@@ -1,0 +1,316 @@
+<!DOCTYPE HTML>
+<html>
+ <head>
+  <meta charset="utf-8"/>
+  <title>
+   Made with Remarkable!
+  </title>
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/github.min.css" rel="stylesheet"/>
+  <style type="text/css">
+   h1,h2,h3,h4{color:#6495ed}body,table tr{background-color:#fff}table tr td,table tr th{border:1px solid #ccc;text-align:left;padding:6px 13px;margin:0}pre code,table,table tr{padding:0}body{font-family:Helvetica,Arial,sans-serif}h1,h2{text-align:center}blockquote{background:#f9f9f9;border-left:10px solid #6495ed;margin:1.5em 10px;padding:.5em 10px;font-style:italic}blockquote p{display:inline}hr{clear:both;float:none;width:100%;height:2.5px;margin:1.4em 0;border:none;background:#ddd;background:-webkit-gradient(linear,left bottom,right bottom,color-stop(0,#fff),color-stop(.1,#ddd),color-stop(.9,#ddd),color-stop(1,#fff)) #ddd;background:-moz-linear-gradient(left center,#fff 0,#ddd 10%,#ddd 90%,#fff 100%) #ddd}table tr{border-top:1px solid #ccc;margin:0}table tr:nth-child(2n){background-color:#aaa}table tr th{font-weight:700}table tr td :first-child,table tr th :first-child{margin-top:0}table tr td:last-child,table tr th :last-child{margin-bottom:0}code,tt{margin:0 2px;padding:0 5px;white-space:nowrap;border:1px solid #eaeaea;background-color:#f8f8f8;border-radius:3px}pre code{margin:0;white-space:pre;border:none;background:0 0}.highlight pre,pre{background-color:#f8f8f8;border:1px solid #ccc;font-size:13px;line-height:19px;overflow:auto;padding:6px 10px;border-radius:3px}
+  </style>
+ </head>
+ <body>
+  <h1 id="maven-web">
+   Maven-web项目建立及配置
+  </h1>
+  <h2 id="_1">
+   一、环境配置
+  </h2>
+  <h3 id="eclipsemaven">
+   eclipse自带Maven
+  </h3>
+  <p>
+   一般在eclipse中自带maven
+   <br/>
+   通过Windows-&gt;Preference-&gt;Maven-&gt;Installations可以查看
+   <br/>
+   其中EMBEDDED为自带的版本，截图如下
+   <br/>
+   <img alt="图1" src="imgs/20181020-213309.png"/>
+   <br/>
+   <span style="text-align: center;color:red">
+    图1
+   </span>
+  </p>
+  <h3 id="_2">
+   使用指定版本
+  </h3>
+  <p>
+   <a href="http://maven.apache.org/download.cgi">
+    官网下载链接
+   </a>
+   :
+   <a href="http://maven.apache.org/download.cgi">
+    http://maven.apache.org/download.cgi
+   </a>
+   <br/>
+   对于Linux系统：
+  </p>
+  <pre><code class="bash">sudo mkdir /opt/maven
+# 解压maven到指定目录
+sudo tar zxvf apache-maven-×.×.×-bin.tar.gz -C /opt/maven
+# 配置maven环境
+sudo gedit /etc/profile
+# 在文件内容后追加如下内容
+export M2_HOME=/opt/maven/apache-maven-3.5.0
+export CLASSPATH=$CLASSPATH:$M2_HOME/lib
+export PATH=$PATH:$M2_HOME/bin
+# 保存后使配置文件生效
+source /etc/profile
+# 运行以下指令以验证是否安装成功
+mvn -v
+# 修改maven源为阿里云及仓库存放路径，以加快下载速度
+sudo gedit /opt/maven/apache-maven-3.5.0/conf/settings.xml
+</code></pre>
+  <pre><code class="xml">&lt;!-- 添加或修改 标签在home目录下生成对应文件夹maven/repository --&gt;
+&lt;localRepository&gt;maven/repository&lt;/localRepository&gt;
+&lt;!-- # 添加或修改 标签 以修改源 --&gt;
+&lt;mirror&gt;
+    &lt;id&gt;nexus-aliyun&lt;/id&gt;
+    &lt;mirrorOf&gt;central&lt;/mirrorOf&gt;
+    &lt;name&gt;Nexus aliyun&lt;/name&gt;
+    &lt;url&gt;http://maven.aliyun.com/nexus/content/groups/public&lt;/url&gt;
+&lt;/mirror&gt;
+</code></pre>
+  <p>
+   对于 Windows系统：
+   <br/>
+   1、下载对应版本文件
+   <br/>
+   2、解压到指定路径 如：D:\Program Files\Apache\maven
+   <br/>
+   3、配置环境变量：
+  </p>
+  <pre><code>MAVEN_HOME:D:\Program Files\Apache\maven
+# 追加到Path变量如下内容（注意前面分号问题）
+%MAVEN_HOME%\bin\
+# 新开cmd窗口并验证
+mvn -v
+# 配置D:\Program Files\Apache\maven\conf\settings.xml 同Ubuntu
+</code></pre>
+  <p>
+   通过点击图1 Add 按钮添加指定版本，配置安装路径即可：
+   <br/>
+   <img alt="添加制定版本maven" src="imgs/20181020-215213.png"/>
+   <br/>
+   <span style="text-align: center;color:red">
+    图2
+   </span>
+   <br/>
+   至此，环境配置完成
+  </p>
+  <h2 id="maven">
+   二、新建maven项目
+  </h2>
+  <p>
+   通过New-&gt;Project 并输入maven，到如下界面：
+   <br/>
+   <img alt="新建界面" src="imgs/20181020-215702.png"/>
+   <br/>
+   <span style="text-align: center;color:red">
+    图3
+   </span>
+   <br/>
+   路径设置，一般使用默认，也可自己选择
+   <br/>
+   <img alt="新建项目路径设置" src="imgs/20181020-215802.png"/>
+   <br/>
+   <span style="text-align: center;color:red">
+    图4
+   </span>
+   <br/>
+   可以使用默认的archetype，也可自行添加archetype（该操作当前不详述）
+   <br/>
+   <img alt="" src="imgs/20181020-220031.png"/>
+   <br/>
+   <span style="text-align: center;color:red">
+    图5
+   </span>
+   <br/>
+   Group Id：唯一就好，个人项目随意
+   <br/>
+   Artifact Id：差不多就项目名的意思
+   <br/>
+   <img alt="" src="imgs/20181020-220315.png"/>
+   <br/>
+   <span style="text-align: center;color:red">
+    图6
+   </span>
+   <br/>
+   点击finish后项目路径分布如下：
+   <br/>
+   <img alt="" src="imgs/20181020-220450.png"/>
+   <br/>
+   <span style="text-align: center;color:red">
+    图7
+   </span>
+   <br/>
+   右击项目选择 Build Path-&gt;Configure Build Path:
+   <br/>
+   <img alt="" src="imgs/20181020-220625.png"/>
+   <br/>
+   <span style="text-align: center;color:red">
+    图8
+   </span>
+   <br/>
+   点击 Add Library，添加Server Runtime，如有需要可修改Jre System Library
+   <br/>
+   <img alt="" src="imgs/20181020-220711.png"/>
+   <br/>
+   <span style="text-align: center;color:red">
+    图9
+   </span>
+   <br/>
+   点击刷新，红色叉号就消失了。
+   <br/>
+   右击，运行，则在浏览器金收入  Hello World！ 页面
+   <br/>
+   至此 maven项目建立完成（关于修改 maven项目名，webapp版本暂不详述）
+  </p>
+  <h2 id="jar">
+   三、下载jar包
+  </h2>
+  <p>
+   在
+   <strong>
+    图7
+   </strong>
+   中可以看到
+   <strong>
+    pom.xml
+   </strong>
+   <br/>
+   通过修改该文件并保存，maven会自动下载或添加对应jar包
+   <br/>
+   其初始内容如下：
+  </p>
+  <pre><code class="xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+  &lt;groupId&gt;com.liang.maven&lt;/groupId&gt;
+  &lt;artifactId&gt;MavenTest&lt;/artifactId&gt;
+  &lt;packaging&gt;war&lt;/packaging&gt;
+  &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+  &lt;name&gt;MavenTest Maven Webapp&lt;/name&gt;
+  &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+  &lt;dependencies&gt;
+    &lt;dependency&gt;
+      &lt;groupId&gt;junit&lt;/groupId&gt;
+      &lt;artifactId&gt;junit&lt;/artifactId&gt;
+      &lt;version&gt;3.8.1&lt;/version&gt;
+      &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+  &lt;/dependencies&gt;
+  &lt;build&gt;
+    &lt;finalName&gt;MavenTest&lt;/finalName&gt;
+  &lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+  <p>
+   百度输入，maven进入其
+   <a href="https://mvnrepository.com/">
+    依赖查询官网
+   </a>
+   :
+   <a href="https://mvnrepository.com/">
+    https://mvnrepository.com/
+   </a>
+  </p>
+  <p>
+   搜索 如：mysql 并在结果中点击第一个链接：
+   <br/>
+   <img alt="" src="imgs/20181020-221731.png"/>
+   <br/>
+   <span style="text-align: center;color:red">
+    图10
+   </span>
+   <br/>
+   点击后会进入版本选择页面，一般我选择使用人数最多的版本，如5.1.6
+   <br/>
+   <img alt="" src="imgs/20181020-221851.png"/>
+   <br/>
+   <span style="text-align: center;color:red">
+    图11
+   </span>
+   <br/>
+   点击对应版本链接后，会进入如下页面：
+   <br/>
+   <img alt="" src="imgs/20181020-221945.png"/>
+   <br/>
+   <span style="text-align: center;color:red">
+    图12
+   </span>
+   <br/>
+   将图中如下内容复制粘贴到
+   <strong>
+    pom.xml
+   </strong>
+   中的
+   <strong>
+    dependencies
+   </strong>
+   标签内：
+  </p>
+  <pre><code class="xml">&lt;!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java --&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;mysql&lt;/groupId&gt;
+    &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+    &lt;version&gt;5.1.6&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+  <p>
+   粘贴后，pom.xml 内容如下：
+  </p>
+  <pre><code class="xml">&lt;project xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"&gt;
+    &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;
+    &lt;groupId&gt;com.liang.maven&lt;/groupId&gt;
+    &lt;artifactId&gt;MavenTest&lt;/artifactId&gt;
+    &lt;packaging&gt;war&lt;/packaging&gt;
+    &lt;version&gt;0.0.1-SNAPSHOT&lt;/version&gt;
+    &lt;name&gt;MavenTest Maven Webapp&lt;/name&gt;
+    &lt;url&gt;http://maven.apache.org&lt;/url&gt;
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;junit&lt;/groupId&gt;
+            &lt;artifactId&gt;junit&lt;/artifactId&gt;
+            &lt;version&gt;3.8.1&lt;/version&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;mysql&lt;/groupId&gt;
+            &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+            &lt;version&gt;5.1.6&lt;/version&gt;
+        &lt;/dependency&gt;
+    &lt;/dependencies&gt;
+    &lt;build&gt;
+        &lt;finalName&gt;MavenTest&lt;/finalName&gt;
+    &lt;/build&gt;
+&lt;/project&gt;
+</code></pre>
+  <p>
+   点击保存，并等待下载完成，下载进度在Progress中查看，下载完成后，可在项目中查看相应jar包：
+   <br/>
+   <img alt="" src="imgs/20181020-222629.png"/>
+   <br/>
+   <span style="text-align: center;color:red">
+    图13
+   </span>
+   <br/>
+   在此项目基础之上，可以轻松下载想要的jar包（如果要拷贝jar包给其他人的话）
+  </p>
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js">
+  </script>
+  <script>
+   hljs.initHighlightingOnLoad();
+  </script>
+  <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript">
+  </script>
+  <script type="text/javascript">
+   MathJax.Hub.Config({"showProcessingMessages" : false,"messageStyle" : "none","tex2jax": { inlineMath: [ [ "$", "$" ] ] }});
+  </script>
+ </body>
+</html>
