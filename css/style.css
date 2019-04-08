@@ -547,6 +547,10 @@ a {
   #container .tags a {
     line-height: 45px;
   }
+  #container #comments {
+    margin: 0.625rem 10px !important;
+    padding: 1rem !important;
+  }
 }
 .header-author {
   text-align: center;
@@ -881,11 +885,10 @@ a {
   background-size: 103%;
 }
 #header .header-nav .social .GitHub {
-  background: url("//cdn.bootcss.com/logos/0.2.0/github-octocat.svg") no-repeat #fff;
-  -webkit-background-size: 90%;
-  -moz-background-size: 90%;
-  background-size: 90%;
-  background-position: 50% 100%;
+  background: url("/img/GitHub.png") center no-repeat #000;
+  -webkit-background-size: 75%;
+  -moz-background-size: 75%;
+  background-size: 75%;
 }
 #header .header-nav .social .CodePen {
   background: url("//cdn.bootcss.com/logos/0.2.0/codepen-icon.svg") no-repeat #000;
@@ -3110,4 +3113,54 @@ p.no-result {
   color: #808080;
   font-family: Times, Georgia serif;
   border-bottom: 2px solid #d3d3d3;
+}
+.category-all-page {
+  margin: 30px 40px 30px 40px;
+  position: relative;
+  min-height: 70vh;
+}
+.category-all-page h2 {
+  margin: 20px 0;
+}
+.category-all-page .category-all-title {
+  text-align: center;
+}
+.category-all-page .category-all {
+  margin-top: 20px;
+}
+.category-all-page .category-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.category-all-page .category-list-item-list-item {
+  margin: 10px 15px;
+}
+.category-all-page .category-list-item-list-count {
+  color: $grey;
+}
+.category-all-page .category-list-item-list-count:before {
+  display: inline;
+  content: " (";
+}
+.category-all-page .category-list-item-list-count:after {
+  display: inline;
+  content: ") ";
+}
+.category-all-page .category-list-item {
+  margin: 10px 10px;
+}
+.category-all-page .category-list-count {
+  color: $grey;
+}
+.category-all-page .category-list-count:before {
+  display: inline;
+  content: " (";
+}
+.category-all-page .category-list-count:after {
+  display: inline;
+  content: ") ";
+}
+.category-all-page .category-list-child {
+  padding-left: 10px;
 }
