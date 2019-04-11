@@ -1,6 +1,16 @@
-# node.js创建流媒体服务器
+---
+title: node.js创建流媒体服务器
+date: 2018-10-28
+categories: node.js
+tags: 
+  - node.js 
+  - 流媒体
+  - 服务器
+---
+
 ## 系统：linux
-## 一、npm安装
+
+## npm安装
 Ubuntu：
 ```bash
 # 安装 npm
@@ -10,7 +20,10 @@ sudo npm install -g npm
 # 切换到淘宝镜像源
 npm install -g cnpm --registry=http://registry.npm.taobao.org
 ```
-## 二、安装express
+<!--more-->
+
+## 安装express
+
 ```bash
 # 先安装generator
 sudo npm install -g express-generator
@@ -18,7 +31,7 @@ sudo npm install -g express-generator
 sudo npm instal -g express
 ```
 
-## 三、通过express创建工程
+## 通过express创建工程
 ```bash
 # 新建工程
 express --view=ejs nodeServer
@@ -78,9 +91,9 @@ nms.run();
 node --harmony nodeServerTest.js
 ```
 得到结果如下：
-![](imgs/20181007-132943.png)
+![](node.js创建流媒体服务器/20181007-132943.png)
 至此，node.js已创建服务器，相关端口参数如果后来者不明白，自己百度科普
-## 四、安装ffmpeg并推送流数据
+## 安装ffmpeg并推送流数据
 Ubuntu下安装ffmpeg比较方便：
 ```bash
 sudo apt-get install ffmpeg
@@ -89,18 +102,18 @@ sudo apt-get install ffmpeg
 ```bash
 sudo ls /dev/video*
 # 若只有一个摄像头，得到的一般是 /dev/video0
-``` 
+```
 ffmpeg推送流
 ```bash
 ffmpeg -f video4linux2 -i /dev/video0 -vcodec libx264 -acodec libvo_aacenc -b 1080k -r 33 -preset:v ultrafast -tune:v zerolatency -f flv rtmp://localhost:1935/live/STREAM_NAME
 # 附注：在Windows系统下，-f后面的参数多为dshow，-i后面的参数video="摄像头名":audio="麦克风名"，在Windows系统中，多为虚拟设备
 ```
 运行效果如下：
-![](imgs/20181007-133704.png)
+![](node.js创建流媒体服务器/20181007-133704.png)
 [参考链接](https://oainin.wordpress.com/2018/06/09/nodejs%E5%88%9B%E5%BB%BA%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8/) 
 链接备用：（https://oainin.wordpress.com/2018/06/09/nodejs%E5%88%9B%E5%BB%BA%E6%B5%81%E5%AA%92%E4%BD%93%E6%9C%8D%E5%8A%A1%E5%99%A8/）
 至此在其他主机上能够访问实时流
-## 五、在网页上访问流数据
+## 在网页上访问流数据
 新建html文件，如：videoPlay.html
 ```html
 <!-- 将192.168.128.112换成服务器实际ip -->

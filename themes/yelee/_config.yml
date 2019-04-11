@@ -7,8 +7,9 @@ Yelee: "3.5"
 ## About Page: `hexo new page about`
 ## Tags Cloud Page: `hexo new page tags`
 menu:
-  主页: /home
+  主页: /
   所有文章: /archives/
+  文章分类: /categories/
   #随笔: /tags/随笔
   标签云: /tags/
   关于我: /about/
@@ -40,9 +41,9 @@ since: 2018
 ## https://github.com/hexojs/hexo-generator-feed
 
 subnav:
-  Email: "mailto:123@123.com"
+  Email: "doubieheart@qq.com"
   #新浪微博: "sina weibo"
-  GitHub: "#"
+  GitHub: "https://github.com/liang-2018"
   #V2EX: "#"
   RSS: "/atom.xml"
   #知乎: "zhihu"
@@ -190,7 +191,7 @@ limit_article_width:
 
 # 是否开启边栏多标签切换
 # Birdhouse button in left column
-tagcloud: true
+tagcloud: false
 
 # Blogroll, Link exchange | 友情链接
 friends:
@@ -200,7 +201,7 @@ friends:
 #friends: false
 
 #是否开启“关于我”。
-aboutme: 专注于前端
+aboutme: 喜欢养花养草的程序员
 #aboutme: false
 
 # Open link in a new tab | 是否在新窗口打开链接
