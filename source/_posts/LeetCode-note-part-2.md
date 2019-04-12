@@ -441,3 +441,757 @@ class Solution {
 }
 ```
 
+## [60. Permutation Sequence](https://leetcode-cn.com/problems/permutation-sequence/)
+
+<span style="color:red;font-size:25px">康托展开Mark</span>
+
+> The set `[1,2,3,...,*n*]` contains a total of *n*! unique permutations.
+>
+> By listing and labeling all of the permutations in order, we get the following sequence for *n* = 3:
+>
+> 1. `"123"`
+> 2. `"132"`
+> 3. `"213"`
+> 4. `"231"`
+> 5. `"312"`
+> 6. `"321"`
+>
+> Given *n* and *k*, return the *k*th permutation sequence.
+>
+> **Note:**
+>
+> - Given *n* will be between 1 and 9 inclusive.
+> - Given *k* will be between 1 and *n*! inclusive.
+>
+> **Example 1:**
+>
+> ```
+> Input: n = 3, k = 3
+> Output: "213"
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: n = 4, k = 9
+> Output: "2314"
+> ```
+
+```java
+// 需学习康拓展开
+class Solution {
+    public String getPermutation(int n, int k) {
+        int[] FAC={1,1,2,6,24,120,720,5040,40320,362880};
+        List<Integer> list=new ArrayList<>();
+       StringBuilder sb=new StringBuilder();
+       for(int i=1;i<=n;i++){
+           list.add(i);
+       }
+        k=k-1;
+        while(n!=0){
+            int a=k/FAC[n-1];
+            int r=k%FAC[n-1];
+            if(a<list.size()){
+                sb.append(list.get(a));
+                list.remove(a);
+            }
+            k=r;//余数当被除数
+            n--; 
+        }       
+       return sb.toString(); 
+    }
+ 
+}
+```
+
+##  [61. Rotate List](https://leetcode-cn.com/problems/rotate-list/)
+
+> Given a linked list, rotate the list to the right by *k* places, where *k* is non-negative.
+>
+> **Example 1:**
+>
+> ```
+> Input: 1->2->3->4->5->NULL, k = 2
+> Output: 4->5->1->2->3->NULL
+> Explanation:
+> rotate 1 steps to the right: 5->1->2->3->4->NULL
+> rotate 2 steps to the right: 4->5->1->2->3->NULL
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: 0->1->2->NULL, k = 4
+> Output: 2->0->1->NULL
+> Explanation:
+> rotate 1 steps to the right: 2->0->1->NULL
+> rotate 2 steps to the right: 1->2->0->NULL
+> rotate 3 steps to the right: 0->1->2->NULL
+> rotate 4 steps to the right: 2->0->1->NULL
+> ```
+
+```java
+// My Ac
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode rotateRight(ListNode head, int k) {
+        if(null ==head)return head;
+        if(head.next == null)return head;
+        int listSize = 1;
+        ListNode pointer = head;
+        while(pointer.next != null){
+                pointer = pointer.next;
+                listSize++;
+        } 
+        k = k % listSize;
+        
+        for(int i = 0; i < k ; i++){
+            pointer = head;
+            while(pointer.next.next != null){
+                pointer = pointer.next;
+            }            
+            ListNode last = pointer.next;
+            pointer.next = null;
+            last.next = head;
+            head = last;
+        }
+        return head;
+    }
+}
+```
+
+```java
+// best ac
+// 将链表先收尾相连成一个环，位移后，再重新拆环
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+public ListNode rotateRight(ListNode head, int k) {
+        if(head==null||k==0){
+            return head;
+        }
+        ListNode cursor=head;
+        ListNode tail=null;//尾指针
+        int length=1;
+        while(cursor.next!=null)//循环 得到总长度
+        {
+            cursor=cursor.next;
+            length++;
+        }
+        int loop=length-(k%length);//得到循环的次数
+        tail=cursor;//指向尾结点
+        cursor.next=head;//改成循环链表
+        cursor=head;//指向头结点
+        for(int i=0;i<loop;i++){//开始循环
+            cursor=cursor.next;
+            tail=tail.next;
+        }
+        tail.next=null;//改成单链表
+        return cursor;//返回当前头
+    }
+}
+```
+
+## [62. Unique Paths](https://leetcode-cn.com/problems/unique-paths/)
+
+<span style="color:red;font-size:25px">Mark,结果溢出</span>
+
+> A robot is located at the top-left corner of a *m* x *n* grid (marked 'Start' in the diagram below).
+>
+> The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+>
+> How many possible unique paths are there?
+>
+> ![img](https://assets.leetcode.com/uploads/2018/10/22/robot_maze.png)
+> Above is a 7 x 3 grid. How many possible unique paths are there?
+>
+> **Note:** *m* and *n* will be at most 100.
+>
+> **Example 1:**
+>
+> ```
+> Input: m = 3, n = 2
+> Output: 3
+> Explanation:
+> From the top-left corner, there are a total of 3 ways to reach the bottom-right corner:
+> 1. Right -> Right -> Down
+> 2. Right -> Down -> Right
+> 3. Down -> Right -> Right
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: m = 7, n = 3
+> Output: 28
+> ```
+
+```java
+// 不假思索就想到的方法多半是坑，因为阶乘数据太大，很容易计算结果溢出
+class Solution {
+    public int uniquePaths(int m, int n) {
+        return fac(m + n -2)/(fac(m-1)*fac(n-1));
+    }
+    public int fac(int n){
+        if(n == 0 || n== 1){
+            return 1;
+        }else{
+            return n * fac(n-1);
+        }        
+    }
+}
+```
+
+> 分析（1）：  
+>
+> 由于机器人智能往右或者往下，所以到达(i,j)的方式只有两种：从（i-1,j）往右和从(i,j-1)往下；从而易得出到达（i,j）的路径总数为dp\[i\]\[j\]=dp\[i-1\]\[j\]+dp\[i\]\[j-1\]
+>
+> 分析（2）：   
+>
+> 由高中数学可知答案就是$C_{m+n-2}^{m-1}$或者$C_{m+n-2}^{n-1}$。其中
+>
+> $$C_m^n=\frac{m!}{n!*(m-n)!}​$$(1)
+>
+> 如果m或者n较小，结果容易得出，但是由于m，n最大可能100，使用阶乘计算的话溢出是必定的。
+>
+> 同时有性质：$C_{m+1}^{n+1}=C_m^n+C_m^{n+1}$(2)和$C_n^0+C_n^1+C_n^2+C_n^3+...+C_n^n=2^n$(3)
+>
+> 通过式（2），很容易想到这题使用动态规划计算。
+>
+> 假设使用数组dp存储结果，则有：dp\[m\]\[n\]=$C_{m+n-2}^{n-1}=C_{m+n-3}^{n-2}+C_{m+n-3}^{n-1}$
+>
+> 结合公式（2）得出：dp\[m\]\[n\]=dp\[m-1\]\[n\]+dp\[m\]\[n-1\]
+>
+> **注意：**dp\[m-1\]\[n-1\]=$C_{m+n-4}^{n-2}$
+
+```java
+class Solution {
+    public int uniquePaths(int m, int n) {
+        int[][] dp = new int[m][n];
+        for(int i = 0; i < m; i++){
+            for(int j = 0; j < n; j++){
+                if(i==0 || j==0){
+                    dp[i][j] = 1;
+                }else{
+                    dp[i][j] = dp[i][j-1] + dp[i-1][j]; // dp[i][j]记录着i行j列时的路径数
+                }
+            }
+        }
+        return dp[m-1][n-1];
+    }
+}
+```
+
+## [63. Unique Paths II](https://leetcode-cn.com/problems/unique-paths-ii/)
+
+> A robot is located at the top-left corner of a *m* x *n* grid (marked 'Start' in the diagram below).
+>
+> The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
+>
+> Now consider if some obstacles are added to the grids. How many unique paths would there be?
+>
+> ![img](https://assets.leetcode.com/uploads/2018/10/22/robot_maze.png)
+>
+> An obstacle and empty space is marked as `1` and `0` respectively in the grid.
+>
+> **Note:** *m* and *n* will be at most 100.
+>
+> **Example 1:**
+>
+> ```
+> Input:
+> [
+>   [0,0,0],
+>   [0,1,0],
+>   [0,0,0]
+> ]
+> Output: 2
+> Explanation:
+> There is one obstacle in the middle of the 3x3 grid above.
+> There are two ways to reach the bottom-right corner:
+> 1. Right -> Right -> Down -> Down
+> 2. Down -> Down -> Right -> Right
+> ```
+
+> 分析：与之前不同，需要判断是否有障碍，有障碍则无法到达该点，即到达该点的路径数为0.
+
+```java
+class Solution {
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int m = obstacleGrid.length;
+        int n = obstacleGrid[0].length;
+        if(obstacleGrid[0][0] ==1)return 0;
+        if(m==1 || n==1){//这里不额外判断也可以
+            for(int i = 0; i < m; i++){
+                for(int j = 0; j < n; j++){
+                    if(obstacleGrid[i][j] == 1){
+                        return 0;
+                    }
+                }
+            }
+            return 1;
+        }             
+        for(int i = 0; i < m; i++){
+            for(int j = 0 ; j < n; j++){
+                if(i == 0 && j > 0){
+                    if(obstacleGrid[i][j] ==0){//Java创建二维数组的代价非常大，能用现成的尽可能别新建
+                        obstacleGrid[i][j] = obstacleGrid[i][j-1];
+                    }else{
+                        obstacleGrid[i][j] = 0;
+                    }
+                }else if(i > 0  && j ==0){
+                     if(obstacleGrid[i][j] ==0){
+                        obstacleGrid[i][j] = obstacleGrid[i-1][j];
+                    }else{
+                        obstacleGrid[i][j] = 0;
+                    }
+                }else if(i ==0 && j==0){
+                    obstacleGrid[i][j] = 1;
+                }else{                    
+                    if(obstacleGrid[i][j] ==0){
+                        obstacleGrid[i][j] = obstacleGrid[i-1][j] + obstacleGrid[i][j-1];
+                    }else{
+                        obstacleGrid[i][j] = 0;
+                    }                                        
+                }
+            }
+        }
+        return obstacleGrid[m-1][n-1];
+        
+    }
+}
+```
+
+## [64. Minimum Path Sum](https://leetcode-cn.com/problems/minimum-path-sum/)
+
+> Given a *m* x *n* grid filled with non-negative numbers, find a path from top left to bottom right which *minimizes* the sum of all numbers along its path.
+>
+> **Note:** You can only move either down or right at any point in time.
+>
+> **Example:**
+>
+> ```
+> Input:
+> [
+>   [1,3,1],
+>   [1,5,1],
+>   [4,2,1]
+> ]
+> Output: 7
+> Explanation: Because the path 1→3→1→1→1 minimizes the sum.
+> ```
+
+> 分析：这道题，和前面两道题，换汤不换药，一样做。也可以使用递归形式熟悉额，道理都一样
+
+```java
+// 循环方式
+class Solution {
+    public int minPathSum(int[][] grid) {
+        //利用dp记录到达某个点的最短长度，因为题目要求只会往右或者往下，不会往回走，只是单向遍历，可以使用动态规划
+        int row = grid.length;
+        int col = grid[0].length;
+        for(int i = 1; i < row; i++){
+            grid[i][0] += grid[i-1][0];
+        }
+         for(int i = 1; i < col; i++){
+            grid[0][i] += grid[0][i-1];
+        }      
+        
+        for(int i = 1; i < row; i++){
+            for(int j = 1; j < col; j++){
+                grid[i][j] += Math.min(grid[i-1][j], grid[i][j-1]);                
+            }
+        }
+        return grid[row-1][col-1];
+    }
+}
+```
+
+```java
+// 递归方式
+class Solution {
+    private int[][] dp;
+    private int core(int[][] m,int row,int col){
+        if (row == m.length - 1 && col == m[0].length - 1) return m[row][col];
+        if (dp[row][col] != 0) return dp[row][col];
+        int result = m[row][col];
+        if (row == m.length - 1){
+            // 只能右走
+            result += core(m,row,col + 1);
+        }else if (col == m[0].length - 1){
+            // 只能向下走
+            result += core(m,row + 1,col);
+        }else{
+            result += Math.min(core(m,row,col + 1) , core(m,row + 1,col));
+        }
+        dp[row][col] = result;
+        return result;
+    }
+    
+    public int minPathSum(int[][] grid) {
+        dp = new int[grid.length][grid[0].length];
+        return core(grid,0,0);
+    }
+}
+```
+
+## [71. Simplify Path](https://leetcode-cn.com/problems/simplify-path/)
+
+> Given an **absolute path** for a file (Unix-style), simplify it. Or in other words, convert it to the **canonical path**.
+>
+> In a UNIX-style file system, a period `.` refers to the current directory. Furthermore, a double period `..` moves the directory up a level. For more information, see: [Absolute path vs relative path in Linux/Unix](https://www.linuxnix.com/abslute-path-vs-relative-path-in-linuxunix/)
+>
+> Note that the returned canonical path must always begin with a slash `/`, and there must be only a single slash `/` between two directory names. The last directory name (if it exists) **must not** end with a trailing `/`. Also, the canonical path must be the **shortest**string representing the absolute path.
+>
+>  
+>
+> **Example 1:**
+>
+> ```
+> Input: "/home/"
+> Output: "/home"
+> Explanation: Note that there is no trailing slash after the last directory name.
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: "/../"
+> Output: "/"
+> Explanation: Going one level up from the root directory is a no-op, as the root level is the highest level you can go.
+> ```
+>
+> **Example 3:**
+>
+> ```
+> Input: "/home//foo/"
+> Output: "/home/foo"
+> Explanation: In the canonical path, multiple consecutive slashes are replaced by a single one.
+> ```
+>
+> **Example 4:**
+>
+> ```
+> Input: "/a/./b/../../c/"
+> Output: "/c"
+> ```
+>
+> **Example 5:**
+>
+> ```
+> Input: "/a/../../b/../c//.//"
+> Output: "/c"
+> ```
+>
+> **Example 6:**
+>
+> ```
+> Input: "/a//b////c/d//././/.."
+> Output: "/a/b/c"
+> ```
+
+>  一开始想到的比较笨的方式，将字符串转换为数组进行判断
+>
+> 每个位置有三个可能：/  .  字母
+>  / + 字母  ： 追加
+>  / + /  : 跳过
+>  . + /  : 跳过
+>  . + .  : 通过lastIndexOf("/")定位剔除最后一段
+>
+> 但是死于输入 "/..."，喵的，
+>  "..."在linux还真能建立，但是用ll都查看不到，但是确实能通过 cd ... 进入该文件夹
+>
+> 所以，换种方式：
+>
+> 通过 split将字符串分割，只需判断是否为空，是否为“.”和".."三种情况，其他的追加上去就好。
+
+```java
+class Solution {
+    public String simplifyPath(String path) {
+
+        String[]  StrArr = path.split("/");
+        StringBuilder sb = new StringBuilder();
+        for(String str :StrArr){
+            if("".equals(str))continue;
+            if(".".equals(str)){
+                continue;
+            }else if("..".equals(str)){
+                int lindex = sb.lastIndexOf("/");
+                if(lindex == -1){
+                    continue;
+                }
+                String tmp = sb.toString().substring(0, lindex);
+                sb = new StringBuilder(tmp);
+            }else{
+                sb.append("/" + str);
+            }
+        }
+        if(sb.length()==0){
+            sb.append("/");
+        }
+        return sb.toString();
+    }
+}
+```
+
+```java
+// 最短用时 2ms
+class Solution {
+    public String simplifyPath(String path) {
+        int i = path.length() - 1, count = 0;
+        StringBuilder builder = new StringBuilder(i);
+        while (i > 0) {
+            int j = path.lastIndexOf('/', i);// 从i开始向前搜索 "/"
+            if (i == j) i--; //说明 i 处 正好是 "/"
+            else {
+                String x = path.substring(j + 1, i + 1);
+                i = j - 1;
+                if (".".equals(x)) ;
+                else if ("..".equals(x)) count++;
+                else if (count > 0) count--;
+                else builder.insert(0, "/" + x);
+            }
+        }
+        return builder.length() == 0 ? "/" : builder.toString();
+    }
+}
+```
+
+## [73. Set Matrix Zeroes](https://leetcode-cn.com/problems/set-matrix-zeroes/)
+
+> Given a *m* x *n* matrix, if an element is 0, set its entire row and column to 0. Do it [**in-place**](https://en.wikipedia.org/wiki/In-place_algorithm).
+>
+> **Example 1:**
+>
+> ```
+> Input: 
+> [
+>   [1,1,1],
+>   [1,0,1],
+>   [1,1,1]
+> ]
+> Output: 
+> [
+>   [1,0,1],
+>   [0,0,0],
+>   [1,0,1]
+> ]
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: 
+> [
+>   [0,1,2,0],
+>   [3,4,5,2],
+>   [1,3,1,5]
+> ]
+> Output: 
+> [
+>   [0,0,0,0],
+>   [0,4,5,0],
+>   [0,3,1,0]
+> ]
+> ```
+>
+> **Follow up:**
+>
+> - A straight forward solution using O(*m**n*) space is probably a bad idea.
+> - A simple improvement uses O(*m* + *n*) space, but still not the best solution.
+> - Could you devise a constant space solution?
+
+```java
+// O(m+n) space 2ms
+class Solution {
+    public void setZeroes(int[][] matrix) {
+        int row = matrix.length;
+        int col = matrix[0].length;
+        int[] rowZero = new int[row]; 
+        int[] colZero = new int[col];
+        for(int i = 0; i < row; i++){
+            for(int j = 0; j < col; j++){
+                if(matrix[i][j] == 0){
+                    rowZero[i] = 1;
+                    colZero[j] = 1;                          
+                }
+            }         
+        }
+        for(int i = 0; i < row; i++){
+            if(rowZero[i] == 1){
+                setRowZero(matrix, i);
+            }            
+        }
+        for(int j = 0; j < col; j++){
+            if(colZero[j] == 1){
+                setColZero(matrix, j);
+            } 
+        }
+        
+    }
+    public void setRowZero(int[][] matrix, int row){        
+        int col = matrix[0].length;
+        for(int i = 0; i < col; i++){
+            matrix[row][i] = 0;
+        }
+    }
+     public void setColZero(int[][] matrix, int col){
+        int row = matrix.length;
+         for(int i = 0; i < row; i++){
+            matrix[i][col] = 0;
+        }
+    }
+}
+```
+
+```java
+// 少于 O(m+n)额外空间的，将首行和首列用来存储对应行列是否存在0
+class Solution {
+    public void setZeroes(int[][] matrix) {
+   	//如果首行或首列有元素为0，在最后将行或列置为0
+    	boolean rowFlag = false;
+        //判断首行
+        for (int i = 0; i < matrix[0].length; i++) {
+            if (matrix[0][i] == 0) {
+            	rowFlag=true;
+                break;
+            }
+        }
+
+        //判断首列
+        boolean colFlag = false;
+        for (int i = 0; i < matrix.length; i++) {
+            if (matrix[i][0] == 0) {
+            	matrix[0][0]=0;
+                break;
+            }
+        }
+
+        //把对应的首行首列置为0，从[1][1]开始遍历
+        for (int i = 1; i < matrix.length; i++) {
+            for (int j = 1; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0){
+                    matrix[i][0] = 0;
+                    matrix[0][j] = 0;
+                }
+            }
+        }
+
+        //行置0
+        for (int i = 1; i < matrix[0].length; i++) {
+            if (matrix[0][i] == 0) {
+                for (int j = 0; j < matrix.length; j++) {
+                    matrix[j][i] = 0;
+                }
+            }
+        }
+        //列置0
+        for (int i = 1; i < matrix.length; i++) {
+            if (matrix[i][0] == 0) {
+                for (int j = 0; j < matrix[0].length; j++) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        //如果首列中有0，将首列置为0
+        if (matrix[0][0]==0){
+            for (int i = 0; i < matrix.length; i++) {
+                matrix[i][0] = 0;
+            }
+        }
+        //如果首行有0，将首行置为0
+        if (rowFlag){
+            for (int i = 0; i < matrix[0].length; i++) {
+                matrix[0][i] = 0;
+            }
+        }
+    }    
+}
+```
+
+## [74. Search a 2D Matrix](https://leetcode-cn.com/problems/search-a-2d-matrix/)
+
+> Write an efficient algorithm that searches for a value in an *m* x *n* matrix. This matrix has the following properties:
+>
+> - Integers in each row are sorted from left to right.
+> - The first integer of each row is greater than the last integer of the previous row.
+>
+> **Example 1:**
+>
+> ```
+> Input:
+> matrix = [
+>   [1,   3,  5,  7],
+>   [10, 11, 16, 20],
+>   [23, 30, 34, 50]
+> ]
+> target = 3
+> Output: true
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input:
+> matrix = [
+>   [1,   3,  5,  7],
+>   [10, 11, 16, 20],
+>   [23, 30, 34, 50]
+> ]
+> target = 13
+> Output: false
+> ```
+
+```java
+// 日常判断  传入的值可能为 null 或者 长度为0
+class Solution {
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if(null == matrix)return false;
+        int row = matrix.length;
+        if(0 == row)return false;
+        int col = matrix[0].length;
+        if(0 == col)return false;
+        for(int i = 0; i < row; i++){
+            if (matrix[i][col-1] == target || matrix[i][0] == target) {
+                return true;
+            } else if(matrix[i][col-1] > target){
+                return rowFind(matrix[i], target);
+            }
+        }
+        return false;
+    }
+// 行查找使用二分查找，对于更长的矩阵，具有更高的效率
+    public boolean rowFind(int[] row, int target){
+        int left = 0;
+        int right = row.length - 1;
+        int mid = -1;
+        while (left <= right) {
+            mid = (right + left) / 2;
+            if (row[mid] == target) {
+                return true;
+            } else if (row[mid] > target) {
+                right = mid - 1;
+            } else if (row[mid] < target) {
+                left = mid + 1;
+            }
+        }
+        return false;
+    }
+}
+```
+
+
+
