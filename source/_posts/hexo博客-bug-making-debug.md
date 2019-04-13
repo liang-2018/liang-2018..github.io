@@ -16,7 +16,7 @@ categories: tools
 
    > 在Windows系统，部署相关指令主要在Git Bash中运行
    >
-   > 博客发布在Gitee/Github上都需要使用到Gi
+   > 博客发布在Gitee/Github上都需要使用到Git
 
 2. 安装Node.js
 
@@ -102,10 +102,14 @@ npm install
 > + 修改_config.yml配置文件,**冒号后务必有空格**
 > ```yml
 > deploy:
-> type: git
-> repo: <repository url>
-> branch: [branch]
-> message: [message]
+> - type: git
+>     repo: <repository url>
+>     branch: [branch]
+>     message: [message]
+> - type: git
+>     repo: <repository url>
+>     branch: [branch]
+>     message: [message]
 > ```
 > 仓库取名：默认情况不是子目录，需要将仓库名取为: **<用户名>.github.io** 这样命名，github的page服务会自动识别处理，否则需要额外设置子目录，如果想在子目录发布，需要额外在_config.yml中配置
 >

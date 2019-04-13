@@ -1195,3 +1195,100 @@ class Solution {
 
 
 
+## [75. Sort Colors](https://leetcode-cn.com/problems/sort-colors/)
+
+Given an array with *n* objects colored red, white or blue, sort them **in-place** so that objects of the same color are adjacent, with the colors in the order red, white and blue.
+
+Here, we will use the integers 0, 1, and 2 to represent the color red, white, and blue respectively.
+
+**Note:** You are not suppose to use the library's sort function for this problem.
+
+**Example:**
+
+```
+Input: [2,0,2,1,1,0]
+Output: [0,0,1,1,2,2]
+```
+
+**Follow up:**
+
+- A rather straight forward solution is a two-pass algorithm using counting sort.
+  First, iterate the array counting number of 0's, 1's, and 2's, then overwrite array with total number of 0's, then 1's and followed by 2's.
+- Could you come up with a one-pass algorithm using only constant space?
+
+```java
+// 遍历，把红的往前放，蓝的往后放，每次交换两处索引的值就可以了。
+class Solution {
+    public void sortColors(int[] nums) {
+        //遍历，把红的往前放，把蓝的往后放
+        int left = 0;
+        int right = nums.length -1;
+        int index = 0;
+        while(left < right && index <=right){
+            if(left < index && nums[index] == 0){
+                swap(nums, left, index);
+                left ++;
+            }else if(nums[index] == 2){
+                swap(nums, right, index);
+                right --;
+            }else{
+                index ++;
+            }
+        }
+        
+    }
+    public void swap(int[] nums, int index1, int index2){
+        int tmp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = tmp;
+    }
+}
+```
+
+## [77. Combinations](https://leetcode-cn.com/problems/combinations/)
+
+Given two integers *n* and *k*, return all possible combinations of *k* numbers out of 1 ... *n*.
+
+**Example:**
+
+```
+Input: n = 4, k = 2
+Output:
+[
+  [2,4],
+  [3,4],
+  [2,3],
+  [1,2],
+  [1,3],
+  [1,4],
+]
+```
+
+```java
+// 最先想到的办法，回溯
+class Solution {
+    private List<List<Integer>> list = new ArrayList();
+    public List<List<Integer>> combine(int n, int k) {
+        combine(n, k, new ArrayList<Integer>());
+       return list;
+    }
+    
+    public void combine(int n, int k, List<Integer> combine){
+         if(n < 1)return;
+         if(k == 1){
+            for(int i = n ; i > 0 ; i--){
+                combine.add(i);
+                list.add(new ArrayList(combine));
+                combine.remove((Object)i);
+            }
+        }else{             
+             for(int i = n; i > 0 ; i--){                
+                combine.add(i);
+                combine(i-1, k-1, combine);
+                combine.remove((Object)i);
+            }
+         }
+    }
+}
+```
+

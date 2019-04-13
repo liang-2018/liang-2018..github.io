@@ -92,3 +92,6 @@ deploy:
 - type: git
   repo: git@gitee.com:PengShiliang/PengShiliang.git
   branch: master
+- type: git
+  repo: git@git.dev.tencent.com:pengshiliang/pengshiliang.git
+  branch: master
