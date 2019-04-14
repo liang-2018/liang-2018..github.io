@@ -1,981 +1,4 @@
 {
-  "edges": [
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49742,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49743,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49744,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1313,
-      "relation": "包含"
-    },
-    {
-      "source": 1313,
-      "target": 44965,
-      "relation": "包含"
-    },
-    {
-      "source": 44965,
-      "target": 49779,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1313,
-      "relation": "包含"
-    },
-    {
-      "source": 1313,
-      "target": 44965,
-      "relation": "包含"
-    },
-    {
-      "source": 44965,
-      "target": 49780,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49784,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49785,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1762,
-      "relation": "包含"
-    },
-    {
-      "source": 1762,
-      "target": 45059,
-      "relation": "包含"
-    },
-    {
-      "source": 45059,
-      "target": 49786,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1762,
-      "relation": "包含"
-    },
-    {
-      "source": 1762,
-      "target": 45059,
-      "relation": "包含"
-    },
-    {
-      "source": 45059,
-      "target": 49787,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1762,
-      "relation": "包含"
-    },
-    {
-      "source": 1762,
-      "target": 45059,
-      "relation": "包含"
-    },
-    {
-      "source": 45059,
-      "target": 49788,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1762,
-      "relation": "包含"
-    },
-    {
-      "source": 1762,
-      "target": 45059,
-      "relation": "包含"
-    },
-    {
-      "source": 45059,
-      "target": 49789,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1762,
-      "relation": "包含"
-    },
-    {
-      "source": 1762,
-      "target": 45059,
-      "relation": "包含"
-    },
-    {
-      "source": 45059,
-      "target": 49790,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1762,
-      "relation": "包含"
-    },
-    {
-      "source": 1762,
-      "target": 45059,
-      "relation": "包含"
-    },
-    {
-      "source": 45059,
-      "target": 49791,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1762,
-      "relation": "包含"
-    },
-    {
-      "source": 1762,
-      "target": 45059,
-      "relation": "包含"
-    },
-    {
-      "source": 45059,
-      "target": 49792,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1762,
-      "relation": "包含"
-    },
-    {
-      "source": 1762,
-      "target": 45059,
-      "relation": "包含"
-    },
-    {
-      "source": 45059,
-      "target": 49793,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1762,
-      "relation": "包含"
-    },
-    {
-      "source": 1762,
-      "target": 45059,
-      "relation": "包含"
-    },
-    {
-      "source": 45059,
-      "target": 49794,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49796,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49797,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49798,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 690,
-      "relation": "包含"
-    },
-    {
-      "source": 690,
-      "target": 38205,
-      "relation": "包含"
-    },
-    {
-      "source": 38205,
-      "target": 49799,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 690,
-      "relation": "包含"
-    },
-    {
-      "source": 690,
-      "target": 38205,
-      "relation": "包含"
-    },
-    {
-      "source": 38205,
-      "target": 49800,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 690,
-      "relation": "包含"
-    },
-    {
-      "source": 690,
-      "target": 38205,
-      "relation": "包含"
-    },
-    {
-      "source": 38205,
-      "target": 49801,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 690,
-      "relation": "包含"
-    },
-    {
-      "source": 690,
-      "target": 38205,
-      "relation": "包含"
-    },
-    {
-      "source": 38205,
-      "target": 49802,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 690,
-      "relation": "包含"
-    },
-    {
-      "source": 690,
-      "target": 38205,
-      "relation": "包含"
-    },
-    {
-      "source": 38205,
-      "target": 49803,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 690,
-      "relation": "包含"
-    },
-    {
-      "source": 690,
-      "target": 38205,
-      "relation": "包含"
-    },
-    {
-      "source": 38205,
-      "target": 49804,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49821,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49822,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49823,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49824,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49825,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1495,
-      "relation": "包含"
-    },
-    {
-      "source": 1495,
-      "target": 36295,
-      "relation": "包含"
-    },
-    {
-      "source": 36295,
-      "target": 49830,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1495,
-      "relation": "包含"
-    },
-    {
-      "source": 1495,
-      "target": 36295,
-      "relation": "包含"
-    },
-    {
-      "source": 36295,
-      "target": 49831,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1495,
-      "relation": "包含"
-    },
-    {
-      "source": 1495,
-      "target": 36295,
-      "relation": "包含"
-    },
-    {
-      "source": 36295,
-      "target": 49832,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1495,
-      "relation": "包含"
-    },
-    {
-      "source": 1495,
-      "target": 36295,
-      "relation": "包含"
-    },
-    {
-      "source": 36295,
-      "target": 49833,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1495,
-      "relation": "包含"
-    },
-    {
-      "source": 1495,
-      "target": 36295,
-      "relation": "包含"
-    },
-    {
-      "source": 36295,
-      "target": 49834,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1495,
-      "relation": "包含"
-    },
-    {
-      "source": 1495,
-      "target": 36295,
-      "relation": "包含"
-    },
-    {
-      "source": 36295,
-      "target": 49835,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1495,
-      "relation": "包含"
-    },
-    {
-      "source": 1495,
-      "target": 36295,
-      "relation": "包含"
-    },
-    {
-      "source": 36295,
-      "target": 49836,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1495,
-      "relation": "包含"
-    },
-    {
-      "source": 1495,
-      "target": 36295,
-      "relation": "包含"
-    },
-    {
-      "source": 36295,
-      "target": 49837,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1494,
-      "relation": "包含"
-    },
-    {
-      "source": 1494,
-      "target": 30425,
-      "relation": "包含"
-    },
-    {
-      "source": 30425,
-      "target": 49839,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1494,
-      "relation": "包含"
-    },
-    {
-      "source": 1494,
-      "target": 30425,
-      "relation": "包含"
-    },
-    {
-      "source": 30425,
-      "target": 49840,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1494,
-      "relation": "包含"
-    },
-    {
-      "source": 1494,
-      "target": 42251,
-      "relation": "包含"
-    },
-    {
-      "source": 42251,
-      "target": 49844,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 1494,
-      "relation": "包含"
-    },
-    {
-      "source": 1494,
-      "target": 42251,
-      "relation": "包含"
-    },
-    {
-      "source": 42251,
-      "target": 49845,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49846,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49847,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 27352,
-      "relation": "包含"
-    },
-    {
-      "source": 27352,
-      "target": 49848,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2419,
-      "relation": "包含"
-    },
-    {
-      "source": 2419,
-      "target": 45200,
-      "relation": "包含"
-    },
-    {
-      "source": 45200,
-      "target": 49849,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2419,
-      "relation": "包含"
-    },
-    {
-      "source": 2419,
-      "target": 45200,
-      "relation": "包含"
-    },
-    {
-      "source": 45200,
-      "target": 49850,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 33243,
-      "relation": "包含"
-    },
-    {
-      "source": 33243,
-      "target": 49851,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 33243,
-      "relation": "包含"
-    },
-    {
-      "source": 33243,
-      "target": 49852,
-      "relation": "包含"
-    },
-    {
-      "source": 313,
-      "target": 1465,
-      "relation": "包含"
-    },
-    {
-      "source": 1465,
-      "target": 33243,
-      "relation": "包含"
-    },
-    {
-      "source": 33243,
-      "target": 49853,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2419,
-      "relation": "包含"
-    },
-    {
-      "source": 2419,
-      "target": 45200,
-      "relation": "包含"
-    },
-    {
-      "source": 45200,
-      "target": 49854,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2419,
-      "relation": "包含"
-    },
-    {
-      "source": 2419,
-      "target": 30454,
-      "relation": "包含"
-    },
-    {
-      "source": 30454,
-      "target": 49855,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2419,
-      "relation": "包含"
-    },
-    {
-      "source": 2419,
-      "target": 30454,
-      "relation": "包含"
-    },
-    {
-      "source": 30454,
-      "target": 49856,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2419,
-      "relation": "包含"
-    },
-    {
-      "source": 2419,
-      "target": 30454,
-      "relation": "包含"
-    },
-    {
-      "source": 30454,
-      "target": 49857,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2419,
-      "relation": "包含"
-    },
-    {
-      "source": 2419,
-      "target": 30454,
-      "relation": "包含"
-    },
-    {
-      "source": 30454,
-      "target": 49858,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2419,
-      "relation": "包含"
-    },
-    {
-      "source": 2419,
-      "target": 30454,
-      "relation": "包含"
-    },
-    {
-      "source": 30454,
-      "target": 49859,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2419,
-      "relation": "包含"
-    },
-    {
-      "source": 2419,
-      "target": 30454,
-      "relation": "包含"
-    },
-    {
-      "source": 30454,
-      "target": 49860,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2419,
-      "relation": "包含"
-    },
-    {
-      "source": 2419,
-      "target": 30455,
-      "relation": "包含"
-    },
-    {
-      "source": 30455,
-      "target": 49861,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2275,
-      "relation": "包含"
-    },
-    {
-      "source": 2275,
-      "target": 30424,
-      "relation": "包含"
-    },
-    {
-      "source": 30424,
-      "target": 49872,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2275,
-      "relation": "包含"
-    },
-    {
-      "source": 2275,
-      "target": 30424,
-      "relation": "包含"
-    },
-    {
-      "source": 30424,
-      "target": 49873,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2275,
-      "relation": "包含"
-    },
-    {
-      "source": 2275,
-      "target": 30424,
-      "relation": "包含"
-    },
-    {
-      "source": 30424,
-      "target": 49874,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2275,
-      "relation": "包含"
-    },
-    {
-      "source": 2275,
-      "target": 30424,
-      "relation": "包含"
-    },
-    {
-      "source": 30424,
-      "target": 49875,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2275,
-      "relation": "包含"
-    },
-    {
-      "source": 2275,
-      "target": 30424,
-      "relation": "包含"
-    },
-    {
-      "source": 30424,
-      "target": 49876,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2275,
-      "relation": "包含"
-    },
-    {
-      "source": 2275,
-      "target": 30424,
-      "relation": "包含"
-    },
-    {
-      "source": 30424,
-      "target": 49877,
-      "relation": "包含"
-    },
-    {
-      "source": 219,
-      "target": 2275,
-      "relation": "包含"
-    },
-    {
-      "source": 2275,
-      "target": 30424,
-      "relation": "包含"
-    },
-    {
-      "source": 30424,
-      "target": 49878,
-      "relation": "包含"
-    }
-  ],
   "nodes": [
     {
       "name": "彩深",
@@ -3516,6 +2539,983 @@
       "样品质量": "27.905",
       "id": 49878,
       "type": "恒压压汞"
+    }
+  ],
+  "edges": [
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49742,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49743,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49744,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1313,
+      "relation": "包含"
+    },
+    {
+      "source": 1313,
+      "target": 44965,
+      "relation": "包含"
+    },
+    {
+      "source": 44965,
+      "target": 49779,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1313,
+      "relation": "包含"
+    },
+    {
+      "source": 1313,
+      "target": 44965,
+      "relation": "包含"
+    },
+    {
+      "source": 44965,
+      "target": 49780,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49784,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49785,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1762,
+      "relation": "包含"
+    },
+    {
+      "source": 1762,
+      "target": 45059,
+      "relation": "包含"
+    },
+    {
+      "source": 45059,
+      "target": 49786,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1762,
+      "relation": "包含"
+    },
+    {
+      "source": 1762,
+      "target": 45059,
+      "relation": "包含"
+    },
+    {
+      "source": 45059,
+      "target": 49787,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1762,
+      "relation": "包含"
+    },
+    {
+      "source": 1762,
+      "target": 45059,
+      "relation": "包含"
+    },
+    {
+      "source": 45059,
+      "target": 49788,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1762,
+      "relation": "包含"
+    },
+    {
+      "source": 1762,
+      "target": 45059,
+      "relation": "包含"
+    },
+    {
+      "source": 45059,
+      "target": 49789,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1762,
+      "relation": "包含"
+    },
+    {
+      "source": 1762,
+      "target": 45059,
+      "relation": "包含"
+    },
+    {
+      "source": 45059,
+      "target": 49790,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1762,
+      "relation": "包含"
+    },
+    {
+      "source": 1762,
+      "target": 45059,
+      "relation": "包含"
+    },
+    {
+      "source": 45059,
+      "target": 49791,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1762,
+      "relation": "包含"
+    },
+    {
+      "source": 1762,
+      "target": 45059,
+      "relation": "包含"
+    },
+    {
+      "source": 45059,
+      "target": 49792,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1762,
+      "relation": "包含"
+    },
+    {
+      "source": 1762,
+      "target": 45059,
+      "relation": "包含"
+    },
+    {
+      "source": 45059,
+      "target": 49793,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1762,
+      "relation": "包含"
+    },
+    {
+      "source": 1762,
+      "target": 45059,
+      "relation": "包含"
+    },
+    {
+      "source": 45059,
+      "target": 49794,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49796,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49797,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49798,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 690,
+      "relation": "包含"
+    },
+    {
+      "source": 690,
+      "target": 38205,
+      "relation": "包含"
+    },
+    {
+      "source": 38205,
+      "target": 49799,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 690,
+      "relation": "包含"
+    },
+    {
+      "source": 690,
+      "target": 38205,
+      "relation": "包含"
+    },
+    {
+      "source": 38205,
+      "target": 49800,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 690,
+      "relation": "包含"
+    },
+    {
+      "source": 690,
+      "target": 38205,
+      "relation": "包含"
+    },
+    {
+      "source": 38205,
+      "target": 49801,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 690,
+      "relation": "包含"
+    },
+    {
+      "source": 690,
+      "target": 38205,
+      "relation": "包含"
+    },
+    {
+      "source": 38205,
+      "target": 49802,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 690,
+      "relation": "包含"
+    },
+    {
+      "source": 690,
+      "target": 38205,
+      "relation": "包含"
+    },
+    {
+      "source": 38205,
+      "target": 49803,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 690,
+      "relation": "包含"
+    },
+    {
+      "source": 690,
+      "target": 38205,
+      "relation": "包含"
+    },
+    {
+      "source": 38205,
+      "target": 49804,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49821,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49822,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49823,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49824,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49825,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1495,
+      "relation": "包含"
+    },
+    {
+      "source": 1495,
+      "target": 36295,
+      "relation": "包含"
+    },
+    {
+      "source": 36295,
+      "target": 49830,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1495,
+      "relation": "包含"
+    },
+    {
+      "source": 1495,
+      "target": 36295,
+      "relation": "包含"
+    },
+    {
+      "source": 36295,
+      "target": 49831,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1495,
+      "relation": "包含"
+    },
+    {
+      "source": 1495,
+      "target": 36295,
+      "relation": "包含"
+    },
+    {
+      "source": 36295,
+      "target": 49832,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1495,
+      "relation": "包含"
+    },
+    {
+      "source": 1495,
+      "target": 36295,
+      "relation": "包含"
+    },
+    {
+      "source": 36295,
+      "target": 49833,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1495,
+      "relation": "包含"
+    },
+    {
+      "source": 1495,
+      "target": 36295,
+      "relation": "包含"
+    },
+    {
+      "source": 36295,
+      "target": 49834,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1495,
+      "relation": "包含"
+    },
+    {
+      "source": 1495,
+      "target": 36295,
+      "relation": "包含"
+    },
+    {
+      "source": 36295,
+      "target": 49835,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1495,
+      "relation": "包含"
+    },
+    {
+      "source": 1495,
+      "target": 36295,
+      "relation": "包含"
+    },
+    {
+      "source": 36295,
+      "target": 49836,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1495,
+      "relation": "包含"
+    },
+    {
+      "source": 1495,
+      "target": 36295,
+      "relation": "包含"
+    },
+    {
+      "source": 36295,
+      "target": 49837,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1494,
+      "relation": "包含"
+    },
+    {
+      "source": 1494,
+      "target": 30425,
+      "relation": "包含"
+    },
+    {
+      "source": 30425,
+      "target": 49839,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1494,
+      "relation": "包含"
+    },
+    {
+      "source": 1494,
+      "target": 30425,
+      "relation": "包含"
+    },
+    {
+      "source": 30425,
+      "target": 49840,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1494,
+      "relation": "包含"
+    },
+    {
+      "source": 1494,
+      "target": 42251,
+      "relation": "包含"
+    },
+    {
+      "source": 42251,
+      "target": 49844,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 1494,
+      "relation": "包含"
+    },
+    {
+      "source": 1494,
+      "target": 42251,
+      "relation": "包含"
+    },
+    {
+      "source": 42251,
+      "target": 49845,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49846,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49847,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 27352,
+      "relation": "包含"
+    },
+    {
+      "source": 27352,
+      "target": 49848,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2419,
+      "relation": "包含"
+    },
+    {
+      "source": 2419,
+      "target": 45200,
+      "relation": "包含"
+    },
+    {
+      "source": 45200,
+      "target": 49849,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2419,
+      "relation": "包含"
+    },
+    {
+      "source": 2419,
+      "target": 45200,
+      "relation": "包含"
+    },
+    {
+      "source": 45200,
+      "target": 49850,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 33243,
+      "relation": "包含"
+    },
+    {
+      "source": 33243,
+      "target": 49851,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 33243,
+      "relation": "包含"
+    },
+    {
+      "source": 33243,
+      "target": 49852,
+      "relation": "包含"
+    },
+    {
+      "source": 313,
+      "target": 1465,
+      "relation": "包含"
+    },
+    {
+      "source": 1465,
+      "target": 33243,
+      "relation": "包含"
+    },
+    {
+      "source": 33243,
+      "target": 49853,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2419,
+      "relation": "包含"
+    },
+    {
+      "source": 2419,
+      "target": 45200,
+      "relation": "包含"
+    },
+    {
+      "source": 45200,
+      "target": 49854,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2419,
+      "relation": "包含"
+    },
+    {
+      "source": 2419,
+      "target": 30454,
+      "relation": "包含"
+    },
+    {
+      "source": 30454,
+      "target": 49855,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2419,
+      "relation": "包含"
+    },
+    {
+      "source": 2419,
+      "target": 30454,
+      "relation": "包含"
+    },
+    {
+      "source": 30454,
+      "target": 49856,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2419,
+      "relation": "包含"
+    },
+    {
+      "source": 2419,
+      "target": 30454,
+      "relation": "包含"
+    },
+    {
+      "source": 30454,
+      "target": 49857,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2419,
+      "relation": "包含"
+    },
+    {
+      "source": 2419,
+      "target": 30454,
+      "relation": "包含"
+    },
+    {
+      "source": 30454,
+      "target": 49858,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2419,
+      "relation": "包含"
+    },
+    {
+      "source": 2419,
+      "target": 30454,
+      "relation": "包含"
+    },
+    {
+      "source": 30454,
+      "target": 49859,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2419,
+      "relation": "包含"
+    },
+    {
+      "source": 2419,
+      "target": 30454,
+      "relation": "包含"
+    },
+    {
+      "source": 30454,
+      "target": 49860,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2419,
+      "relation": "包含"
+    },
+    {
+      "source": 2419,
+      "target": 30455,
+      "relation": "包含"
+    },
+    {
+      "source": 30455,
+      "target": 49861,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2275,
+      "relation": "包含"
+    },
+    {
+      "source": 2275,
+      "target": 30424,
+      "relation": "包含"
+    },
+    {
+      "source": 30424,
+      "target": 49872,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2275,
+      "relation": "包含"
+    },
+    {
+      "source": 2275,
+      "target": 30424,
+      "relation": "包含"
+    },
+    {
+      "source": 30424,
+      "target": 49873,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2275,
+      "relation": "包含"
+    },
+    {
+      "source": 2275,
+      "target": 30424,
+      "relation": "包含"
+    },
+    {
+      "source": 30424,
+      "target": 49874,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2275,
+      "relation": "包含"
+    },
+    {
+      "source": 2275,
+      "target": 30424,
+      "relation": "包含"
+    },
+    {
+      "source": 30424,
+      "target": 49875,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2275,
+      "relation": "包含"
+    },
+    {
+      "source": 2275,
+      "target": 30424,
+      "relation": "包含"
+    },
+    {
+      "source": 30424,
+      "target": 49876,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2275,
+      "relation": "包含"
+    },
+    {
+      "source": 2275,
+      "target": 30424,
+      "relation": "包含"
+    },
+    {
+      "source": 30424,
+      "target": 49877,
+      "relation": "包含"
+    },
+    {
+      "source": 219,
+      "target": 2275,
+      "relation": "包含"
+    },
+    {
+      "source": 2275,
+      "target": 30424,
+      "relation": "包含"
+    },
+    {
+      "source": 30424,
+      "target": 49878,
+      "relation": "包含"
     }
   ]
 }
