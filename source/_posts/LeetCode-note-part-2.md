@@ -441,7 +441,7 @@ class Solution {
 }
 ```
 
-## [60. Permutation Sequence](https://leetcode-cn.com/problems/permutation-sequence/)
+## [Mark-60. Permutation Sequence](https://leetcode-cn.com/problems/permutation-sequence/)
 
 <span style="color:red;font-size:25px">康托展开Mark</span>
 
@@ -605,7 +605,7 @@ public ListNode rotateRight(ListNode head, int k) {
 }
 ```
 
-## [62. Unique Paths](https://leetcode-cn.com/problems/unique-paths/)
+## [Mark-62. Unique Paths](https://leetcode-cn.com/problems/unique-paths/)
 
 <span style="color:red;font-size:25px">Mark,结果溢出</span>
 
@@ -1274,20 +1274,654 @@ class Solution {
     }
     
     public void combine(int n, int k, List<Integer> combine){
-         if(n < 1)return;
-         if(k == 1){
-            for(int i = n ; i > 0 ; i--){
-                combine.add(i);
-                list.add(new ArrayList(combine));
-                combine.remove((Object)i);
+		if(k == 0){
+            list.add(new ArrayList(combine));
+            return;
+        }
+        if(n < 1)return;            
+        for(int i = n; i > 0 && i >= k; i--){ 
+            // 注意，添加 i >= k 可以节约很多时间，避免大量无用功，差不多是5ms和57ms的区别              
+            combine.add(i);
+            combine(i-1, k-1, combine);
+            combine.remove((Object)i); // 或  combine.remove(combine.size()-1);
+        }
+    }
+}
+```
+
+```java
+// 原理差不多，一个从大到小组合，一个从小到大组合
+class Solution {
+    private int max;
+
+	private int num;
+
+	private List<List<Integer>> res;
+
+	public List<List<Integer>> combine(int n, int k)
+	{
+		max = n;
+		num = k;
+		res = new ArrayList<>();
+
+		if (k == 0) {
+			return res;
+		}
+
+		getCombine(1, new ArrayList<>());
+
+		return res;
+	}
+
+	private void getCombine(int index, List<Integer> form)
+	{
+		if (form.size() == num) {
+			res.add(new ArrayList<>(form));
+
+			return;
+		}
+		// 剪枝，[i, n]区间至少需要有k - form.size()个元素，否则跳过
+		int range = max - num + form.size() + 1;
+
+		for (int i = index; i <= range; i++) {
+			form.add(i);
+			getCombine(i + 1, form);
+			form.remove(form.size() - 1);
+		}
+	}
+}
+```
+
+## [78. Subsets](https://leetcode-cn.com/problems/subsets/)
+
+> Given a set of **distinct** integers, *nums*, return all possible subsets (the power set).
+>
+> **Note:** The solution set must not contain duplicate subsets.
+>
+> **Example:**
+>
+> ```
+> Input: nums = [1,2,3]
+> Output:
+> [
+>   [3],
+>   [1],
+>   [2],
+>   [1,2,3],
+>   [1,3],
+>   [2,3],
+>   [1,2],
+>   []
+> ]
+> ```
+
+```java
+class Solution {
+    private List<List<Integer>> res = null;
+    public List<List<Integer>> subsets(int[] nums) {
+        res = new ArrayList<>();
+        ArrayList <Integer> temp = new ArrayList<>();
+        sub(nums,temp, 0);
+        return res;
+    }
+    public void sub(int[] nums, List temp, int index) {
+        if(index == nums.length) {
+            res.add(new ArrayList(temp));
+            return;
+        }
+        temp.add(nums[index]);
+        sub(nums, temp, index + 1);
+        temp.remove(temp.size() - 1);
+        sub(nums, temp, index + 1);
+    }
+}
+```
+
+```java
+class Solution {
+    public List<List<Integer>> subsets(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        result.add(new ArrayList<Integer>());
+        for(int n:nums){
+            int size = result.size();
+            for(int i=0;i<size;i++){
+                List<Integer> temp = new ArrayList<Integer>(result.get(i));
+                temp.add(n);
+                result.add(temp);
             }
-        }else{             
-             for(int i = n; i > 0 ; i--){                
-                combine.add(i);
-                combine(i-1, k-1, combine);
-                combine.remove((Object)i);
+        }
+        return result;
+    }
+}
+```
+
+## [79. Word Search](https://leetcode-cn.com/problems/word-search/)
+
+> Given a 2D board and a word, find if the word exists in the grid.
+>
+> The word can be constructed from letters of sequentially adjacent cell, where "adjacent" cells are those horizontally or vertically neighboring. The same letter cell may not be used more than once.
+>
+> **Example:**
+>
+> ```
+> board =
+> [
+>   ['A','B','C','E'],
+>   ['S','F','C','S'],
+>   ['A','D','E','E']
+> ]
+> 
+> Given word = "ABCCED", return true.
+> Given word = "SEE", return true.
+> Given word = "ABCB", return false.
+> ```
+
+```java
+// 10 ms 38.7MB
+class Solution {
+    private char[][] board = null;
+    private int[][] mark = null;
+    private String word = null;
+    public boolean exist(char[][] board, String word) {
+        // 通过遍历定位首字母位置，然后再逐步递归调用比较旁边位置，  将起始坐标都保存
+        // 同时还需要标记 相应位置 是否已经使用过（由于可能多个方向可能相同，需要使用到回溯）
+        this.board = board;
+        this.word = word;
+        int row = board.length;
+        int col = board[0].length;
+        mark = new int[row][col];
+        List<int[]> starts = find(word.charAt(0));
+        for(int[] point : starts){
+            mark[point[0]][point[1]] = 1;
+            if(exist(point[0], point[1], 0)){
+                return true;
             }
-         }
+            mark[point[0]][point[1]] = 0;
+        }
+        return false;
+        
+    }
+    private boolean exist(int curRow, int curCol, int curIndex){
+        if(word.charAt(curIndex) == board[curRow][curCol] && curIndex == word.length() -1){
+            return true;
+        }
+        if( word.charAt(curIndex) == board[curRow][curCol]){
+            //判断四个方向是否可行
+            // 上
+            if(curRow - 1 >= 0 && mark[curRow-1][curCol] ==0){
+                mark[curRow -1][curCol] = 1;
+                boolean exist = exist(curRow -1, curCol, curIndex + 1);
+                mark[curRow -1][curCol] = 0;
+                if(exist)return exist;
+            }
+            // 下
+            if(curRow + 1 < board.length && mark[curRow+1][curCol] ==0){
+                mark[curRow + 1][curCol] = 1;
+                boolean exist = exist(curRow + 1, curCol, curIndex + 1);
+                mark[curRow + 1][curCol] = 0;
+                if(exist)return exist;
+            }
+            // 左
+            if(curCol -1 >= 0 && mark[curRow][curCol -1] == 0){
+                mark[curRow][curCol - 1] = 1;
+                boolean exist = exist(curRow, curCol -1, curIndex + 1);
+                mark[curRow][curCol - 1] = 0;
+                if(exist)return exist;
+            }
+            // 右
+            if(curCol + 1 < board[0].length && mark[curRow][curCol + 1] == 0){
+                mark[curRow][curCol + 1] = 1;
+                boolean exist = exist(curRow, curCol + 1, curIndex + 1);
+                mark[curRow][curCol + 1] = 0;
+                if(exist)return exist;
+            }            
+        }else{
+            return false;
+        }        
+        return false;
+    }
+    // 查找首字母的位置
+    private List<int[]> find(char head){
+        List<int[]> list = new ArrayList();
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[0].length; j++){
+                if(board[i][j] == head){
+                    list.add(new int[]{i, j});
+                }
+            }
+        }
+        return list;
+    }
+}
+```
+
+```java
+// 将上面的逻辑统一简化处理  14ms 43.9MB
+class Solution {
+    private char[][] board = null;
+    private int[][] mark = null;
+    private String word = null;
+    public boolean exist(char[][] board, String word) {
+        // 通过遍历定位首字母位置，然后再逐步递归调用比较旁边位置，  将起始坐标都保存
+        // 同时还需要标记 相应位置 是否已经使用过（由于可能多个方向可能相同，需要使用到回溯）
+        this.board = board;
+        this.word = word;
+        int row = board.length;
+        int col = board[0].length;
+        mark = new int[row][col];
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[0].length; j++){
+                if(board[i][j] == word.charAt(0)){
+                   if(exist(i, j, 0))return true;
+                }
+            }
+        }
+        return false;  
+    }
+    private boolean exist(int curRow, int curCol, int curIndex){
+        if( curIndex == word.length()){
+            return true;
+        }
+        if(curRow < 0 || curRow == board.length || curCol < 0 || curCol == board[0].length || mark[curRow][curCol] == 1){
+            return false;
+        }
+        if( word.charAt(curIndex) == board[curRow][curCol]){
+            //判断四个方向是否可行
+            mark[curRow][curCol] = 1;
+            if(exist(curRow - 1, curCol, curIndex + 1) 
+              || exist(curRow + 1, curCol, curIndex + 1)
+              || exist(curRow, curCol -1, curIndex + 1)
+              || exist(curRow, curCol + 1, curIndex + 1)){
+                return true;
+            }  
+            mark[curRow][curCol] = 0;
+        }    
+        return false;
+    }
+}
+```
+
+```java
+// 由于是比较值是相同，所以可以通过临时改变值使不相同来做标记，节省内存  8ms  39.6MB
+class Solution {
+    private char[][] board = null;
+    private String word = null;
+    public boolean exist(char[][] board, String word) {
+        // 通过遍历定位首字母位置，然后再逐步递归调用比较旁边位置
+        // 同时还需要标记 相应位置 是否已经使用过（由于可能多个方向可能相同，需要使用到回溯）
+        this.board = board;
+        this.word = word;
+        int row = board.length;
+        int col = board[0].length;
+        for(int i = 0; i < board.length; i++){
+            for(int j = 0; j < board[0].length; j++){
+                if(board[i][j] == word.charAt(0)){
+                   if(exist(i, j, 0))return true;
+                }
+            }
+        }
+        return false;
+        
+    }
+    private boolean exist(int curRow, int curCol, int curIndex){
+        if( curIndex == word.length()){
+            return true;
+        }
+        if(curRow < 0 || curRow == board.length || curCol < 0 || curCol == board[0].length){
+            return false;
+        }
+        if( word.charAt(curIndex) == board[curRow][curCol]){
+            //判断四个方向是否可行
+            board[curRow][curCol] ^= 256; // 使用位运算，加快计算速度，同时计算后不是字母，相当于标记了已遍历
+            if(exist(curRow - 1, curCol, curIndex + 1) 
+              || exist(curRow + 1, curCol, curIndex + 1)
+              || exist(curRow, curCol -1, curIndex + 1)
+              || exist(curRow, curCol + 1, curIndex + 1)){
+                return true;
+            }  
+            board[curRow][curCol] ^= 256; // 二次异或，回复原值
+        }    
+        return false;
+    }
+}
+```
+
+## [80. Remove Duplicates from Sorted Array II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-array-ii/)
+
+> Given a sorted array *nums*, remove the duplicates [**in-place**](https://en.wikipedia.org/wiki/In-place_algorithm) such that duplicates appeared at most *twice* and return the new length.
+>
+> Do not allocate extra space for another array, you must do this by **modifying the input array in-place** with O(1) extra memory.
+>
+> **Example 1:**
+>
+> ```
+> Given nums = [1,1,1,2,2,3],
+> 
+> Your function should return length = 5, with the first five elements of nums being 1, 1, 2, 2 and 3 respectively.
+> 
+> It doesn't matter what you leave beyond the returned length.
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Given nums = [0,0,1,1,1,1,2,3,3],
+> 
+> Your function should return length = 7, with the first seven elements of nums being modified to 0, 0, 1, 1, 2, 3 and 3 respectively.
+> 
+> It doesn't matter what values are set beyond the returned length.
+> ```
+>
+> **Clarification:**
+>
+> Confused why the returned value is an integer but your answer is an array?
+>
+> Note that the input array is passed in by **reference**, which means modification to the input array will be known to the caller as well.
+>
+> Internally you can think of this:
+>
+> ```
+> // nums is passed in by reference. (i.e., without making a copy)
+> int len = removeDuplicates(nums);
+> 
+> // any modification to nums in your function would be known by the caller.
+> // using the length returned by your function, it prints the first len elements.
+> for (int i = 0; i < len; i++) {
+>     print(nums[i]);
+> }
+> ```
+
+```java
+// 理解容易，写起来绕
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        if( 0 == nums.length)return 0;
+        int newLength = 0;
+        int count = 0;
+        int preVal = nums[0];
+        for(int i = 1; i < nums.length; i++){
+            if(preVal == nums[i]) {                
+                count ++;                  
+            }else{                
+                count = 0;                
+            }
+            preVal = nums[i];
+            if(count < 2){//在这里控制重复的个数是多少
+                 newLength++;;
+            }
+            if(i > newLength){//如果没有超过3个的重复数，则没必要交换
+                swap(nums, i, newLength);
+            }             
+        }
+        return newLength + 1;//长度是最后索引+1
+    }
+    private void swap(int[] nums, int index1, int index2){
+        int tmp = nums[index1];
+        nums[index1] = nums[index2];
+        nums[index2] = tmp;
+    }
+}
+```
+
+```java
+class Solution {
+    public int removeDuplicates(int[] nums) {
+        int flag = 0;
+        if (nums == null || nums.length <= 0){
+            return flag;
+        }
+        for (int i = 0;i < nums.length;i++){
+            if (flag < 2 || nums[i] > nums[flag - 2]){
+                //flag 指向有效值赋值后一位置，（即newLength）,因而flag-2指向上一个值
+               	// 可以通过修改 flag 减少 num 来控制多少个重复
+                nums[flag++] = nums[i];
+            }
+        }
+        return flag;
+    }
+}
+```
+
+## [Mark-81. Search in Rotated Sorted Array II](https://leetcode-cn.com/problems/search-in-rotated-sorted-array-ii/)
+
+> Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+>
+> (i.e., `[0,0,1,2,2,5,6]` might become `[2,5,6,0,0,1,2]`).
+>
+> You are given a target value to search. If found in the array return `true`, otherwise return `false`.
+>
+> **Example 1:**
+>
+> ```
+> Input: nums = [2,5,6,0,0,1,2], target = 0
+> Output: true
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: nums = [2,5,6,0,0,1,2], target = 3
+> Output: false
+> ```
+>
+> **Follow up:**
+>
+> - This is a follow up problem to [Search in Rotated Sorted Array](https://leetcode-cn.com/problems/search-in-rotated-sorted-array/description/), where `nums` may contain duplicates.
+> - Would this affect the run-time complexity? How and why?
+
+```java
+class Solution {
+    public boolean search(int[] nums, int target) {
+        if(nums.length == 0)return false;
+        return find(nums, 0, nums.length - 1, target);
+    }
+    public boolean find(int[] nums, int left, int right, int target){
+        if(left > right)return false;
+        if(nums[left] == target || nums[right] == target){
+            return true;
+        }
+        if(left == right )return false;
+        int mid = left + (right - left) / 2;
+        if(nums[mid] == target)return true;
+        if(nums[left] < nums[mid]){
+           if(nums[left] <=target && target <= nums[mid]){
+               return find(nums, left, mid -1, target);
+           }else{
+               return find(nums, mid+1, right, target);
+           }
+        }else if(nums[right] > nums[mid]){
+            if(nums[mid] <= target && target <= nums[right]){
+                return find(nums, mid +1, right, target);
+            }else{
+                return find(nums, left, mid -1, target);
+            }
+        }else{
+            if(nums[mid] == nums[left]){
+                return find(nums, left +1, right, target);
+            }else{
+                return find(nums, left, right -1, target);
+            }
+        }
+    }
+}
+```
+
+```java
+class Solution {
+    public boolean search(int[] nums, int target) {
+       int l = 0, r = nums.length-1;
+        while(l<=r){
+            //处理重复数字
+            while(l<r&&nums[l]==nums[l+1]) ++l;
+            while(l<r&&nums[r]==nums[r-1]) --r;
+            int mid = l+(r-l)/2;
+            if(nums[mid]==target) return true;
+            //左半部分有序
+            if(nums[mid]>=nums[l]){
+                if(target<nums[mid]&&target>=nums[l]) r = mid-1;//target落在左半边
+                else l = mid+1;
+            }else{//右半部分有序
+                if(target>nums[mid]&&target<=nums[r]) l = mid+1;//target落在右半边
+                else r = mid-1;
+            }
+        }
+        return false;
+    }
+}
+```
+
+## [Mark-82. Remove Duplicates from Sorted List II](https://leetcode-cn.com/problems/remove-duplicates-from-sorted-list-ii/)
+
+> Given a sorted linked list, delete all nodes that have duplicate numbers, leaving only *distinct*numbers from the original list.
+>
+> **Example 1:**
+>
+> ```
+> Input: 1->2->3->3->4->4->5
+> Output: 1->2->5
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: 1->1->1->2->3
+> Output: 2->3
+> ```
+
+
+
+```java
+public ListNode deleteDuplicates(ListNode head) {
+        /**
+        //方法一：直接法
+        //问题？？？ 如何跳过两个连续相等的？？pre指到4，但prev本身不到4；
+        if (head == null || head.next == null) return head;
+        ListNode dummyHead = new ListNode(0);
+        dummyHead.next = head;
+        ListNode prev = dummyHead;
+        ListNode cur = head;
+        while (cur != null && cur.next != null) {
+            if (cur.val == cur.next.val){
+                while (cur.next != null && cur.val == cur.next.val) {
+                    cur.next = cur.next.next;
+                }
+                
+                prev.next = cur.next;
+                cur = cur.next;
+            }else {
+                prev = prev.next;
+                cur = cur.next;
+            }
+        }
+        return dummyHead.next;
+        */
+        /**
+        //方法二：递归法
+        if (head == null || head.next == null) return head;
+        ListNode dummyHead = new ListNode(0);
+        if (head.val == head.next.val) {
+            ListNode node = head.next;
+            while (node != null && node.val == head.val) {
+                node = node.next;
+            }
+            return deleteDuplicates(node);
+
+        }else {
+            head.next = deleteDuplicates(head.next);
+            return head;
+        }
+        */
+        
+        //方法三：
+        
+        if (head == null || head.next == null) return head;
+        ListNode prev = null;
+        ListNode cur = head;
+        while (cur != null) {
+            ListNode next = cur.next;
+            if (cur.next != null && cur.val == next.val) {
+                ListNode toBeDel = cur;
+                while (toBeDel != null && toBeDel.val == cur.val) {
+                    next = toBeDel.next;
+                    toBeDel = next;
+                }
+                if (prev == null) {
+                    head = next;
+                }else {
+                    prev.next = next;
+                }
+                cur = next;      
+            }else {
+                prev =  cur;
+                cur = cur.next;
+            }
+        }
+        return head;
+    }
+```
+
+```java
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if(null == head || null == head.next)return head;  
+        ListNode dHead = new ListNode(0);
+        dHead.next = head;
+        ListNode pointer = head;
+        ListNode prePoint = dHead;
+
+        while(pointer!= null && pointer.next != null){
+           if(pointer.val == pointer.next.val){
+               while(null != pointer.next && pointer.val == pointer.next.val){
+                   pointer.next = pointer.next.next;
+               }
+               prePoint.next = pointer.next;
+               pointer = pointer.next;
+           }else{
+               prePoint = prePoint.next;
+               pointer = pointer.next;
+           }   
+            
+        }
+
+        return dHead.next;
+    }
+}
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        if(null == head || null == head.next)return head;  
+        if(head.val == head.next.val){
+            while(null != head.next && head.val == head.next.val){
+                head.next = head.next.next;
+            }
+            head = head.next;
+            return deleteDuplicates(head);
+        }else{
+            head.next = deleteDuplicates(head.next);
+            return head;
+        }
+    }
+}
+class Solution {
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode prev = null;
+        ListNode cur = head;
+        while( null != cur){
+            if(cur.next != null && cur.val == cur.next.val){
+                while(null != cur.next && cur.val == cur.next.val){
+                    cur.next = cur.next.next;                
+                }
+                cur = cur.next;
+                if(prev == null){
+                    head = cur;
+                }else{
+                    prev.next = cur;// 修改节点的next，否则还是指向重复的
+                }
+            }else{
+                prev = cur;
+                cur = cur.next;
+            }
+        }
+        return head;
     }
 }
 ```
