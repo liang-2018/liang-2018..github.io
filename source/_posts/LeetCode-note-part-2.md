@@ -1788,79 +1788,8 @@ class Solution {
 > Output: 2->3
 > ```
 
-
-
 ```java
-public ListNode deleteDuplicates(ListNode head) {
-        /**
-        //方法一：直接法
-        //问题？？？ 如何跳过两个连续相等的？？pre指到4，但prev本身不到4；
-        if (head == null || head.next == null) return head;
-        ListNode dummyHead = new ListNode(0);
-        dummyHead.next = head;
-        ListNode prev = dummyHead;
-        ListNode cur = head;
-        while (cur != null && cur.next != null) {
-            if (cur.val == cur.next.val){
-                while (cur.next != null && cur.val == cur.next.val) {
-                    cur.next = cur.next.next;
-                }
-                
-                prev.next = cur.next;
-                cur = cur.next;
-            }else {
-                prev = prev.next;
-                cur = cur.next;
-            }
-        }
-        return dummyHead.next;
-        */
-        /**
-        //方法二：递归法
-        if (head == null || head.next == null) return head;
-        ListNode dummyHead = new ListNode(0);
-        if (head.val == head.next.val) {
-            ListNode node = head.next;
-            while (node != null && node.val == head.val) {
-                node = node.next;
-            }
-            return deleteDuplicates(node);
-
-        }else {
-            head.next = deleteDuplicates(head.next);
-            return head;
-        }
-        */
-        
-        //方法三：
-        
-        if (head == null || head.next == null) return head;
-        ListNode prev = null;
-        ListNode cur = head;
-        while (cur != null) {
-            ListNode next = cur.next;
-            if (cur.next != null && cur.val == next.val) {
-                ListNode toBeDel = cur;
-                while (toBeDel != null && toBeDel.val == cur.val) {
-                    next = toBeDel.next;
-                    toBeDel = next;
-                }
-                if (prev == null) {
-                    head = next;
-                }else {
-                    prev.next = next;
-                }
-                cur = next;      
-            }else {
-                prev =  cur;
-                cur = cur.next;
-            }
-        }
-        return head;
-    }
-```
-
-```java
+// 先虚拟一个前节点，用于获取指针
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
         if(null == head || null == head.next)return head;  
@@ -1886,6 +1815,7 @@ class Solution {
         return dHead.next;
     }
 }
+// 递归调用
 class Solution {
     public ListNode deleteDuplicates(ListNode head) {
         if(null == head || null == head.next)return head;  
@@ -1926,3 +1856,222 @@ class Solution {
 }
 ```
 
+## [86. Partition List](https://leetcode-cn.com/problems/partition-list/)
+
+<center>Mark</center>
+
+> Given a linked list and a value *x*, partition it such that all nodes less than *x* come before nodes greater than or equal to *x*.
+>
+> You should preserve the original relative order of the nodes in each of the two partitions.
+>
+> **Example:**
+>
+> ```
+> Input: head = 1->4->3->2->5->2, x = 3
+> Output: 1->2->2->4->3->5
+> ```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        // 建立两个虚拟头部来链接值
+        ListNode less_head = new ListNode(0);//用来链接比x更小的值
+        ListNode more_head = new ListNode(0);//用来链接比x更大或相等的值
+ 
+        ListNode less_cur = less_head;// 插入点
+        ListNode more_cur = more_head;//插入点
+        
+        while(head != null){
+            if(head.val < x){
+                less_cur.next = head;
+                less_cur = less_cur.next;
+            }
+            else{
+                more_cur.next = head;
+                more_cur = more_cur.next;
+            }
+            head = head.next;
+        }
+        
+        less_cur.next = more_head.next;
+        more_cur.next = null;
+        return less_head.next;
+    }
+}
+```
+
+## [89. Gray Code](https://leetcode-cn.com/problems/gray-code/)
+
+> The gray code is a binary numeral system where two successive values differ in only one bit.
+>
+> Given a non-negative integer *n* representing the total number of bits in the code, print the sequence of gray code. A gray code sequence must begin with 0.
+>
+> **Example 1:**
+>
+> ```
+> Input: 2
+> Output: [0,1,3,2]
+> Explanation:
+> 00 - 0
+> 01 - 1
+> 11 - 3
+> 10 - 2
+> 
+> For a given n, a gray code sequence may not be uniquely defined.
+> For example, [0,2,3,1] is also a valid gray code sequence.
+> 
+> 00 - 0
+> 10 - 2
+> 11 - 3
+> 01 - 1
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: 0
+> Output: [0]
+> Explanation: We define the gray code sequence to begin with 0.
+>              A gray code sequence of n has size = 2n, which for n = 0 the size is 20 = 1.
+>              Therefore, for n = 0 the gray code sequence is [0].
+> ```
+
+> 这道题如果了解格雷码构成的原理就很简单了
+
+```java
+class Solution {
+    public List<Integer> grayCode(int n) {
+        if(n == 0){
+            List<Integer> list = new ArrayList();
+            list.add(0);
+            return list; 
+        }       
+        List<Integer> list = new ArrayList();
+        List preList = grayCode(n - 1);
+        for(Object val : preList){
+            list.add((int)val);
+        }
+        int addVal = 1 <<(n-1);
+        for(int i = preList.size() - 1; i>=0; i--){            
+            list.add((int)preList.get(i) + addVal);
+        }
+        return list;
+    }
+}
+```
+
+## [90. Subsets II](https://leetcode-cn.com/problems/subsets-ii/)
+
+> Given a collection of integers that might contain duplicates, **nums**, return all possible subsets (the power set).
+>
+> **Note:** The solution set must not contain duplicate subsets.
+>
+> **Example:**
+>
+> ```
+> Input: [1,2,2]
+> Output:
+> [
+>   [2],
+>   [1],
+>   [1,2,2],
+>   [2,2],
+>   [1,2],
+>   []
+> ]
+> ```
+
+```java
+class Solution {
+    private List<List<Integer>> result = new ArrayList<>();
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        
+        result.add(new ArrayList<Integer>());
+        Arrays.sort(nums);
+        for(int i = 1; i <= nums.length; i ++){
+            genSub(nums, 0, i, new ArrayList(i));
+        }
+        return result;
+    }
+    private void genSub(int[] nums, int sIndex, int len, List<Integer> sub){
+        if(len == sub.size()){
+            result.add(new ArrayList(sub));            
+            return;
+        }
+
+        for(int i = sIndex; i + len - sub.size() <= nums.length; i++){
+             // 判断条件很重要  i + len - sub.size() <= nums.length
+            sub.add(nums[i]);
+            genSub(nums, i + 1, len , sub);
+            sub.remove(sub.size() -1);
+            while(i < nums.length -1 && nums[i] == nums[i+1]){
+                i++ ;
+            } 
+                      
+        }        
+        
+    }
+}
+```
+
+```java
+class Solution {
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        List<Integer> tmp = new ArrayList<Integer>();
+        Arrays.sort(nums);
+        helper(nums,res,tmp,0);
+        return res;
+        
+    }
+    
+    public void helper(int[] nums, List<List<Integer>> res, List<Integer> tmp, int start){
+        res.add(new ArrayList<Integer>(tmp));
+        for (int i = start; i < nums.length; i++){
+            if (i > start && nums[i] == nums[i-1]) continue;
+            tmp.add(nums[i]);
+            helper(nums,res,tmp,i+1);
+            tmp.remove(tmp.size()-1);
+        }
+    }
+}
+```
+
+## [91. Decode Ways](https://leetcode-cn.com/problems/decode-ways/)
+
+> A message containing letters from `A-Z` is being encoded to numbers using the following mapping:
+>
+> ```
+> 'A' -> 1
+> 'B' -> 2
+> ...
+> 'Z' -> 26
+> ```
+>
+> Given a **non-empty** string containing only digits, determine the total number of ways to decode it.
+>
+> **Example 1:**
+>
+> ```
+> Input: "12"
+> Output: 2
+> Explanation: It could be decoded as "AB" (1 2) or "L" (12).
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: "226"
+> Output: 3
+> Explanation: It could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).
+> ```
+
+> 组合相关基本使用  动态规划、回溯等
