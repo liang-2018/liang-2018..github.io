@@ -2074,4 +2074,402 @@ class Solution {
 > Explanation: It could be decoded as "BZ" (2 26), "VF" (22 6), or "BBF" (2 2 6).
 > ```
 
-> 组合相关基本使用  动态规划、回溯等
+> 组合相关基本使用  动态规划、回溯、分治等
+
+```java
+class Solution {
+    public int numDecodings(String s) {
+        char[] ss=s.toCharArray();
+        int n=ss.length;
+        if(n==0) {//没有数字的情况
+        	return 0;
+        }
+        int[] dp=new int[n+1];//dp[i]表示前i个数字的组合数
+        dp[0]=1;//为了后面的好计算
+        for(int i=1;i<=n;i++) {
+        	int t=ss[i-1]-'0';
+        	if(t>=1&&t<=9) {//最后一个数字
+        		dp[i]+=dp[i-1];
+        	}
+        	if(i>=2) {//最后两个组合成数字
+        		t=(ss[i-2]-'0')*10+(ss[i-1]-'0');
+        		if(t>=10&&t<=26) {
+        			dp[i]+=dp[i-2];
+        		}
+        	}
+        }
+        return dp[n];
+    }
+}
+```
+
+```python
+class Solution:
+    # 原型还是斐波那契的思路，第i的个数由i-1和i-2的个数决定
+    def numDecodings(self, s: str) -> int:
+        # '0'开头的全部违规
+        if s[0] == '0':
+            return 0
+        # '0'结尾的，前一位比2大也全部违规，受测试用例'230'的启发
+        # 其实下面的循环也实现了，但就是想早点剔除违规的哈哈哈
+        if s[-1] == '0' and s[-2] > '2':
+            return 0
+        # 这有点斐波那契的意思，因为第i位在不违规的情况下，
+        # 要么自己成一位，要么和前一位组成两位的字母，所以可就是f(i) = f(i-1) + f(i-2)
+        a = 1 # 第i-1位的组合个数
+        b = 1 # 第i-2位的组合个数
+        for i in range(1, len(s)):
+            # 连续两个0肯定违规
+            if s[i-1] == '0' and s[i] == '0':
+                return 0
+            # 小于26就有可能i和i+1配对变斐波那契
+            elif s[i-1]+s[i] <= '26':
+                # i为0，就只能f(i) = f(i-2),和前一个合体，不能自己单独
+                if s[i] == '0':
+                    a, b = b, a
+                # 如果前一个为0，而自己为不为0，f(i) = f(i-1)
+                elif s[i-1] == '0':
+                    a = b
+                # 一切正常，f(i) = f(i-1) + f(i-2)
+                else:
+                    a, b = b, a+b
+            # 删除任何30，40，50这种出现在尾部，中部的违规组合
+            elif s[i] == '0':
+                return 0
+            else:
+                a = b
+        
+        return b
+            
+```
+
+## [92. Reverse Linked List II](https://leetcode-cn.com/problems/reverse-linked-list-ii/)
+
+> Reverse a linked list from position *m* to *n*. **Do it in one-pass.**
+>
+> **Note:** 1 ≤ *m* ≤ *n* ≤ length of list.
+>
+> **Example:**
+>
+> ```
+> Input: 1->2->3->4->5->NULL, m = 2, n = 4
+> Output: 1->4->3->2->5->NULL
+> ```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode reverseBetween(ListNode head, int m, int n) {
+        if(m == n || head == null || head.next == null)return head;
+        ListNode prev = null;
+        ListNode cur = head;
+        ListNode part1Start = head;
+        ListNode part1End = null, part2Start = null, part2End = null, part3Start = null;
+        for(int i = 1; cur != null; i++){
+            if(i == m ){
+                part1End = prev;
+                part2End = cur;
+            }
+            if(i == n){
+                part2Start = cur;
+                part3Start = cur.next;
+            }
+            if( i >= m && i <= n){
+                ListNode next = cur.next;
+                cur.next = prev;
+                prev = cur;            
+                cur = next;
+            }else{
+                prev = cur;
+                cur = cur.next;
+            }            
+        }
+        if(m == 1){
+            head = part2Start;
+            part2End.next = part3Start;
+        }else{
+            part1End.next = part2Start;
+            part2End.next = part3Start;
+        }
+        return head;           
+    }
+}
+```
+
+## [93. Restore IP Addresses](https://leetcode-cn.com/problems/restore-ip-addresses/)
+
+> Given a string containing only digits, restore it by returning all possible valid IP address combinations.
+>
+> **Example:**
+>
+> ```
+> Input: "25525511135"
+> Output: ["255.255.11.135", "255.255.111.35"]
+> ```
+
+```java
+// 4ms 37.4MB
+class Solution {
+    private List<String> result = new ArrayList();
+    public List<String> restoreIpAddresses(String s) {
+        restore(s, "", 4);
+        return result;
+    }
+    private void restore(String s, String sb, int len){
+        if(len == 0 && s.length() == 0){
+            result.add(sb.substring(0, sb.length() -1));
+            return;
+        }
+        if(s.length() > len * 3 || len == 0 || s.length() < 1){
+            return;
+        }
+        
+        restore(s.substring(1), sb + s.substring(0,1) +".", len -1);  
+        if(s.length() >= 2 ){
+            int val = Integer.parseInt(s.substring(0, 2));
+            if(val > 9){
+                restore(s.substring(2), sb + s.substring(0,2) +".", len -1);     
+            }                
+        }  
+        if(s.length() >= 3){
+            int val = Integer.parseInt(s.substring(0, 3));
+            if( val > 99 && val < 256){
+                 restore(s.substring(3), sb + s.substring(0,3) +".", len -1);    
+            }
+        }                            
+        
+    }
+}
+// 也可以用 StringBuilder  4ms  34.7MB
+class Solution {
+    private List<String> result = new ArrayList();
+    public List<String> restoreIpAddresses(String s) {
+        restore(s, new StringBuilder(), 4);
+        return result;
+    }
+    private void restore(String s, StringBuilder sb, int len){
+        if(len == 0 && s.length() == 0){
+            result.add(sb.toString().substring(0, sb.length() -1));
+            return;
+        }
+        if(s.length() > len * 3 || len == 0 || s.length() < 1){
+            return;
+        }
+        sb.append(s.substring(0,1)).append(".");
+        restore(s.substring(1), sb, len -1); 
+        sb.delete(sb.length()-2, sb.length());
+        if(s.length() >= 2 ){
+            int val = Integer.parseInt(s.substring(0, 2));
+            if(val > 9){
+                sb.append(s.substring(0,2)).append(".");
+                restore(s.substring(2), sb, len -1);   
+                sb.delete(sb.length()-3, sb.length());
+            }                
+        }  
+        if(s.length() >= 3){
+            int val = Integer.parseInt(s.substring(0, 3));
+            if( val > 99 && val < 256){
+                sb.append(s.substring(0,3)).append(".");
+                 restore(s.substring(3), sb, len -1);   
+                 sb.delete(sb.length()-4, sb.length());
+            }
+        }                            
+        
+    }
+}
+```
+
+```java
+// 2ms 37.2MB
+class Solution {
+    public List<String> restoreIpAddresses(String s) {
+        int[] splits = new int[5];                        //分割的每一段的开始位置，从1开始
+        List<String> ips = new ArrayList<>(); 
+        restoreIpAddresses(0,splits,s,ips);
+        return ips;
+    }
+    //通过寻找原IP地址的四个分段的起始位置来确定新的IP地址
+    private void restoreIpAddresses(int level,int[] s,String ip,List<String> ips){        
+        if(level == 4 && s[4] != ip.length()){   //生成的ip地址的长度不和原ip地址长度相同则退出
+            return;
+        }
+        
+        if(level == 4 && s[4] == ip.length()){
+           String r = ip.substring(s[0],s[1])+"."+ip.substring(s[1],s[2])+"."+ip.substring(s[2],s[3])+"."+ip.substring(s[3]);
+           ips.add(r);
+        }
+        
+        
+        int num = 0;
+        for(int i = s[level];i<ip.length();i++){
+            num = num*10+ip.charAt(i)-'0';
+            if((num == 0 && i==s[level]) || (num>0 && num<=255)){  //越界检查，当num为0时，i必须与该段的开始位置相等
+                s[level+1]=i+1;
+                restoreIpAddresses(level+1,s,ip,ips);
+                if(num == 0 && i==s[level])   //如果是0，则0后面不能有其他数字
+                    break;
+                continue;
+            }
+            break;
+        }
+    }
+    
+}
+```
+
+## [94. Binary Tree Inorder Traversal](https://leetcode-cn.com/problems/binary-tree-inorder-traversal/)
+
+> Given a binary tree, return the *inorder* traversal of its nodes' values.
+>
+> **Example:**
+>
+> ```
+> Input: [1,null,2,3]
+>    1
+>     \
+>      2
+>     /
+>    3
+> 
+> Output: [1,3,2]
+> ```
+>
+> **Follow up:** Recursive solution is trivial, could you do it iteratively?
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    private List<Integer> result = new ArrayList();
+    public List<Integer> inorderTraversal(TreeNode root) {
+        if(root == null)return result;
+        if(root.left == null && root.right == null){
+            result.add(root.val);
+            return result;
+        }
+        if(root.left != null){
+            inorderTraversal(root.left);
+        }
+        result.add(root.val);
+        if(root.right != null){
+            inorderTraversal(root.right);
+        }
+        return result;
+    }
+}
+```
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    private List<Integer> result = new ArrayList();
+    public List<Integer> inorderTraversal(TreeNode root) {
+        if(root == null)return result;
+        TreeNode curRoot = root;
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        while(curRoot != null || !stack.isEmpty()){
+            while(curRoot != null){
+                stack.push(curRoot);
+                curRoot = curRoot.left;
+            }
+            curRoot = stack.pop();
+            result.add(curRoot.val);           
+            curRoot = curRoot.right;            
+        }
+        return result;
+    }
+}
+```
+
+## [95. Unique Binary Search Trees II](https://leetcode-cn.com/problems/unique-binary-search-trees-ii/)
+
+> Given an integer *n*, generate all structurally unique **BST's** (binary search trees) that store values 1 ... *n*.
+>
+> **Example:**
+>
+> ```
+> Input: 3
+> Output:
+> [
+>   [1,null,3,2],
+>   [3,2,null,1],
+>   [3,1,null,null,2],
+>   [2,1,3],
+>   [1,null,2,null,3]
+> ]
+> Explanation:
+> The above output corresponds to the 5 unique BST's shown below:
+> 
+>    1         3     3      2      1
+>     \       /     /      / \      \
+>      3     2     1      1   3      2
+>     /     /       \                 \
+>    2     1         2                 3
+> ```
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    
+    public List<TreeNode> generateTrees(int n) {
+        if (n == 0)
+            return new ArrayList();
+        return generate(1, n);
+    }
+    private List<TreeNode> generate(int start, int end) {
+        List<TreeNode> res = new ArrayList<>();
+        if (start > end) {
+            res.add(null);
+            return res;
+        }
+        if (start == end) {
+            res.add(new TreeNode(start)); 
+            return res;
+        }
+        for (int i = start; i <= end; i++) {
+            List<TreeNode> leftSubTrees = generate(start, i-1);
+            List<TreeNode> rightSubTrees = generate(i+1, end);
+            for (TreeNode left : leftSubTrees) {
+                for(TreeNode right : rightSubTrees) {
+                    TreeNode node = new TreeNode(i);
+                    node.left = left;
+                    node.right = right;
+                    res.add(node);
+                }
+            }
+        }
+        return res;
+    }
+}
+```
+
