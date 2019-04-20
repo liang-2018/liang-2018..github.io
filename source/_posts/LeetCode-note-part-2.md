@@ -663,7 +663,7 @@ class Solution {
 >
 > 由高中数学可知答案就是$C_{m+n-2}^{m-1}$或者$C_{m+n-2}^{n-1}$。其中
 >
-> $$C_m^n=\frac{m!}{n!*(m-n)!}​$$(1)
+> $$C_m^n=\frac{m!}{n!*(m-n)!}$$(1)
 >
 > 如果m或者n较小，结果容易得出，但是由于m，n最大可能100，使用阶乘计算的话溢出是必定的。
 >
@@ -2469,6 +2469,101 @@ class Solution {
             }
         }
         return res;
+    }
+}
+```
+
+## [96. Unique Binary Search Trees](https://leetcode-cn.com/problems/unique-binary-search-trees/)
+
+> Given *n*, how many structurally unique **BST's** (binary search trees) that store values 1 ... *n*?
+>
+> **Example:**
+>
+> ```
+> Input: 3
+> Output: 5
+> Explanation:
+> Given n = 3, there are a total of 5 unique BST's:
+> 
+>    1         3     3      2      1
+>     \       /     /      / \      \
+>      3     2     1      1   3      2
+>     /     /       \                 \
+>    2     1         2                 3
+> ```
+
+```java
+class Solution {
+    public int numTrees(int n) {
+        int[] dp = new int[n+1];
+        dp[0] = 1;
+        dp[1] = 1;
+        for(int i = 2; i <= n; i ++){
+            for(int j = 0; j < i; j++){
+                dp[i] += dp[j]* dp[i - j -1];
+            }
+        }
+        return dp[n];
+    }
+}
+```
+
+## [98. Validate Binary Search Tree](https://leetcode-cn.com/problems/validate-binary-search-tree/)
+
+> Given a binary tree, determine if it is a valid binary search tree (BST).
+>
+> Assume a BST is defined as follows:
+>
+> - The left subtree of a node contains only nodes with keys **less than** the node's key.
+> - The right subtree of a node contains only nodes with keys **greater than** the node's key.
+> - Both the left and right subtrees must also be binary search trees.
+>
+> **Example 1:**
+>
+> ```
+> Input:
+>     2
+>    / \
+>   1   3
+> Output: true
+> ```
+>
+> **Example 2:**
+>
+> ```
+>     5
+>    / \
+>   1   4
+>      / \
+>     3   6
+> Output: false
+> Explanation: The input is: [5,1,4,null,null,3,6]. The root node's value
+>              is 5 but its right child's value is 4.
+> ```
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    // 注意：Double.MIN_VALUE 不是最小负数，而是最小非负数
+    double preVal = -Double.MAX_VALUE;
+    public boolean isValidBST(TreeNode root) {
+        //不仅要保证 左节点<根节点<右节点，同时左节点的所有节点都得小于根节点；右节点同理
+        if(root == null)return true;
+        if(isValidBST(root.left)){
+            if(preVal < root.val){
+                preVal = root.val;
+                return isValidBST(root.right);
+            }
+        }
+        return false;
     }
 }
 ```
