@@ -1532,3 +1532,364 @@ class Solution {
 }
 ```
 
+## [129. Sum Root to Leaf Numbers](https://leetcode-cn.com/problems/sum-root-to-leaf-numbers/)
+
+> Given a binary tree containing digits from `0-9` only, each root-to-leaf path could represent a number.
+>
+> An example is the root-to-leaf path `1->2->3` which represents the number `123`.
+>
+> Find the total sum of all root-to-leaf numbers.
+>
+> **Note:** A leaf is a node with no children.
+>
+> **Example:**
+>
+> ```
+> Input: [1,2,3]
+>     1
+>    / \
+>   2   3
+> Output: 25
+> Explanation:
+> The root-to-leaf path 1->2 represents the number 12.
+> The root-to-leaf path 1->3 represents the number 13.
+> Therefore, sum = 12 + 13 = 25.
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: [4,9,0,5,1]
+>     4
+>    / \
+>   9   0
+>  / \
+> 5   1
+> Output: 1026
+> Explanation:
+> The root-to-leaf path 4->9->5 represents the number 495.
+> The root-to-leaf path 4->9->1 represents the number 491.
+> The root-to-leaf path 4->0 represents the number 40.
+> Therefore, sum = 495 + 491 + 40 = 1026.
+> ```
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    private int sum = 0;
+    public int sumNumbers(TreeNode root) {
+        sumNumbers(root, 0);
+        return sum;
+    }
+    private void sumNumbers(TreeNode root, int preVal){
+        if(root == null)return ;
+        preVal = 10 * preVal + root.val;
+        if(root.left == null && root.right == null){
+            sum += preVal;
+        }
+        if(root.left != null){
+            sumNumbers(root.left, preVal);
+        }
+        if(root.right != null){
+            sumNumbers(root.right, preVal);
+        }
+    }
+}
+```
+
+## [sMark-130. Surrounded Regions](https://leetcode-cn.com/problems/surrounded-regions/)
+
+> Given a 2D board containing `'X'` and `'O'` (**the letter O**), capture all regions surrounded by `'X'`.
+>
+> A region is captured by flipping all `'O'`s into `'X'`s in that surrounded region.
+>
+> **Example:**
+>
+> ```
+> X X X X
+> X O O X
+> X X O X
+> X O X X
+> ```
+>
+> After running your function, the board should be:
+>
+> ```
+> X X X X
+> X X X X
+> X X X X
+> X O X X
+> ```
+>
+> **Explanation:**
+>
+> Surrounded regions shouldn’t be on the border, which means that any `'O'` on the border of the board are not flipped to `'X'`. Any `'O'` that is not on the border and it is not connected to an `'O'` on the border will be flipped to `'X'`. Two cells are connected if they are adjacent cells connected horizontally or vertically.
+
+> 对矩阵边界上所有的O做深度优先搜索，将相连的O更改为-，然后编辑数组，将数组中O更改为X，将数组中-更改为O。只有外层为‘O’才会继续往内遍历。
+
+```java
+class Solution {
+    int row,col;
+    public void solve(char[][] board) {
+        if(board==null||board.length==0)
+            return ;
+        row=board.length;
+        col=board[0].length;
+        for(int i=0;i<row;i++){
+                dfs(board,i,0);
+                dfs(board,i,col-1);
+        }
+        for(int j=0;j<col;j++){
+                dfs(board,0,j);
+                dfs(board,row-1,j);
+        }
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(board[i][j]=='O')
+                    board[i][j]='X';
+                if(board[i][j]=='-')
+                    board[i][j]='O';
+            }
+        }
+        return ;
+    }
+    public void dfs(char[][] board,int i,int j){
+        if(i<0||j<0||i>=row||j>=col||board[i][j]!='O')
+            return;
+        board[i][j]='-';
+            dfs(board,i-1,j);
+            dfs(board,i+1,j);
+            dfs(board,i,j-1);
+            dfs(board,i,j+1);
+        return ;
+    }
+}
+```
+
+## [method-131. Palindrome Partitioning](https://leetcode-cn.com/problems/palindrome-partitioning/)
+
+> Given a string *s*, partition *s* such that every substring of the partition is a palindrome.
+>
+> Return all possible palindrome partitioning of *s*.
+>
+> **Example:**
+>
+> ```
+> Input: "aab"
+> Output:
+> [
+>   ["aa","b"],
+>   ["a","a","b"]
+> ]
+> ```
+
+> https://www.cnblogs.com/grandyang/p/4270008.html
+
+```java
+class Solution {
+    List<List<String>> result = new ArrayList<>();
+    List<String> list = new ArrayList<>();
+    char[] arr;
+    String s;
+    
+    void core(int index){
+        // 从index开始分割
+        if (index == arr.length){
+            result.add(new ArrayList<>(list));
+            return;
+        }
+        for (int i = index; i < arr.length; i++){
+            if (isPalindrome(index,i)){
+                list.add(s.substring(index,i + 1));
+                core(i + 1);
+                list.remove(list.size() - 1);
+            }
+        }
+    }
+    
+    boolean isPalindrome(int left,int right){// 减少substring次数，直接使用索引
+        int L = left,R = right;
+        while (L <= R){
+            if (arr[L++] != arr[R--]){
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    public List<List<String>> partition(String s) {
+        arr = s.toCharArray(); // 可以有效节约空间和时间
+        this.s = s;
+        core(0);
+        return result;
+    }
+}
+```
+
+## [map-133. Clone Graph](https://leetcode-cn.com/problems/clone-graph/)
+
+> Given a reference of a node in a **connected** undirected graph, return a [**deep copy**](https://en.wikipedia.org/wiki/Object_copying#Deep_copy) (clone) of the graph. Each node in the graph contains a val (`int`) and a list (`List[Node]`) of its neighbors.
+>
+>  
+>
+> **Example:**
+>
+> ![img](https://assets.leetcode.com/uploads/2019/02/19/113_sample.png)
+>
+> ```
+> Input:
+> {"$id":"1","neighbors":[{"$id":"2","neighbors":[{"$ref":"1"},{"$id":"3","neighbors":[{"$ref":"2"},{"$id":"4","neighbors":[{"$ref":"3"},{"$ref":"1"}],"val":4}],"val":3}],"val":2},{"$ref":"4"}],"val":1}
+> 
+> Explanation:
+> Node 1's value is 1, and it has two neighbors: Node 2 and 4.
+> Node 2's value is 2, and it has two neighbors: Node 1 and 3.
+> Node 3's value is 3, and it has two neighbors: Node 2 and 4.
+> Node 4's value is 4, and it has two neighbors: Node 1 and 3.
+> ```
+>
+>  
+>
+> **Note:**
+>
+> 1. The number of nodes will be between 1 and 100.
+> 2. The undirected graph is a [simple graph](https://en.wikipedia.org/wiki/Graph_(discrete_mathematics)#Simple_graph), which means no repeated edges and no self-loops in the graph.
+> 3. Since the graph is undirected, if node *p* has node *q* as neighbor, then node *q* must have node *p* as neighbor too.
+> 4. You must return the **copy of the given node** as a reference to the cloned graph.
+
+> https://www.cnblogs.com/grandyang/p/4267628.html
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public List<Node> neighbors;
+
+    public Node() {}
+
+    public Node(int _val,List<Node> _neighbors) {
+        val = _val;
+        neighbors = _neighbors;
+    }
+};
+*/
+class Solution {
+    Map<Integer, Node> map = new HashMap<>();
+    
+    public Node cloneGraph(Node node) {
+        if (node == null)
+            return null;
+        
+        if (map.containsKey(node.val)) 
+            return map.get(node.val);
+        
+        Node copyNode = new Node(node.val, new ArrayList<Node>());
+        map.put(node.val, copyNode);
+        for (Node neighbour: node.neighbors) {
+            copyNode.neighbors.add(cloneGraph(neighbour));
+        }
+        
+        return copyNode;
+    }
+}
+```
+
+## [134. Gas Station](https://leetcode-cn.com/problems/gas-station/)
+
+> There are *N* gas stations along a circular route, where the amount of gas at station *i* is `gas[i]`.
+>
+> You have a car with an unlimited gas tank and it costs `cost[i]` of gas to travel from station *i* to its next station (*i*+1). You begin the journey with an empty tank at one of the gas stations.
+>
+> Return the starting gas station's index if you can travel around the circuit once in the clockwise direction, otherwise return -1.
+>
+> **Note:**
+>
+> - If there exists a solution, it is guaranteed to be unique.
+> - Both input arrays are non-empty and have the same length.
+> - Each element in the input arrays is a non-negative integer.
+>
+> **Example 1:**
+>
+> ```
+> Input: 
+> gas  = [1,2,3,4,5]
+> cost = [3,4,5,1,2]
+> 
+> Output: 3
+> 
+> Explanation:
+> Start at station 3 (index 3) and fill up with 4 unit of gas. Your tank = 0 + 4 = 4
+> Travel to station 4. Your tank = 4 - 1 + 5 = 8
+> Travel to station 0. Your tank = 8 - 2 + 1 = 7
+> Travel to station 1. Your tank = 7 - 3 + 2 = 6
+> Travel to station 2. Your tank = 6 - 4 + 3 = 5
+> Travel to station 3. The cost is 5. Your gas is just enough to travel back to station 3.
+> Therefore, return 3 as the starting index.
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: 
+> gas  = [2,3,4]
+> cost = [3,4,3]
+> 
+> Output: -1
+> 
+> Explanation:
+> You can't start at station 0 or 1, as there is not enough gas to travel to the next station.
+> Let's start at station 2 and fill up with 4 unit of gas. Your tank = 0 + 4 = 4
+> Travel to station 0. Your tank = 4 - 3 + 2 = 3
+> Travel to station 1. Your tank = 3 - 3 + 3 = 3
+> You cannot travel back to station 2, as it requires 4 unit of gas but you only have 3.
+> Therefore, you can't travel around the circuit once no matter where you start.
+> ```
+
+```java
+class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int start = 0;
+        int total = 0;
+        int current = 0;
+        for (int i = 0; i < gas.length; i++) {
+            total += gas[i] - cost[i];
+            current += gas[i] - cost[i];
+            if (current < 0) {// 说明从start出发，会存在无法到达的情况（油不够）
+                start = i + 1; // 在站点i才发生油不够的情况，说明从站点i到达i+1，因而至少从站点i+1出发
+                current = 0;
+            }
+        }
+        return total >= 0 ? start : -1;
+        
+    }
+}
+```
+
+```java
+class Solution {
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int tmpSum = 0, min = Integer.MAX_VALUE, minPoint = 0;
+        for (int i = 0; i < gas.length; i++) {
+            tmpSum += gas[i] - cost[i];
+            if (tmpSum < min) {
+                min = tmpSum;
+                minPoint = i;
+            }
+        }
+        if (tmpSum < 0) {
+            return -1;
+        } else {
+            return (minPoint + 1) % gas.length;
+        }
+    }
+}
+```
+
