@@ -90,6 +90,9 @@ match p = ()-[r:has_father]->() return p // 返回所有父子关系对
 ```cypher
 match p = ()-[r*2]-() return p //返回固定层数
 match p = ()-[r*2..4]-() return p // 返回2到4层关系链
+match p = ()-[r*..4]-() return p // 返回4层以下关系链
+match p = ()-[r*2..]-() return p // 返回2层以上关系链
+match p = ()-[*]-() return p // 不限长度
 ```
 
 > 指定节点到节点的关系
@@ -107,6 +110,29 @@ match (n:N)
 where n.attr =~ '.*a1.*|.*a2.*' // 尽量不要分成两个or
 return n
 ```
+
+## 二、更新（update）
+
+> cypher更新与mysql类似，都需要先定位需要修改的节点或者关系位置
+>
+> 不同的是，cypher中，如果对已有属性进行set时为更新该属性的值，如果没有该属性，则会新增该属性并设值
+>
+> 在mysql中如果没有对应字段，则会报错。
+
+```cypher
+match (a:Person),(b:Person),p=(a)-[r:has_father]->(b)
+where a.name = "son" and b.name = "father"
+set r.new_type = `has_son` //如果已有属性new_type则更新值，如果没有，则新增该属性并设值
+return p
+```
+
+```cypher
+match (n:Person{name:"Jane", age:19}) 
+set n.nickName = "J" //如果已有属性 nickName 则更新值，如果没有，则新增该属性并设值
+return n
+```
+
+##  三、增（create、merge）
 
 
 
