@@ -90,7 +90,7 @@
 <meta name="keywords" content="LeetCode,Algorithm">
 <meta property="og:type" content="article">
 <meta property="og:title" content="LeetCode note - part 2">
-<meta property="og:url" content="https://liang-2018.github.io/2019/04/09/LeetCode-note-part-2/index.html">
+<meta property="og:url" content="https://pengshiliang.coding.me/2019/04/09/LeetCode-note-part-2/index.html">
 <meta property="og:site_name" content="初心不忘">
 <meta property="og:description" content="刷LeetCode笔记2">
 <meta property="og:locale" content="zh-Hans">
@@ -130,7 +130,7 @@
 
 
 
-  <link rel="canonical" href="https://liang-2018.github.io/2019/04/09/LeetCode-note-part-2/">
+  <link rel="canonical" href="https://pengshiliang.coding.me/2019/04/09/LeetCode-note-part-2/">
 
 
 
@@ -305,7 +305,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://liang-2018.github.io/2019/04/09/LeetCode-note-part-2/">
+    <link itemprop="mainEntityOfPage" href="https://pengshiliang.coding.me/2019/04/09/LeetCode-note-part-2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Liang">
@@ -496,12 +496,12 @@
 <p>分析（1）：  </p>
 <p>由于机器人智能往右或者往下，所以到达(i,j)的方式只有两种：从（i-1,j）往右和从(i,j-1)往下；从而易得出到达（i,j）的路径总数为dp[i][j]=dp[i-1][j]+dp[i][j-1]</p>
 <p>分析（2）：   </p>
-<p>由高中数学可知答案就是$C_{m+n-2}^{m-1}$或者$C_{m+n-2}^{n-1}$。其中</p>
+<p>由高中数学可知答案就是$C<em>{m+n-2}^{m-1}$或者$C</em>{m+n-2}^{n-1}$。其中</p>
 <p><script type="math/tex">C_m^n=\frac{m!}{n!*(m-n)!}</script>(1)</p>
 <p>如果m或者n较小，结果容易得出，但是由于m，n最大可能100，使用阶乘计算的话溢出是必定的。</p>
 <p>同时有性质：$C_{m+1}^{n+1}=C_m^n+C_m^{n+1}$(2)和$C_n^0+C_n^1+C_n^2+C_n^3+…+C_n^n=2^n$(3)</p>
 <p>通过式（2），很容易想到这题使用动态规划计算。</p>
-<p>假设使用数组dp存储结果，则有：dp[m][n]=$C_{m+n-2}^{n-1}=C_{m+n-3}^{n-2}+C_{m+n-3}^{n-1}$</p>
+<p>假设使用数组dp存储结果，则有：dp[m][n]=$C<em>{m+n-2}^{n-1}=C</em>{m+n-3}^{n-2}+C_{m+n-3}^{n-1}$</p>
 <p>结合公式（2）得出：dp[m][n]=dp[m-1][n]+dp[m][n-1]</p>
 <p><strong>注意：</strong>dp[m-1][n-1]=$C_{m+n-4}^{n-2}$</p>
 </blockquote>
@@ -843,7 +843,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://liang-2018.github.io/2019/04/09/LeetCode-note-part-2/" title="LeetCode note - part 2">https://liang-2018.github.io/2019/04/09/LeetCode-note-part-2/</a>
+    <a href="https://pengshiliang.coding.me/2019/04/09/LeetCode-note-part-2/" title="LeetCode note - part 2">https://pengshiliang.coding.me/2019/04/09/LeetCode-note-part-2/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
@@ -967,7 +967,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -978,7 +978,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-count">6</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -989,7 +989,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -1631,7 +1631,7 @@
         }
       });
     </script>
-    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
   
 
 

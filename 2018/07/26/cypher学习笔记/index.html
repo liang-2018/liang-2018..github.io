@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="J2EE, Plants">
+  <meta name="keywords" content="cypher,neo4j,">
 
 
 
@@ -86,17 +86,18 @@
 
 
 
-<meta name="description" content="一个喜欢养花养草的扫地僧">
-<meta name="keywords" content="养花养草，bug制造师">
-<meta property="og:type" content="website">
-<meta property="og:title" content="初心不忘">
-<meta property="og:url" content="https://pengshiliang.coding.me/archives/index.html">
+<meta name="description" content="neo4j操作语言，cypher常用操作笔记">
+<meta name="keywords" content="cypher,neo4j">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cypher学习笔记">
+<meta property="og:url" content="https://pengshiliang.coding.me/2018/07/26/cypher学习笔记/index.html">
 <meta property="og:site_name" content="初心不忘">
-<meta property="og:description" content="一个喜欢养花养草的扫地僧">
+<meta property="og:description" content="neo4j操作语言，cypher常用操作笔记">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-04-26T15:19:19.343Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="初心不忘">
-<meta name="twitter:description" content="一个喜欢养花养草的扫地僧">
+<meta name="twitter:title" content="cypher学习笔记">
+<meta name="twitter:description" content="neo4j操作语言，cypher常用操作笔记">
 
 
 
@@ -126,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="https://pengshiliang.coding.me/archives/">
+  <link rel="canonical" href="https://pengshiliang.coding.me/2018/07/26/cypher学习笔记/">
 
 
 
 
 
-  <title>归档 | 初心不忘</title>
+  <title>cypher学习笔记 | 初心不忘</title>
   
 
 
@@ -151,7 +152,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -287,322 +288,292 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://pengshiliang.coding.me/2018/07/26/cypher学习笔记/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/head-32x32.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="初心不忘">
+    </span>
+
+    
+      <header class="post-header">
+
         
         
+          <h1 class="post-title" itemprop="name headline">cypher学习笔记</h1>
         
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-26T15:05:55+08:00">
+                2018-07-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
           
-        
-        嗯..! 目前共计 8 篇日志。 继续努力。
-      </span>
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/database/" itemprop="url" rel="index">
+                    <span itemprop="name">database</span>
+                  </a>
+                </span>
 
-      
-
-        
-        
-        
-
-        
+                
+                
+              
+            </span>
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2019">2019</h1>
-          </div>
-        
-        
 
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/22/LeetCode-note-part-3/" itemprop="url">
-              
-                <span itemprop="name">LeetCode note - part 3</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-22T21:03:27+08:00" content="2019-04-22">
-          04-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/13/eclipse-J2EE项目设置/" itemprop="url">
-              
-                <span itemprop="name">eclipse-J2EE项目设置</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-13T13:45:19+08:00" content="2019-04-13">
-          04-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/09/LeetCode-note-part-2/" itemprop="url">
-              
-                <span itemprop="name">LeetCode note - part 2</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-09T14:15:06+08:00" content="2019-04-09">
-          04-09
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2019/04/08/hexo博客-bug-making-debug/" itemprop="url">
-              
-                <span itemprop="name">hexo博客踩坑</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2019-04-08T19:52:23+08:00" content="2019-04-08">
-          04-08
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2018">2018</h1>
-          </div>
-        
-        
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/07/26/cypher学习笔记/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/07/26/cypher学习笔记/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
 
-        
+          
+          
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/10/28/node.js创建流媒体服务器/" itemprop="url">
-              
-                <span itemprop="name">node.js创建流媒体服务器</span>
-              
-            </a>
-        
-      </h2>
+          
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-10-28T00:00:00+08:00" content="2018-10-28">
-          10-28
-        </time>
-      </div>
+          
 
-    </header>
-  </article>
+        </div>
+      </header>
+    
 
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/10/09/LeetCode-note-part-1/" itemprop="url">
-              
-                <span itemprop="name">LeetCode note - part 1</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-10-09T11:44:39+08:00" content="2018-10-09">
-          10-09
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/07/26/cypher学习笔记/" itemprop="url">
-              
-                <span itemprop="name">cypher学习笔记</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-07-26T15:05:55+08:00" content="2018-07-26">
-          07-26
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2018/01/22/Maven-web项目建立及配置/" itemprop="url">
-              
-                <span itemprop="name">Maven-web项目建立及配置</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-01-22T00:00:00+08:00" content="2018-01-22">
-          01-22
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <blockquote>
+<p>neo4j操作语言，cypher常用操作笔记</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="一、查-match"><a href="#一、查-match" class="headerlink" title="一、查(match)"></a>一、查(match)</h2><h3 id="查询节点"><a href="#查询节点" class="headerlink" title="查询节点"></a>查询节点</h3><blockquote>
+<p>cypher 在很多方面比较相似，如order by、asc/desc、limit、distinct</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 这种方式很像 sql</span><br><span class="line">start n = node(*)  // 该端很多时候省略，表示遍历时在图中的起点，可以通过节点id或者查找获得</span><br><span class="line">match (n:Person)  // 选择指定类型的节点</span><br><span class="line">where n.name = &quot;Jane&quot; //使用相关属性进行筛选</span><br><span class="line">and  n.age = 19</span><br><span class="line">return n</span><br><span class="line">// 也可以以另一种方式书写</span><br><span class="line">match (n:Person&#123;name:&quot;Jane&quot;, age:19&#125;) return n</span><br></pre></td></tr></table></figure>
+<p>如果放在mysql里差不多是这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">select * from Person n where n.name = &quot;Jane&quot; and n.age= 19</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>对结果进行排序、升降序</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">match (n:Person) return n order by n.age desc limit 25</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>分页查询</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">match (n:Person) return n order by n.age desc skip 1 limit 25 // skip 1 limit 25 第一条不返回</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>where 后条件中的操作符</p>
+<p>数学操作符： + 、 - 、 * 、 / 、 %</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>比较操作符号</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>=</td>
+<td>相等</td>
+</tr>
+<tr>
+<td>&lt;&gt;</td>
+<td>不等于（字符串等比对等不使用 != 而使用 &lt;&gt;）</td>
+</tr>
+<tr>
+<td>&lt;</td>
+<td>小于</td>
+</tr>
+<tr>
+<td>&gt;</td>
+<td>大于</td>
+</tr>
+<tr>
+<td>&lt;=</td>
+<td>小于等于</td>
+</tr>
+<tr>
+<td>&gt;=</td>
+<td>大于等于</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>根据索引检索（待验证）</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">START n=node:N_INDEX (USER_NAME=&apos;tom&apos;) RETURN n SKIP 0 LIMIT 20</span><br><span class="line">START n=node:N_INDEX(&apos;USER_NAME:*tom*&apos;) RETURN n SKIP 0 LIMIT 20</span><br></pre></td></tr></table></figure>
+<h3 id="查询关系（链）"><a href="#查询关系（链）" class="headerlink" title="查询关系（链）"></a>查询关系（链）</h3><blockquote>
+<p>通用查询(注意：关系是<strong>有方向</strong>的)</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">match p = ()-[]-() return p //返回所有关系链</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>指定关系类型查询</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">match p = ()-[r:has_father]-&gt;() return p // 返回所有父子关系对</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>指定关系层数</p>
+<p>目前没发现怎么限定r的方法</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">match p = ()-[r*2]-() return p //返回固定层数</span><br><span class="line">match p = ()-[r*2..4]-() return p // 返回2到4层关系链</span><br><span class="line">match p = ()-[r*..4]-() return p // 返回4层以下关系链</span><br><span class="line">match p = ()-[r*2..]-() return p // 返回2层以上关系链</span><br><span class="line">match p = ()-[*]-() return p // 不限长度</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>指定节点到节点的关系</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">match (a:Person),(b:Person),p=(a)-[r:has_father]-&gt;(b)</span><br><span class="line">where a.name = &quot;son&quot; and b.name = &quot;father&quot;</span><br><span class="line">return p</span><br></pre></td></tr></table></figure>
+<h3 id="模糊查询"><a href="#模糊查询" class="headerlink" title="模糊查询"></a>模糊查询</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">match (n:N)</span><br><span class="line">where n.attr =~ &apos;.*a1.*|.*a2.*&apos; // 尽量不要分成两个or</span><br><span class="line">return n</span><br></pre></td></tr></table></figure>
+<h2 id="二、更新（update）"><a href="#二、更新（update）" class="headerlink" title="二、更新（update）"></a>二、更新（update）</h2><blockquote>
+<p>cypher更新与mysql类似，都需要先定位需要修改的节点或者关系位置</p>
+<p>不同的是，cypher中，如果对已有属性进行set时为更新该属性的值，如果没有该属性，则会新增该属性并设值</p>
+<p>在mysql中如果没有对应字段，则会报错。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">match (a:Person),(b:Person),p=(a)-[r:has_father]-&gt;(b)</span><br><span class="line">where a.name = &quot;son&quot; and b.name = &quot;father&quot;</span><br><span class="line">set r.new_type = `has_son` //如果已有属性new_type则更新值，如果没有，则新增该属性并设值</span><br><span class="line">return p</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">match (n:Person&#123;name:&quot;Jane&quot;, age:19&#125;) </span><br><span class="line">set n.nickName = &quot;J&quot; //如果已有属性 nickName 则更新值，如果没有，则新增该属性并设值</span><br><span class="line">return n</span><br></pre></td></tr></table></figure>
+<h2 id="参考博文："><a href="#参考博文：" class="headerlink" title="参考博文："></a>参考博文：</h2><blockquote>
+<p><a href="https://blog.csdn.net/weixin_39012047/article/details/82348881" target="_blank" rel="noopener">https://blog.csdn.net/weixin_39012047/article/details/82348881</a></p>
+<p><a href="https://blog.csdn.net/qq_32662595/article/details/79876345" target="_blank" rel="noopener">https://blog.csdn.net/qq_32662595/article/details/79876345</a></p>
+<p><a href="https://www.cnblogs.com/shangbingbing/p/5052964.html" target="_blank" rel="noopener">https://www.cnblogs.com/shangbingbing/p/5052964.html</a></p>
+</blockquote>
 
       
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Liang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://pengshiliang.coding.me/2018/07/26/cypher学习笔记/" title="cypher学习笔记">https://pengshiliang.coding.me/2018/07/26/cypher学习笔记/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/cypher/" rel="tag"># cypher</a>
+          
+            <a href="/tags/neo4j/" rel="tag"># neo4j</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/01/22/Maven-web项目建立及配置/" rel="next" title="Maven-web项目建立及配置">
+                <i class="fa fa-chevron-left"></i> Maven-web项目建立及配置
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/09/LeetCode-note-part-1/" rel="prev" title="LeetCode note - part 1">
+                LeetCode note - part 1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -610,6 +581,13 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -630,8 +608,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -709,6 +696,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、查-match"><span class="nav-text">一、查(match)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查询节点"><span class="nav-text">查询节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询关系（链）"><span class="nav-text">查询关系（链）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模糊查询"><span class="nav-text">模糊查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、更新（update）"><span class="nav-text">二、更新（update）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考博文："><span class="nav-text">参考博文：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -877,6 +880,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
