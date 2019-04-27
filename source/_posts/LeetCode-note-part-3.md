@@ -1887,9 +1887,124 @@ class Solution {
         if (tmpSum < 0) {
             return -1;
         } else {
-            return (minPoint + 1) % gas.length;
+            return (minPoint + 1) % gas.length; //如果到底了，自动回到 0 站点
         }
     }
 }
+```
+
+## [136. Single Number](https://leetcode-cn.com/problems/single-number/)
+
+> Given a **non-empty** array of integers, every element appears *twice* except for one. Find that single one.
+>
+> **Note:**
+>
+> Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+>
+> **Example 1:**
+>
+> ```
+> Input: [2,2,1]
+> Output: 1
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: [4,1,2,1,2]
+> Output: 4
+> ```
+
+```java
+class Solution {
+    public int singleNumber(int[] nums) {
+        int a = 0;
+        for( int i = 0; i < nums.length; i++ ){
+           a ^= nums[i];
+        }        
+        return a;
+    }
+}
+```
+
+```java
+class Solution {
+    public int singleNumber(int[] nums) {
+        if(nums.length==0)return -1;
+        if(nums.length==1)return nums[0];
+        Arrays.sort(nums);
+        for(int i=0;i<nums.length-1;i+=2){
+            if(nums[i]!=nums[i+1])
+                return nums[i];
+        }
+        return nums[nums.length-1];
+    }
+}
+class Solution {
+    public int singleNumber(int[] nums) {
+    	
+    	Set<Integer> set = new HashSet<>();
+    	
+    	for(int i=0;i<nums.length;i++) {
+    		int value = nums[i];
+    		if(set.contains(value)) {
+    			set.remove(value);
+    		}else {
+    			set.add(value);
+    		}
+    	}
+        
+    	return set.iterator().next();
+    }
+}
+```
+
+## [137. Single Number II](https://leetcode-cn.com/problems/single-number-ii/)
+
+> Given a **non-empty** array of integers, every element appears *three* times except for one, which appears exactly once. Find that single one.
+>
+> **Note:**
+>
+> Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+>
+> **Example 1:**
+>
+> ```
+> Input: [2,2,3,2]
+> Output: 3
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: [0,1,0,1,0,1,99]
+> Output: 99
+> ```
+
+> 通用做法，统计所有数字各个对应位1的总数，如第i位1的总数不是3的整数(此处余1)，说明那个特殊数字在该位置是1，遍历所有位，如此则能统计该数每个位上是0还是1,最终得到the single one 的值。
+>
+> **[更效率的办法是模仿数电，使用真值表求出表达式](https://blog.csdn.net/yutianzuijin/article/details/50597413)** 但是需要比较熟悉，
+
+```java
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int ret = 0;
+        int mask = 1;
+        while(mask)
+        {
+            int countOne = 0;   //number of digit 1
+            for(int i = 0; i < nums.size(); i ++)
+            {
+                if(nums[i] & mask)
+                    countOne ++;
+            }
+            if(countOne % 3 == 1)
+                ret |= mask;
+            mask <<= 1;
+        }
+        return ret;
+    }
+};
 ```
 
