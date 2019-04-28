@@ -1987,24 +1987,746 @@ class Solution {
 
 ```java
 class Solution {
-public:
-    int singleNumber(vector<int>& nums) {
-        int ret = 0;
+    public int singleNumber(int[] nums) {
+        int result = 0;
         int mask = 1;
-        while(mask)
-        {
-            int countOne = 0;   //number of digit 1
-            for(int i = 0; i < nums.size(); i ++)
-            {
-                if(nums[i] & mask)
-                    countOne ++;
+        while(mask != 0){
+            int count = 0;
+            for(int x : nums){
+                if((x & mask) != 0){
+                    count ++;
+                }                
             }
-            if(countOne % 3 == 1)
-                ret |= mask;
-            mask <<= 1;
+            if(count % 3 == 1){
+                result = result | mask;
+            }
+            mask = mask << 1;
         }
-        return ret;
+        return result;
+    }
+}
+```
+
+```java
+class Solution {
+    public int singleNumber(int[] nums) {
+        int high = 0, low = 0;
+        for(int x : nums){
+            low = low ^ x & ~ high;
+            high = high ^ x & ~low;
+        }
+        return low;
+    }
+}
+```
+
+## [138. Copy List with Random Pointer](https://leetcode-cn.com/problems/copy-list-with-random-pointer/)
+
+> A linked list is given such that each node contains an additional random pointer which could point to any node in the list or null.
+>
+> Return a [**deep copy**](https://en.wikipedia.org/wiki/Object_copying#Deep_copy) of the list.
+>
+>  
+>
+> **Example 1:**
+>
+> **![img](https://discuss.leetcode.com/uploads/files/1470150906153-2yxeznm.png)**
+>
+> ```
+> Input:
+> {"$id":"1","next":{"$id":"2","next":null,"random":{"$ref":"2"},"val":2},"random":{"$ref":"2"},"val":1}
+> 
+> Explanation:
+> Node 1's value is 1, both of its next and random pointer points to Node 2.
+> Node 2's value is 2, its next pointer points to null and its random pointer points to itself.
+> ```
+>
+>  
+>
+> **Note:**
+>
+> 1. You must return the **copy of the given head** as a reference to the cloned list.
+
+```java
+/*
+// Definition for a Node.
+class Node {
+    public int val;
+    public Node next;
+    public Node random;
+
+    public Node() {}
+
+    public Node(int _val,Node _next,Node _random) {
+        val = _val;
+        next = _next;
+        random = _random;
     }
 };
+*/
+class Solution {
+    private Map<Node, Node> map = new HashMap();
+    public Node copyRandomList(Node head) {
+        if(head == null) return null;
+        if(map.containsKey(head)){
+            return map.get(head);
+        }
+        Node copyHead = new Node(head.val);
+        map.put(head, copyHead);
+        copyHead.random = copyRandomList(head.random);
+        copyHead.next = copyRandomList(head.next);
+        return copyHead;
+    }
+}
+```
+
+```java
+class Solution {
+   /**
+     * 复制带随机指针的链表
+     * 给定一个链表，每个节点包含一个额外增加的随机指针，该指针可以指向链表中的任何节点或空节点。
+     * 对每个node复制，插入到其他node的后面，新旧交替成为重复链表，遍历每个旧node复制随机指针，将新旧两个链表叉开，返回新的链表
+     */
+    public Node copyRandomList(Node head) {
+        if (head == null) return head;
+        Node node = head;
+        while (node != null) { //复制链表
+            Node newNode = new Node(node.val,null,null);
+            newNode.next = node.next;
+            node.next = newNode;
+            node = newNode.next;
+        }
+        node = head;
+        while (node != null) {  //复制随机指针
+            if (node.random != null)
+                node.next.random = node.random.next; //应指向对应的复制节点
+            node = node.next.next;
+        }
+        Node newHead = head.next;
+        node = head;
+        while (node != null) {  //拆分链表
+            Node newNode = node.next;
+            node.next = newNode.next;
+            if (newNode.next != null) {
+                newNode.next = newNode.next.next;
+            }
+            node = node.next;
+        }
+        return newHead;
+    }
+}
+```
+
+## [139. Word Break](https://leetcode-cn.com/problems/word-break/)
+
+> Given a **non-empty** string *s* and a dictionary *wordDict* containing a list of **non-empty** words, determine if *s* can be segmented into a space-separated sequence of one or more dictionary words.
+>
+> **Note:**
+>
+> - The same word in the dictionary may be reused multiple times in the segmentation.
+> - You may assume the dictionary does not contain duplicate words.
+>
+> **Example 1:**
+>
+> ```
+> Input: s = "leetcode", wordDict = ["leet", "code"]
+> Output: true
+> Explanation: Return true because "leetcode" can be segmented as "leet code".
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: s = "applepenapple", wordDict = ["apple", "pen"]
+> Output: true
+> Explanation: Return true because "applepenapple" can be segmented as "apple pen apple".
+>              Note that you are allowed to reuse a dictionary word.
+> ```
+>
+> **Example 3:**
+>
+> ```
+> Input: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+> Output: false
+> ```
+
+> 通过遍历从0到i的子串是否存在于字典，result[i] 为true表示0到i能够完成拆分
+
+```java
+class Solution {
+    
+    public boolean wordBreak(String s, List<String> wordDict) {// 当前方法会造成优先匹配短的，所以会出问题
+        boolean[] result = new boolean[s.length() + 1];
+        result[0] = true;
+        for(int i = 0; i <= s.length(); i++){
+            for(int j = 0; j < i; j++){
+                if(result[j] && wordDict.contains(s.substring(j, i))){
+                    result[i] = true;
+                    break;
+                }
+            }
+        }
+        return result[s.length()];
+    }
+} 
+```
+
+> 原理类似，进行优化。先得出字典中字符串最大长度，优先查找长串（背包先装大的）
+>
+> 同时Set在查找效率上比List高(判断contains的时候)
+
+```java
+class Solution {
+    
+    public boolean wordBreak(String s, List<String> wordDict) {
+        boolean[] result = new boolean[s.length() + 1];
+        HashSet<String> dict = new HashSet<>(wordDict); //使用的hash，查找效率比List高
+        result[0] = true;
+        int maxLen = 0;
+        for(String word : wordDict){
+            if(maxLen < word.length()){
+                maxLen = word.length();
+            }
+        }
+        for(int i = 0; i <= s.length(); i++){
+            for(int j = Math.max(0, i - maxLen - 1); j < i; j++){
+                if(result[j] && dict.contains(s.substring(j, i))){
+                    result[i] = true;
+                    break;
+                }
+            }
+        }
+        return result[s.length()];
+    }
+}
+```
+
+##  [142. Linked List Cycle II](https://leetcode-cn.com/problems/linked-list-cycle-ii/)
+
+> Given a linked list, return the node where the cycle begins. If there is no cycle, return `null`.
+>
+> To represent a cycle in the given linked list, we use an integer `pos` which represents the position (0-indexed) in the linked list where tail connects to. If `pos` is `-1`, then there is no cycle in the linked list.
+>
+> **Note:** Do not modify the linked list.
+>
+>  
+>
+> **Example 1:**
+>
+> ```
+> Input: head = [3,2,0,-4], pos = 1
+> Output: tail connects to node index 1
+> Explanation: There is a cycle in the linked list, where tail connects to the second node.
+> ```
+>
+> ![img](https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist.png)
+>
+> **Example 2:**
+>
+> ```
+> Input: head = [1,2], pos = 0
+> Output: tail connects to node index 0
+> Explanation: There is a cycle in the linked list, where tail connects to the first node.
+> ```
+>
+> ![img](https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist_test2.png)
+>
+> **Example 3:**
+>
+> ```
+> Input: head = [1], pos = -1
+> Output: no cycle
+> Explanation: There is no cycle in the linked list.
+> ```
+>
+> ![img](https://assets.leetcode.com/uploads/2018/12/07/circularlinkedlist_test3.png)
+
+> 使用快慢指针，快的每次走两步，慢的一步，相遇时，快指针所走的路程是慢指针路程2倍
+>
+> 假设非环段长度为 a ，环部分长度为b, 假设相遇时距离环节点x
+>
+> 慢指针路程 s1 = a + mb + x  （讲道理，慢指针应该没走满一圈）  
+>
+> 快指针路程为 s2 = a + nb + x  
+>
+> 由于有 s2 = 2 * s1  
+>
+> 则可得 a + x = (n - 2m) b
+>
+> 假设此时 再走 a 步数，则有s2 + a = a + (2n - 2m)b, 即 a + n圈，正好回到环点 
+>
+> 而从头部到达环点正好需要走 a 步，
+>
+> 即此时从头部出发，另一个从之前相遇点出发，都一次一步，能够同时到达环点
+
+```java
+public class Solution {
+    
+    // A+B+N = 2A+2B
+    // N=A+B
+    public ListNode detectCycle(ListNode head) {
+        if(head == null || head.next == null){
+            return null;
+        }
+        ListNode fast = head;
+        ListNode slow = head;
+        while(fast != null && fast.next != null){  //快节点和快节点的next节点不为空时可能有环
+            fast = fast.next.next;
+            if(fast == null) return null;
+            slow = slow.next;
+            if(slow == fast){   //相等时才有环
+                while(slow != head && slow != null){
+                   head = head.next;
+                   slow = slow.next;
+                }
+                return slow;
+            }
+        }
+        return null;
+    }
+}
+```
+
+## [143. Reorder List](https://leetcode-cn.com/problems/reorder-list/)
+
+> Given a singly linked list *L*: *L*0→*L*1→…→*L**n*-1→*L*n,
+> reorder it to: *L*0→*L**n*→*L*1→*L**n*-1→*L*2→*L**n*-2→…
+>
+> You may **not** modify the values in the list's nodes, only nodes itself may be changed.
+>
+> **Example 1:**
+>
+> ```
+> Given 1->2->3->4, reorder it to 1->4->2->3.
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Given 1->2->3->4->5, reorder it to 1->5->2->4->3.
+> ```
+
+> + 利用快慢指针快速定位，将链表分成两部分
+> + 将后半部分链表反转
+> + 将两部分量表合并
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public void reorderList(ListNode head) {
+        if(head == null || head.next == null)return ;
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast != null && fast.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode part1Point = head;
+        ListNode part2Point = reverse(slow.next);
+        slow.next = null;
+        while(part1Point != null && part2Point != null){
+            ListNode part1next = part1Point.next;
+            ListNode part2next = part2Point.next;
+            part1Point.next = part2Point;
+            part2Point.next = part1next;
+            part1Point = part1next;
+            part2Point = part2next;
+        }        
+        
+    }
+    private ListNode reverse(ListNode head){
+        ListNode prev = null;
+        ListNode cur = head;
+        ListNode next = head;
+        while(cur != null){
+            next = cur.next;
+            cur.next = prev;
+            prev = cur;                        
+            cur = next;
+        }
+        return prev;
+    }
+}
+```
+
+## [144. Binary Tree Preorder Traversal](https://leetcode-cn.com/problems/binary-tree-preorder-traversal/)
+
+> Given a binary tree, return the *preorder* traversal of its nodes' values.
+>
+> **Example:**
+>
+> ```
+> Input: [1,null,2,3]
+>    1
+>     \
+>      2
+>     /
+>    3
+> 
+> Output: [1,2,3]
+> ```
+>
+> **Follow up:** Recursive solution is trivial, could you do it iteratively?
+
+> 递归
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    private List<Integer> result = new ArrayList();
+    public List<Integer> preorderTraversal(TreeNode root) {
+        if(root != null ){
+            result.add(root.val);
+            preorderTraversal(root.left);
+            preorderTraversal(root.right);
+        }
+        return result;
+    }
+}
+```
+
+> 迭代方式
+
+```java
+class Solution {
+    public List<Integer> preorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList();
+        if(root == null)return result;
+        Stack<TreeNode> stack = new Stack();
+        stack.push(root);
+        while(!stack.isEmpty()){
+            TreeNode node = stack.pop();
+            result.add(node.val);
+            if(node.right != null){
+                stack.push(node.right);
+            }
+            if(node.left != null){
+                stack.push(node.left);
+            }
+        }                
+        
+        return result;
+    }
+}
+```
+
+## [145.Binary Tree Postorder Traversal](https://leetcode-cn.com/problems/binary-tree-postorder-traversal/)
+
+> Given a binary tree, return the *postorder* traversal of its nodes' values.
+>
+> **Example:**
+>
+> ```
+> Input: [1,null,2,3]
+>    1
+>     \
+>      2
+>     /
+>    3
+> 
+> Output: [3,2,1]
+> ```
+>
+> **Follow up:** Recursive solution is trivial, could you do it iteratively?
+
+> 递归
+
+```java
+class Solution{
+ 	private List<Integer> res = new ArrayList<Integer>();
+    public List<Integer> postorderTraversal(TreeNode root) {//递归写法
+        if(root == null)
+            return res;
+        postorderTraversal(root.left);
+        postorderTraversal(root.right);
+        res.add(root.val);
+        return res;
+    }   
+}
+```
+
+> 迭代
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList();
+        if(root == null)return result;
+        Stack<TreeNode> stack = new Stack();
+        stack.push(root);
+        TreeNode pre = null;
+        while(!stack.isEmpty()){
+            root = stack.peek();
+            if(root.left ==null && root.right == null ||
+              (pre != null && (pre == root.left || pre == root.right))){
+                result.add(root.val);
+                pre = root;
+                stack.pop();
+            }else{
+                if(root.right != null)stack.push(root.right);
+                if(root.left != null)stack.push(root.left);
+            }
+        }
+        return result;
+    }
+}
+```
+
+```java
+class Solution{
+    public List<Integer> postorderTraversal(TreeNode root) {
+        List<Integer> res = new ArrayList<Integer>();
+        if(root == null)
+            return res;
+        Stack<TreeNode> stack = new Stack<TreeNode>();
+        stack.push(root);
+        while(!stack.isEmpty()){
+            TreeNode node = stack.pop();
+            if(node.left != null) stack.push(node.left);//和传统先序遍历不一样，先将左结点入栈
+            if(node.right != null) stack.push(node.right);//后将右结点入栈
+            res.add(0,node.val);                        //逆序添加结点值
+        }     
+        return res;
+    }
+}
+
+```
+
+## [147. Insertion Sort List](https://leetcode-cn.com/problems/insertion-sort-list/)
+
+> Sort a linked list using insertion sort.
+>
+> 
+>
+> ![img](https://upload.wikimedia.org/wikipedia/commons/0/0f/Insertion-sort-example-300px.gif)
+> A graphical example of insertion sort. The partial sorted list (black) initially contains only the first element in the list.
+> With each iteration one element (red) is removed from the input data and inserted in-place into the sorted list
+>  
+>
+> 
+>
+> **Algorithm of Insertion Sort:**
+>
+> 1. Insertion sort iterates, consuming one input element each repetition, and growing a sorted output list.
+> 2. At each iteration, insertion sort removes one element from the input data, finds the location it belongs within the sorted list, and inserts it there.
+> 3. It repeats until no input elements remain.
+>
+> 
+> **Example 1:**
+>
+> ```
+> Input: 4->2->1->3
+> Output: 1->2->3->4
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: -1->5->3->4->0
+> Output: -1->0->3->4->5
+> ```
+
+```java
+// 中规中矩的办法
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if(head == null || head.next == null)return head;
+        ListNode preHead = new ListNode(0);
+       
+        while(head != null){
+            ListNode next = head.next;
+            ListNode insert = preHead;
+            while(insert.next != null && head.val > insert.next.val){
+                insert = insert.next;
+            }
+            head.next = insert.next;
+            insert.next = head;                                                                            
+            head = next;
+        }
+        return preHead.next;
+    }
+}
+```
+
+> 归并排序
+
+```java
+class Solution {
+    public ListNode insertionSortList(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode fast = head;
+        ListNode slow = head;
+        ListNode pre = null;
+        while (fast != null && fast.next != null) {
+            pre = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        pre.next = null;
+        ListNode l1 = insertionSortList(head);
+        ListNode l2 = insertionSortList(slow);
+        return merge(l1, l2);
+    }
+
+    public static ListNode merge(ListNode l1, ListNode l2) {
+        if (l1 == null || l2 == null) return l1 == null ? l2 : l1;
+        if (l1.val < l2.val) {
+            l1.next = merge(l1.next, l2);
+            return l1;
+        } else {
+            l2.next = merge(l1, l2.next);
+            return l2;
+        }
+    }
+}
+```
+
+## [148. Sort List](https://leetcode-cn.com/problems/sort-list/)
+
+> Sort a linked list in *O*(*n* log *n*) time using constant space complexity.
+>
+> **Example 1:**
+>
+> ```
+> Input: 4->2->1->3
+> Output: 1->2->3->4
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: -1->5->3->4->0
+> Output: -1->0->3->4->5
+> ```
+
+```java
+public class Solution {
+    public ListNode SortList(ListNode head) {
+        if (head == null) return null;
+        var n = 0;
+        for (var current = head; current != null; current = current.next) n += 1;
+        var dummy1 = new ListNode(-1);
+        dummy1.next = head;
+        var dummy2 = new ListNode(-1);
+        for (var m = 1; m < n; m *= 2) {
+            var prev1 = dummy1;
+            while (prev1.next != null) {
+
+                // Grab up to the next m items into list1.
+                var list1 = prev1.next;
+                var prev2 = list1;
+                for (var i = 0; i < m - 1 && prev2 != null; i++) prev2 = prev2.next;
+
+                if (prev2 == null) break;
+
+                // Grab up to the next m items into list2.
+                var list2 = prev2.next;
+                var prev3 = list2;
+                for (var i = 0; i < m - 1 && prev3 != null; i++) prev3 = prev3.next;
+
+                // Save the remaining items, if any.
+                var list3 = prev3 != null ? prev3.next : null;
+
+                // Terminate list1 and list2.
+                prev2.next = null;
+                if (prev3 != null) prev3.next = null;
+
+                // Merge the two lists, terminating with remaining items.
+                (prev1.next, prev1) = Merge(dummy2, list1, list2, list3);
+            }
+        }
+        return dummy1.next;
+    }
+    private (ListNode, ListNode) Merge(ListNode dummy, ListNode list1, ListNode list2, ListNode list3) {
+        var prev = dummy;
+        while (list1 != null || list2 != null) {
+            var first = false;
+            if (list1 == null) first = false;
+            else if (list2 == null) first = true;
+            else first = list1.val <= list2.val;
+            if (first) {
+                prev.next = list1;
+                list1 = list1.next;
+            }
+            else {
+                prev.next = list2;
+                list2 = list2.next;
+            }
+            prev = prev.next;
+        }
+        prev.next = list3;
+        return (dummy.next, prev);
+    }
+}
+```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode sortList(ListNode head) {
+        if(head == null || head.next == null)return head;
+        ListNode prev = null;
+        ListNode slow = head;
+        ListNode fast = head;
+        while(fast != null && fast.next != null){
+            prev = slow;
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        prev.next = null;
+        ListNode list1 = sortList(head); 
+        ListNode list2 = sortList(slow);
+        return merge(list1, list2);
+    }
+    private ListNode merge(ListNode node1, ListNode node2){
+        if(node1 == null || node2 == null)return node1 == null ? node2 : node1;
+        if(node1.val < node2.val){
+            node1.next = merge(node1.next, node2);
+            return node1;
+        }else{
+            node2.next = merge(node2.next, node1);
+            return node2;
+        }
+    }
+}
 ```
 
