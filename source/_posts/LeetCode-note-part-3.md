@@ -2631,6 +2631,8 @@ class Solution {
 > Output: -1->0->3->4->5
 > ```
 
+> 貌似是合格的，但是没太详细看，用的貌似是 Java 11
+
 ```java
 public class Solution {
     public ListNode SortList(ListNode head) {
@@ -2692,6 +2694,8 @@ public class Solution {
 }
 ```
 
+> 归并排序，在空间要求上实际上是不合理的
+
 ```java
 /**
  * Definition for singly-linked list.
@@ -2726,6 +2730,495 @@ class Solution {
             node2.next = merge(node2.next, node1);
             return node2;
         }
+    }
+}
+```
+
+## [Method-150. Evaluate Reverse Polish Notation](https://leetcode-cn.com/problems/evaluate-reverse-polish-notation/)
+
+> Evaluate the value of an arithmetic expression in [Reverse Polish Notation](http://en.wikipedia.org/wiki/Reverse_Polish_notation).
+>
+> Valid operators are `+`, `-`, `*`, `/`. Each operand may be an integer or another expression.
+>
+> **Note:**
+>
+> - Division between two integers should truncate toward zero.
+> - The given RPN expression is always valid. That means the expression would always evaluate to a result and there won't be any divide by zero operation.
+>
+> **Example 1:**
+>
+> ```
+> Input: ["2", "1", "+", "3", "*"]
+> Output: 9
+> Explanation: ((2 + 1) * 3) = 9
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: ["4", "13", "5", "/", "+"]
+> Output: 6
+> Explanation: (4 + (13 / 5)) = 6
+> ```
+>
+> **Example 3:**
+>
+> ```
+> Input: ["10", "6", "9", "3", "+", "-11", "*", "/", "*", "17", "+", "5", "+"]
+> Output: 22
+> Explanation: 
+>   ((10 * (6 / ((9 + 3) * -11))) + 17) + 5
+> = ((10 * (6 / (12 * -11))) + 17) + 5
+> = ((10 * (6 / -132)) + 17) + 5
+> = ((10 * 0) + 17) + 5
+> = (0 + 17) + 5
+> = 17 + 5
+> = 22
+> ```
+
+> 真是的，Postfix Expression 后缀表达式，说 逆波兰表达式  我一脸懵逼。。。。。
+
+```java
+// 中规中矩的办法
+class Solution {
+    public int evalRPN(String[] tokens) {
+        if(null == tokens || tokens.length == 0) return 0;
+        Stack<Integer> stack = new Stack();
+        Set<String> calSign = new HashSet<String>(){ 
+            {
+                add("+");
+                add("-");
+                add("*");
+                add("/");
+            } 
+        };
+        for(String token : tokens){
+            if(calSign.contains(token)){
+                int b = stack.pop();
+                int a = stack.pop();
+                stack.push(cal(a, b, token));
+            }else{
+                stack.push(Integer.parseInt(token));
+            }
+        }
+        return stack.pop();
+    }
+    private int cal(int a, int b, String op){
+        int result = 0;
+        switch(op){
+            case "+":
+                result = a + b;
+                break;
+            case "-":
+                result = a - b;
+                break;
+            case "*":
+                result = a * b;
+                break;
+            case "/":
+                result = a / b;
+                break;
+        }
+        return result;
+    }
+}
+```
+
+> 递归版本
+
+```java
+class Solution {
+     private int N =-1;
+   public int evalRPN(String[] tokens) {
+
+        if(N==-1)
+            N=tokens.length-1;
+        String s = tokens[N--];
+        char c = s.charAt(0);
+        if(s.length()==1&&"+-*/".indexOf(c)!=-1){
+            int a = evalRPN(tokens);
+            int b = evalRPN(tokens);
+            switch(c){
+                case '+':return a+b;
+                case '-':return b-a;
+                case '*':return a*b;
+                case '/':return b/a;
+                default:break;
+            }
+        }
+        return Integer.parseInt(s);
+    }
+}
+```
+
+## [151. Reverse Words in a String](https://leetcode-cn.com/problems/reverse-words-in-a-string/)
+
+> Given an input string, reverse the string word by word.
+>
+>  
+>
+> **Example 1:**
+>
+> ```
+> Input: "the sky is blue"
+> Output: "blue is sky the"
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: "  hello world!  "
+> Output: "world! hello"
+> Explanation: Your reversed string should not contain leading or trailing spaces.
+> ```
+>
+> **Example 3:**
+>
+> ```
+> Input: "a good   example"
+> Output: "example good a"
+> Explanation: You need to reduce multiple spaces between two words to a single space in the reversed string.
+> ```
+>
+>  
+>
+> **Note:**
+>
+> - A word is defined as a sequence of non-space characters.
+> - Input string may contain leading or trailing spaces. However, your reversed string should not contain leading or trailing spaces.
+> - You need to reduce multiple spaces between two words to a single space in the reversed string.
+>
+>  
+>
+> **Follow up:**
+>
+> For C programmers, try to solve it *in-place* in *O*(1) extra space.
+
+```java
+// 笨方法
+class Solution {
+    public String reverseWords(String s) {
+        StringBuilder sb = new StringBuilder();
+        char pre = ' ';  
+        for(int i = 0; i < s.length(); i ++){
+            char cur = s.charAt(i);
+            if(cur == ' ' && pre == ' ')continue;
+            pre = cur;
+            sb.append(cur);            
+        }
+        String[] words = sb.toString().trim().split(" ");
+        sb = new StringBuilder();
+        for(int i = words.length -1; i > 0; i --){
+            sb.append(words[i]).append(" ");            
+        }
+        sb.append(words[0]);
+        return sb.toString();
+    }
+}
+```
+
+```java
+// 通过两个数来定位 单词的 始末位置， 由后往前遍历
+class Solution {
+    public String reverseWords(String s) {
+        StringBuilder builder = new StringBuilder(s.length());
+        int i = s.length() - 1;
+        while (i >= 0) {
+            while (i >= 0 && s.charAt(i) == ' ') i--;
+            if (i == -1) break;
+            
+            int j = s.lastIndexOf(' ', i); //从位置 i 开始， 从后往前找出 ' ' 第一次出现的位置
+            builder.append(s.substring(j + 1, i + 1) + " ");
+            i = j - 1;
+        }    
+        if (builder.length() > 0) builder.deleteCharAt(builder.length() - 1);
+        return builder.toString();
+    }
+}
+```
+
+## [Means - 152. Maximum Product Subarray](https://leetcode-cn.com/problems/maximum-product-subarray/)
+
+> Given an integer array `nums`, find the contiguous subarray within an array (containing at least one number) which has the largest product.
+>
+> **Example 1:**
+>
+> ```
+> Input: [2,3,-2,4]
+> Output: 6
+> Explanation: [2,3] has the largest product 6.
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: [-2,0,-1]
+> Output: 0
+> Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
+> ```
+
+> 动态规划，由于题目要求连续，故而只需保留当前和前一步的状态即可
+
+```java
+class Solution {
+    public int maxProduct(int[] nums) {
+        int max = Integer.MIN_VALUE, imax = 1, imin = 1; //一个保存最大的，一个保存最小的。
+        for(int i=0; i<nums.length; i++){
+            if(nums[i] < 0){ int tmp = imax; imax = imin; imin = tmp;} //如果数组的数是负数，那么会导致最大的变最小的，最小的变最大的。因此交换两个的值。
+            imax = Math.max(imax*nums[i], nums[i]);// 假如存在 0， 则会刷新当前子集 积
+            imin = Math.min(imin*nums[i], nums[i]);            
+            max = Math.max(max, imax);
+        }
+        return max;
+    }
+}
+```
+
+## [自身逻辑不擅长此类--153. Find Minimum in Rotated Sorted Array](https://leetcode-cn.com/problems/find-minimum-in-rotated-sorted-array/)
+
+> Suppose an array sorted in ascending order is rotated at some pivot unknown to you beforehand.
+>
+> (i.e.,  `[0,1,2,4,5,6,7]` might become  `[4,5,6,7,0,1,2]`).
+>
+> Find the minimum element.
+>
+> You may assume no duplicate exists in the array.
+>
+> **Example 1:**
+>
+> ```
+> Input: [3,4,5,1,2] 
+> Output: 1
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: [4,5,6,7,0,1,2]
+> Output: 0
+> ```
+
+```java
+class Solution {
+    public int findMin(int[] nums) {
+        if(nums.length == 1)return nums[0];
+        int start = 0;
+        int end = nums.length -1;
+        if(nums[start] <= nums[end])return nums[start];// 用于过滤有序数组
+        int mid = 0;
+        while(start < end && end - start > 1){// 不添加 end - start > 1 有可能会陷入死循环
+            mid = start + (end - start) / 2;
+            if(nums[start] > nums[end]){                
+                if(nums[mid] > nums[start]){
+                    start = mid; // 这里不能写 start = mid + 1; 因为可能nums[mid+1]正好是最小值而陷入死循环
+                }else{
+                    end = mid;// 同理不能写 end = nums[mid - 1],否则可能造成死循环
+                }                
+            }
+        }
+        return Math.min(nums[start], nums[end]);
+    }
+}
+```
+
+```java
+class Solution {
+    public int findMin(int[] nums) {
+        int start = 0;
+        int end = nums.length -1;
+        if(nums[start] <= nums[end])return nums[start];
+        int mid = 0;
+        while(start <= end){
+            mid = start + (end - start) / 2;;
+            if(nums[mid] > nums[mid + 1])return nums[mid+1]; // 这一步为了避免造成死循环
+            if(nums[mid] > nums[start]){// nums[mid] > nums[start]已经保证了 nums[start] > nums[end]
+                start = mid + 1;
+            }else{
+                end = mid - 1;
+            }
+        }
+        return nums[0];
+    }
+}
+```
+
+## [源码的重要性--155. Min Stack](https://leetcode-cn.com/problems/min-stack/)
+
+> Design a stack that supports push, pop, top, and retrieving the minimum element in constant time.
+>
+> - push(x) -- Push element x onto stack.
+> - pop() -- Removes the element on top of the stack.
+> - top() -- Get the top element.
+> - getMin() -- Retrieve the minimum element in the stack.
+>
+> 
+>
+> **Example:**
+>
+> ```
+> MinStack minStack = new MinStack();
+> minStack.push(-2);
+> minStack.push(0);
+> minStack.push(-3);
+> minStack.getMin();   --> Returns -3.
+> minStack.pop();
+> minStack.top();      --> Returns 0.
+> minStack.getMin();   --> Returns -2.
+> ```
+
+> 有很多人使用两个栈解决这个问题，感觉有点投机，
+>
+> 我第一遍做的时候，用的List,后面看答案的时候，觉得下面这个最合题意，某方面来说就是仿的jdk源码
+
+```java
+class MinStack {
+
+    private int capacity;
+    private int size;
+    private int[] data;
+    private int[] min;
+
+    public MinStack() {
+        capacity = 4;
+        size = 0;
+        data = new int[capacity];
+        min = new int[capacity];
+    }
+
+    public void push(int x) {
+        if (size >= capacity) {
+            expand();
+        }
+        int min = size > 0 ?this.min[size-1] : Integer.MAX_VALUE;
+        data[size] = x;
+        this.min[size++] = x > min ? min : x; //记录size为指定值时的最小值，如果移除值，只是根据size移动下标即可
+    }
+
+    public void pop() {
+        size--;
+    }
+
+    public int top() {
+        return size > 0 ? data[size-1] : -1;
+    }
+
+    public int getMin() {
+        return size > 0 ? min[size-1] : -1;
+    }
+
+    private void expand() {
+        int newCapacity = capacity * 2;
+        int[] newData = new int[newCapacity];
+        int[] newMin = new int[newCapacity];
+        System.arraycopy(data, 0, newData, 0, capacity);
+        System.arraycopy(min, 0, newMin, 0, capacity);
+        capacity = newCapacity;
+        data = newData;
+        min = newMin;
+    }
+}
+
+/**
+ * Your MinStack object will be instantiated and called as such:
+ * MinStack obj = new MinStack();
+ * obj.push(x);
+ * obj.pop();
+ * int param_3 = obj.top();
+ * int param_4 = obj.getMin();
+ */
+```
+
+## [160. Intersection of Two Linked Lists](https://leetcode-cn.com/problems/intersection-of-two-linked-lists/)
+
+> Write a program to find the node at which the intersection of two singly linked lists begins.
+>
+> For example, the following two linked lists:
+>
+> ![img](https://assets.leetcode.com/uploads/2018/12/13/160_statement.png)
+>
+> 
+>
+> begin to intersect at node c1.
+>
+>  
+>
+> **Example 1:**
+>
+> ![img](https://assets.leetcode.com/uploads/2018/12/13/160_example_1.png)
+>
+> 
+>
+> ```
+> Input: intersectVal = 8, listA = [4,1,8,4,5], listB = [5,0,1,8,4,5], skipA = 2, skipB = 3
+> Output: Reference of the node with value = 8
+> Input Explanation: The intersected node's value is 8 (note that this must not be 0 if the two lists intersect). From the head of A, it reads as [4,1,8,4,5]. From the head of B, it reads as [5,0,1,8,4,5]. There are 2 nodes before the intersected node in A; There are 3 nodes before the intersected node in B.
+> ```
+>
+>  
+>
+> **Example 2:**
+>
+> ![img](https://assets.leetcode.com/uploads/2018/12/13/160_example_2.png)
+>
+> 
+>
+> ```
+> Input: intersectVal = 2, listA = [0,9,1,2,4], listB = [3,2,4], skipA = 3, skipB = 1
+> Output: Reference of the node with value = 2
+> Input Explanation: The intersected node's value is 2 (note that this must not be 0 if the two lists intersect). From the head of A, it reads as [0,9,1,2,4]. From the head of B, it reads as [3,2,4]. There are 3 nodes before the intersected node in A; There are 1 node before the intersected node in B.
+> ```
+>
+>  
+>
+> **Example 3:**
+>
+> ![img](https://assets.leetcode.com/uploads/2018/12/13/160_example_3.png)
+>
+> 
+>
+> ```
+> Input: intersectVal = 0, listA = [2,6,4], listB = [1,5], skipA = 3, skipB = 2
+> Output: null
+> Input Explanation: From the head of A, it reads as [2,6,4]. From the head of B, it reads as [1,5]. Since the two lists do not intersect, intersectVal must be 0, while skipA and skipB can be arbitrary values.
+> Explanation: The two lists do not intersect, so return null.
+> ```
+>
+>  
+>
+> **Notes:**
+>
+> - If the two linked lists have no intersection at all, return `null`.
+> - The linked lists must retain their original structure after the function returns.
+> - You may assume there are no cycles anywhere in the entire linked structure.
+> - Your code should preferably run in O(n) time and use only O(1) memory.
+
+> 定义两个指针, 第一轮让两个到达末尾的节点指向另一个链表的头部, 最后如果相遇则为交点(在第一轮移动中恰好抹除了长度差)
+> 两个指针等于移动了相同的距离, 有交点就返回, 无交点就是各走了两条指针的长度
+> 在这里第一轮体现在pA和pB第一次到达尾部会移向另一链表的表头, 而第二轮体现在如果pA或pB相交就返回交点, 不相交最后就是null==null
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) {
+ *         val = x;
+ *         next = null;
+ *     }
+ * }
+ */
+public class Solution {
+    public ListNode getIntersectionNode(ListNode headA, ListNode headB) {
+        if(null == headA || null == headB)return null;
+        ListNode curA = headA;
+        ListNode curB = headB;
+        while(curA != curB){
+            curA = curA == null ? headB : curA.next;
+            curB = curB == null ? headA : curB.next;              
+        }
+        
+        return curA;
     }
 }
 ```
