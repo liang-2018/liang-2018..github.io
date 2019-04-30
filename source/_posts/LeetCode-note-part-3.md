@@ -3223,3 +3223,180 @@ public class Solution {
 }
 ```
 
+## [162. Find Peak Element](https://leetcode-cn.com/problems/find-peak-element/)
+
+> A peak element is an element that is greater than its neighbors.
+>
+> Given an input array `nums`, where `nums[i] ≠ nums[i+1]`, find a peak element and return its index.
+>
+> The array may contain multiple peaks, in that case return the index to any one of the peaks is fine.
+>
+> You may imagine that `nums[-1] = nums[n] = -∞`.
+>
+> **Example 1:**
+>
+> ```
+> Input: nums = [1,2,3,1]
+> Output: 2
+> Explanation: 3 is a peak element and your function should return the index number 2.
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: nums = [1,2,1,3,5,6,4]
+> Output: 1 or 5 
+> Explanation: Your function can return either index number 1 where the peak element is 2, 
+>              or index number 5 where the peak element is 6.
+> ```
+>
+> **Note:**
+>
+> Your solution should be in logarithmic complexity.
+
+> **二分法在变更起点和终点的时候应结合实际情况灵活变更**
+>
+> + O(logN)一般考虑二分搜索
+>
+> + 如果nums[i] > nums[i+1]，则在i之前一定存在峰值元素
+>
+> + 如果nums[i] < nums[i+1]，则在i+1之后一定存在峰值元素
+
+```java
+class Solution {
+    public int findPeakElement(int[] nums) {
+        if(nums == null || 0 == nums.length)return 0;
+        int length = nums.length;
+        int start = 0;
+        int end = length - 1;
+       
+        while(start < end){
+            int mid = start + ((end - start) >>> 1);
+            if( nums[mid] > nums[mid + 1] ){
+                // mid 可能是峰值点，如果此处直接写mid + 1,则应在前面判断mid是否为峰值点
+                end = mid; 
+            }else{
+                // mid 一定不是峰值点，如果此处写mid的话，最后可能需要从 start 和 end 之间判断哪个是峰值点
+                start = mid + 1; 
+            }                      
+        }
+        return left;
+    }
+}
+```
+
+## [165. Compare Version Numbers](https://leetcode-cn.com/problems/compare-version-numbers/)
+
+> Compare two version numbers *version1* and *version2*.
+> If  ***version1* > *version2*  return 1**; if ***version1* < *version2* return -1; otherwise return `0`**.
+>
+> You may assume that the version strings are non-empty and contain only digits and the `.` character.
+>
+> The `.` character does not represent a decimal point and is used to separate number sequences.
+>
+> For instance, `2.5` is not "two and a half" or "half way to version three", it is the fifth second-level revision of the second first-level revision.
+>
+> You may assume the default revision number for each level of a version number to be `0`. For example, version number `3.4` has a revision number of `3` and `4` for its first and second level revision number. Its third and fourth level revision number are both `0`.
+>
+>  
+>
+> **Example 1:**
+>
+> ```
+> Input: version1 = "0.1", version2 = "1.1"
+> Output: -1
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: version1 = "1.0.1", version2 = "1"
+> Output: 1
+> ```
+>
+> **Example 3:**
+>
+> ```
+> Input: version1 = "7.5.2.4", version2 = "7.5.3"
+> Output: -1
+> ```
+>
+> **Example 4:**
+>
+> ```
+> Input: version1 = "1.01", version2 = "1.001"
+> Output: 0
+> Explanation: Ignoring leading zeroes, both “01” and “001" represent the same number “1”
+> ```
+>
+> **Example 5:**
+>
+> ```
+> Input: version1 = "1.0", version2 = "1.0.0"
+> Output: 0
+> Explanation: The first version number does not have a third level revision number, which means its third level revision number is default to "0"
+> ```
+>
+>  
+>
+> **Note:**
+>
+> 1. Version strings are composed of numeric strings separated by dots `.` and this numeric strings **may** have leading zeroes.
+> 2. Version strings do not start or end with dots, and they will not be two consecutive dots.
+
+> 最不费脑的方法是用split分成数组，比较烧时间，但是容易理解
+
+```java
+class Solution {
+    public int compareVersion(String version1, String version2) {
+        String[] v1 = version1.split("\\.");
+        String[] v2 = version2.split("\\.");
+        int length = v1.length < v2.length ? v1.length : v2.length;
+        int v1product = 0;
+        int v2product = 0;
+        for(int i = 0; i < length; i++){//先将相同段进行计数计算，如 7.5.2 ==> 752
+            v1product = v1product * 10 + Integer.parseInt(v1[i]);
+            v2product = v2product * 10 + Integer.parseInt(v2[i]);
+            if(v1product != v2product)return v1product - v2product > 0 ? 1 : -1;
+        }        
+        // 如果前面值不等于0 判断后面长度数值 计数值,如果比较大于
+        if(v1.length > v2.length){
+            for(int i = v2.length; i < v1.length; i++){
+                int tmp = Integer.parseInt(v1[i]);
+                if(tmp == 0)continue;
+                return 1;
+            }
+        }
+        if(v1.length < v2.length){
+            for(int i = v1.length; i < v2.length; i++){
+                int tmp = Integer.parseInt(v2[i]);
+                if(tmp == 0)continue;
+                return -1;
+            }
+        }
+        
+        return 0;
+    }
+}
+```
+
+> 这个是榜单最佳
+
+```java
+class Solution {
+    public int compareVersion(String version1, String version2) {
+        if(version1 == null || version2 == null) return 0;
+        char[] v1 = version1.toCharArray();
+        char[] v2 = version2.toCharArray();
+        for (int i = 0,j = 0;i < v1.length || j < v2.length;i++,j++){
+            int ver1 = 0, ver2 = 0;
+            for (;i<v1.length && v1[i]!='.';i++) ver1 = ver1 * 10 + v1[i] - '0';
+            for (;j<v2.length && v2[j]!='.';j++) ver2 = ver2 * 10 + v2[j] - '0';
+            if(ver1 < ver2) return -1;
+            else if(ver1 > ver2) return 1;
+        }
+        return 0;
+    }
+}
+```
+
