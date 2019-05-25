@@ -7,7 +7,7 @@ tags: hexo
 categories: tools
 ---
 
-> 每次写完markdown笔记后上传到csdn都是件恼火的事情，如果没有图片，倒也方便，若是有较多图片，那就脑壳疼了。起意很久，还是用github&gitee实践一波自己的博客吧。期间遇到很多bug，感谢文末链接中的大佬们，前人踩坑，后来者接着踩。
+> 每次写完markdown笔记后上传到csdn都是件恼火的事情，如果没有图片，倒也方便，若是有较多图片，那就脑壳疼了。起意很久，还是用github&gitee实践一波自己的博客吧。期间遇到很多bug，**感谢文末链接**中的大佬们，前人踩坑，后来者接着踩。
 
 <!-- more -->
 # 环境搭建
@@ -128,8 +128,44 @@ npm install
 
 主题有多种，各种折腾后，最后我选择的next主题。
 
+[hexo的next主题个性化教程：打造炫酷网站](https://blog.csdn.net/qq_33699981/article/details/72716951)
+
 # 相关插件配置
 
 1. 本地搜索
+
 2. 评论
+
+   [评论系统从Disqus到Valine - 简书](https://www.jianshu.com/p/532acf1d41c1)
+
 3. 公式支持
+
+   [hexo next主题解决无法显示数学公式 - MrYx - CSDN博客](https://blog.csdn.net/yexiaohhjk/article/details/82526604)
+
+   [在Hexo中使用mathjax渲染数学公式 - DH's Den - CSDN博客](https://blog.csdn.net/u013282174/article/details/80666123)
+
+# 相关参考链接
+
+[Hexo主题更改以及小功能的添加](https://www.jianshu.com/p/c9de55660d1b)
+
+[Hexo博客教程(二):基本功能和网站优化](https://www.jianshu.com/p/2a70262295e4?utm_campaign=maleskine&utm_content=note&utm_medium=seo_notes&utm_source=recommendation)
+
+[hexo生成博文插入图片](https://blog.csdn.net/sugar_rainbow/article/details/57415705)
+
+[Hexo添加categories页面](https://www.voidking.com/2018/06/11/deve-hexo-categories/)
+
+[hexo的next主题个性化教程：打造炫酷网站](https://blog.csdn.net/qq_33699981/article/details/72716951)
+
+[Hexo 博客优化之博客美化（看板娘/鼠标点击爱心字体烟花爆炸效果/自定义鼠标指针样式/彩色滚动变换字体/背景音乐/网页标题恶搞/动态线条/人体时钟挂件/雪花飘落/背景动态彩带......）](https://blog.csdn.net/qq_36759224/article/details/85420403)
+
+[hexo添加小功能 - 青花猪的忧伤的博客 - CSDN博客](https://blog.csdn.net/qq_43020645/article/details/82793753)
+
+[hexo next主题解决无法显示数学公式 - MrYx - CSDN博客](https://blog.csdn.net/yexiaohhjk/article/details/82526604)
+
+[在Hexo中使用mathjax渲染数学公式 - DH's Den - CSDN博客](https://blog.csdn.net/u013282174/article/details/80666123)
+
+[遇见西门 - simon96.online](https://www.simon96.online/)
+
+[Hexo使用细节及各种问题 - Selier的博客 - CSDN博客](https://blog.csdn.net/the_liang/article/details/82288346)
+
+[Hexo博客之速度优化 - 简书](https://www.jianshu.com/p/93b63852f0b3)

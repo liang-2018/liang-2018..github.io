@@ -14,6 +14,16 @@ categories:
 
 <!-- more -->
 
+## 参考博文：
+
+> https://blog.csdn.net/weixin_39012047/article/details/82348881
+>
+> https://blog.csdn.net/qq_32662595/article/details/79876345
+>
+> https://www.cnblogs.com/shangbingbing/p/5052964.html
+
+
+
 ## 一、查(match)
 
 ###  查询节点
@@ -111,7 +121,7 @@ where n.attr =~ '.*a1.*|.*a2.*' // 尽量不要分成两个or
 return n
 ```
 
-## 二、更新（update）
+## 二、更新（set/remove）
 
 > cypher更新与mysql类似，都需要先定位需要修改的节点或者关系位置
 >
@@ -132,15 +142,111 @@ set n.nickName = "J" //如果已有属性 nickName 则更新值，如果没有�
 return n
 ```
 
+### set 
+
+```cypher
+// 使用 键值对 添加属性
+merge (n:Student{name:"小明"}) SET n += { hungry: TRUE , position: 'outside the classroom' } return n
+// 使用set 设置多个属性
+match(n:Student) where n.name="小明" set n.hungry="True", n.position="outside the classroom" return n
+// 给节点添加标签
+MATCH (n { name: 'Stefan' }) SET n :German RETURN n
+MATCH (n { name: 'Emil' }) SET n :Swedish:Bossman RETURN n 
+```
+
+### remove
+
+```cypher
+// 删除属性
+match (n:Student) where n.name="小明" REMOVE n.age return n
+// 删除节点的标签,其写法与set的设置标签一样
+match (n:Student:Person:LeagueMember) where n.name="小明" REMOVE n:Student:LeagueMember return n
+```
+
 ##  三、增（create、merge）
 
+> 不同于mysql，在neo4j中，即使数据库中已有数据完全一致的节点，使用create依旧会创建新节点，原因在于neo4j中的每一个节点都有一个独一无二的id，使用id(n)可以获得其id。因而也就有了merge，merge会先检查是否已存在满足条件的节点，然后再进行操作。
 
+### create
 
-##  参考博文：
+> 创建节点
 
-> https://blog.csdn.net/weixin_39012047/article/details/82348881
+```cypher
+create (n:Person:Student) set n.name = "小明" return n //创建带多个标签的节点，小明既是人，也是学生
+ create (n:Person {name:"weiw",age:23}) return n 
+create (n:Person) set n.name = "weiw", n.age =23 return n   //创建节点并对属性设值   
+```
+
+> 创建关系
 >
-> https://blog.csdn.net/qq_32662595/article/details/79876345
->
-> https://www.cnblogs.com/shangbingbing/p/5052964.html
+> 值得注意的是，neo4j中，关系也可以和节点一样，设置properties
 
+```cypher
+// 创建两个节点间关系
+match (a:Person),(b:Person) where a.name="zhangs" and b.name="lisi"  create (a)-[r:RELTYPE]->(b) return r
+// 创建关系，并对关系设值
+match (a:Person),(b:Person) where a.name="zhangs" and b.name="lisi" 
+create (a)-[r:RELTYPE {name:a.name +"<->" + b.name}]->(b) return r
+// 设置多个节点间的关系,最好通过match来定位节点
+create p=(an {name:"an"})-[:WORKS_AT]->(neo)<-[:WORKS_AT]-(mach {name:"mach"}) return p;                       
+```
+
+### merge
+
+>和create不同的是，对不存在的节点进行创建，存在的直接返回。
+
+> 合并 节点
+
+```cypher
+merge (n:Person{name:"小明"}) set n.age = 23 return n
+merge (n:Person) where n.name = "小明" set n.age = 23 return n
+```
+
+> 条件 合并
+
+```cypher
+// 找到节点就设值
+merge (keanu:Person {name:"Keanu"}) on  match set person.found=true return person;
+// 在创建节点的时候，进行set设值
+merge (keanu:Person {name:"Keanu"}) on create set keanu.created=timestamp() return keanu;
+// 找到就设值，没找到就创建节点并设值
+merge (keanu:Person {name:"Keanu"}) on create set keanu.created=timestamp() on match set keanu.lastSeen=timestamp() return keanu;
+```
+
+> 合并 关系
+
+```cypher
+// 一般先match 节点，再进行merge/create
+match (charlie:Person {name:"Charlie"}),(wall:Movie {title:"Wall"})
+merge (charlie)-[r:ACTED_AT]->(wall)  return r;
+// 合并非直接关系(在创建关系的时候必须有方向，merge 创建关系时，默认的方式是前者指向后者)
+MATCH (charlie:Person { name:'Charlie Sheen' }),(oliver:Person { name:'Oliver Stone' }) 
+MERGE (charlie)-[r:KNOWS]-(oliver) RETURN r 
+```
+
+> 约束
+
+```cypher
+CREATE CONSTRAINT ON (n:Person) ASSERT n.name IS UNIQUE; 
+CREATE CONSTRAINT ON (n:Person) ASSERT n.role IS UNIQUE;
+MERGE (laurence:Person { name: 'Laurence Fishburne' }) RETURN laurence ；
+```
+
+## 四、删(delete)
+
+> 删和查有点类似，只不过将对应的return换成delete即可,
+>
+> 需要注意的是，在neo4j中，如果有关系没有删除，节点是不允许删除的
+
+```cypher
+// 删除节点
+MATCH (n:Student) where n.name="小明" DELETE n;
+// 删除关系
+MATCH (a:Studeng)-[r:love]-(b:Studeng) where a.name="小明" and b.name="小红" DELETE r
+// 删除 关系和节点
+MATCH (a:Studeng)-[r:love]-(b:Studeng) where a.name="小明" and b.name="小红" DELETE r，a, b
+```
+
+## 五、其他特殊关键字与函数
+
+当前用得不多，待后面继续更新。
