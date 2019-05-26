@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="初心不忘">
 <meta property="og:description" content="neo4j操作语言，cypher常用操作笔记">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-26T15:19:19.343Z">
+<meta property="og:updated_time" content="2019-05-25T14:06:09.633Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="cypher学习笔记">
 <meta name="twitter:description" content="neo4j操作语言，cypher常用操作笔记">
@@ -405,6 +405,11 @@
 <p>neo4j操作语言，cypher常用操作笔记</p>
 </blockquote>
 <a id="more"></a>
+<h2 id="参考博文："><a href="#参考博文：" class="headerlink" title="参考博文："></a>参考博文：</h2><blockquote>
+<p><a href="https://blog.csdn.net/weixin_39012047/article/details/82348881" target="_blank" rel="noopener">https://blog.csdn.net/weixin_39012047/article/details/82348881</a></p>
+<p><a href="https://blog.csdn.net/qq_32662595/article/details/79876345" target="_blank" rel="noopener">https://blog.csdn.net/qq_32662595/article/details/79876345</a></p>
+<p><a href="https://www.cnblogs.com/shangbingbing/p/5052964.html" target="_blank" rel="noopener">https://www.cnblogs.com/shangbingbing/p/5052964.html</a></p>
+</blockquote>
 <h2 id="一、查-match"><a href="#一、查-match" class="headerlink" title="一、查(match)"></a>一、查(match)</h2><h3 id="查询节点"><a href="#查询节点" class="headerlink" title="查询节点"></a>查询节点</h3><blockquote>
 <p>cypher 在很多方面比较相似，如order by、asc/desc、limit、distinct</p>
 </blockquote>
@@ -479,18 +484,50 @@
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">match (a:Person),(b:Person),p=(a)-[r:has_father]-&gt;(b)</span><br><span class="line">where a.name = &quot;son&quot; and b.name = &quot;father&quot;</span><br><span class="line">return p</span><br></pre></td></tr></table></figure>
 <h3 id="模糊查询"><a href="#模糊查询" class="headerlink" title="模糊查询"></a>模糊查询</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">match (n:N)</span><br><span class="line">where n.attr =~ &apos;.*a1.*|.*a2.*&apos; // 尽量不要分成两个or</span><br><span class="line">return n</span><br></pre></td></tr></table></figure>
-<h2 id="二、更新（update）"><a href="#二、更新（update）" class="headerlink" title="二、更新（update）"></a>二、更新（update）</h2><blockquote>
+<h2 id="二、更新（set-remove）"><a href="#二、更新（set-remove）" class="headerlink" title="二、更新（set/remove）"></a>二、更新（set/remove）</h2><blockquote>
 <p>cypher更新与mysql类似，都需要先定位需要修改的节点或者关系位置</p>
 <p>不同的是，cypher中，如果对已有属性进行set时为更新该属性的值，如果没有该属性，则会新增该属性并设值</p>
 <p>在mysql中如果没有对应字段，则会报错。</p>
 </blockquote>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">match (a:Person),(b:Person),p=(a)-[r:has_father]-&gt;(b)</span><br><span class="line">where a.name = &quot;son&quot; and b.name = &quot;father&quot;</span><br><span class="line">set r.new_type = `has_son` //如果已有属性new_type则更新值，如果没有，则新增该属性并设值</span><br><span class="line">return p</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">match (n:Person&#123;name:&quot;Jane&quot;, age:19&#125;) </span><br><span class="line">set n.nickName = &quot;J&quot; //如果已有属性 nickName 则更新值，如果没有，则新增该属性并设值</span><br><span class="line">return n</span><br></pre></td></tr></table></figure>
-<h2 id="参考博文："><a href="#参考博文：" class="headerlink" title="参考博文："></a>参考博文：</h2><blockquote>
-<p><a href="https://blog.csdn.net/weixin_39012047/article/details/82348881" target="_blank" rel="noopener">https://blog.csdn.net/weixin_39012047/article/details/82348881</a></p>
-<p><a href="https://blog.csdn.net/qq_32662595/article/details/79876345" target="_blank" rel="noopener">https://blog.csdn.net/qq_32662595/article/details/79876345</a></p>
-<p><a href="https://www.cnblogs.com/shangbingbing/p/5052964.html" target="_blank" rel="noopener">https://www.cnblogs.com/shangbingbing/p/5052964.html</a></p>
+<h3 id="set"><a href="#set" class="headerlink" title="set"></a>set</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 使用 键值对 添加属性</span><br><span class="line">merge (n:Student&#123;name:&quot;小明&quot;&#125;) SET n += &#123; hungry: TRUE , position: &apos;outside the classroom&apos; &#125; return n</span><br><span class="line">// 使用set 设置多个属性</span><br><span class="line">match(n:Student) where n.name=&quot;小明&quot; set n.hungry=&quot;True&quot;, n.position=&quot;outside the classroom&quot; return n</span><br><span class="line">// 给节点添加标签</span><br><span class="line">MATCH (n &#123; name: &apos;Stefan&apos; &#125;) SET n :German RETURN n</span><br><span class="line">MATCH (n &#123; name: &apos;Emil&apos; &#125;) SET n :Swedish:Bossman RETURN n</span><br></pre></td></tr></table></figure>
+<h3 id="remove"><a href="#remove" class="headerlink" title="remove"></a>remove</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">// 删除属性</span><br><span class="line">match (n:Student) where n.name=&quot;小明&quot; REMOVE n.age return n</span><br><span class="line">// 删除节点的标签,其写法与set的设置标签一样</span><br><span class="line">match (n:Student:Person:LeagueMember) where n.name=&quot;小明&quot; REMOVE n:Student:LeagueMember return n</span><br></pre></td></tr></table></figure>
+<h2 id="三、增（create、merge）"><a href="#三、增（create、merge）" class="headerlink" title="三、增（create、merge）"></a>三、增（create、merge）</h2><blockquote>
+<p>不同于mysql，在neo4j中，即使数据库中已有数据完全一致的节点，使用create依旧会创建新节点，原因在于neo4j中的每一个节点都有一个独一无二的id，使用id(n)可以获得其id。因而也就有了merge，merge会先检查是否已存在满足条件的节点，然后再进行操作。</p>
 </blockquote>
+<h3 id="create"><a href="#create" class="headerlink" title="create"></a>create</h3><blockquote>
+<p>创建节点</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">create (n:Person:Student) set n.name = &quot;小明&quot; return n //创建带多个标签的节点，小明既是人，也是学生</span><br><span class="line"> create (n:Person &#123;name:&quot;weiw&quot;,age:23&#125;) return n </span><br><span class="line">create (n:Person) set n.name = &quot;weiw&quot;, n.age =23 return n   //创建节点并对属性设值</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>创建关系</p>
+<p>值得注意的是，neo4j中，关系也可以和节点一样，设置properties</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 创建两个节点间关系</span><br><span class="line">match (a:Person),(b:Person) where a.name=&quot;zhangs&quot; and b.name=&quot;lisi&quot;  create (a)-[r:RELTYPE]-&gt;(b) return r</span><br><span class="line">// 创建关系，并对关系设值</span><br><span class="line">match (a:Person),(b:Person) where a.name=&quot;zhangs&quot; and b.name=&quot;lisi&quot; </span><br><span class="line">create (a)-[r:RELTYPE &#123;name:a.name +&quot;&lt;-&gt;&quot; + b.name&#125;]-&gt;(b) return r</span><br><span class="line">// 设置多个节点间的关系,最好通过match来定位节点</span><br><span class="line">create p=(an &#123;name:&quot;an&quot;&#125;)-[:WORKS_AT]-&gt;(neo)&lt;-[:WORKS_AT]-(mach &#123;name:&quot;mach&quot;&#125;) return p;</span><br></pre></td></tr></table></figure>
+<h3 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h3><blockquote>
+<p>和create不同的是，对不存在的节点进行创建，存在的直接返回。</p>
+<p>合并 节点</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">merge (n:Person&#123;name:&quot;小明&quot;&#125;) set n.age = 23 return n</span><br><span class="line">merge (n:Person) where n.name = &quot;小明&quot; set n.age = 23 return n</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>条件 合并</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 找到节点就设值</span><br><span class="line">merge (keanu:Person &#123;name:&quot;Keanu&quot;&#125;) on  match set person.found=true return person;</span><br><span class="line">// 在创建节点的时候，进行set设值</span><br><span class="line">merge (keanu:Person &#123;name:&quot;Keanu&quot;&#125;) on create set keanu.created=timestamp() return keanu;</span><br><span class="line">// 找到就设值，没找到就创建节点并设值</span><br><span class="line">merge (keanu:Person &#123;name:&quot;Keanu&quot;&#125;) on create set keanu.created=timestamp() on match set keanu.lastSeen=timestamp() return keanu;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>合并 关系</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 一般先match 节点，再进行merge/create</span><br><span class="line">match (charlie:Person &#123;name:&quot;Charlie&quot;&#125;),(wall:Movie &#123;title:&quot;Wall&quot;&#125;)</span><br><span class="line">merge (charlie)-[r:ACTED_AT]-&gt;(wall)  return r;</span><br><span class="line">// 合并非直接关系(在创建关系的时候必须有方向，merge 创建关系时，默认的方式是前者指向后者)</span><br><span class="line">MATCH (charlie:Person &#123; name:&apos;Charlie Sheen&apos; &#125;),(oliver:Person &#123; name:&apos;Oliver Stone&apos; &#125;) </span><br><span class="line">MERGE (charlie)-[r:KNOWS]-(oliver) RETURN r</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>约束</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">CREATE CONSTRAINT ON (n:Person) ASSERT n.name IS UNIQUE; </span><br><span class="line">CREATE CONSTRAINT ON (n:Person) ASSERT n.role IS UNIQUE;</span><br><span class="line">MERGE (laurence:Person &#123; name: &apos;Laurence Fishburne&apos; &#125;) RETURN laurence ；</span><br></pre></td></tr></table></figure>
+<h2 id="四、删-delete"><a href="#四、删-delete" class="headerlink" title="四、删(delete)"></a>四、删(delete)</h2><blockquote>
+<p>删和查有点类似，只不过将对应的return换成delete即可,</p>
+<p>需要注意的是，在neo4j中，如果有关系没有删除，节点是不允许删除的</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 删除节点</span><br><span class="line">MATCH (n:Student) where n.name=&quot;小明&quot; DELETE n;</span><br><span class="line">// 删除关系</span><br><span class="line">MATCH (a:Studeng)-[r:love]-(b:Studeng) where a.name=&quot;小明&quot; and b.name=&quot;小红&quot; DELETE r</span><br><span class="line">// 删除 关系和节点</span><br><span class="line">MATCH (a:Studeng)-[r:love]-(b:Studeng) where a.name=&quot;小明&quot; and b.name=&quot;小红&quot; DELETE r，a, b</span><br></pre></td></tr></table></figure>
+<h2 id="五、其他特殊关键字与函数"><a href="#五、其他特殊关键字与函数" class="headerlink" title="五、其他特殊关键字与函数"></a>五、其他特殊关键字与函数</h2><p>当前用得不多，待后面继续更新。</p>
 
       
     </div>
@@ -541,8 +578,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/01/22/Maven-web项目建立及配置/" rel="next" title="Maven-web项目建立及配置">
-                <i class="fa fa-chevron-left"></i> Maven-web项目建立及配置
+              <a href="/2018/07/26/CentOS 7 基本配置/" rel="next" title="CentOS 7 基本配置">
+                <i class="fa fa-chevron-left"></i> CentOS 7 基本配置
               </a>
             
           </div>
@@ -635,7 +672,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">11</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -646,7 +683,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -657,7 +694,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -706,7 +743,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、查-match"><span class="nav-text">一、查(match)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查询节点"><span class="nav-text">查询节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询关系（链）"><span class="nav-text">查询关系（链）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模糊查询"><span class="nav-text">模糊查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、更新（update）"><span class="nav-text">二、更新（update）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考博文："><span class="nav-text">参考博文：</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#参考博文："><span class="nav-text">参考博文：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、查-match"><span class="nav-text">一、查(match)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#查询节点"><span class="nav-text">查询节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查询关系（链）"><span class="nav-text">查询关系（链）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#模糊查询"><span class="nav-text">模糊查询</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、更新（set-remove）"><span class="nav-text">二、更新（set/remove）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#set"><span class="nav-text">set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#remove"><span class="nav-text">remove</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、增（create、merge）"><span class="nav-text">三、增（create、merge）</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#create"><span class="nav-text">create</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#merge"><span class="nav-text">merge</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、删-delete"><span class="nav-text">四、删(delete)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、其他特殊关键字与函数"><span class="nav-text">五、其他特殊关键字与函数</span></a></li></ol></div>
             
 
           </div>
