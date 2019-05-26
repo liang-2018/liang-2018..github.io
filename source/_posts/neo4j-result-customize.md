@@ -264,8 +264,8 @@ public class Neo4jUtil {
 
 #### 1、(Internal)StatementResult
 
-<div  style="float:left"><img src="./neo4j-result-customize/1558856486723.png"/></div>
-<div  style="float:left;margin-left:20px"><img src="./neo4j-result-customize/1558856654020.png"/></div>
+![](neo4j-result-customize/1558856486723.png)
+![](neo4j-result-customize/1558856654020.png)
 
 > keys()
 >
@@ -334,8 +334,8 @@ public class Neo4jUtil {
 
 #### 2、(Internal)Record
 
-<div  style="float:left"><img src="./neo4j-result-customize/1558860175754.png"/></div>
-<div  style="float:left;margin-left:20px"><img src="./neo4j-result-customize/1558860211942.png"/></div>
+![](neo4j-result-customize/1558860175754.png)
+![](neo4j-result-customize/1558860211942.png)
 
 > ```java
 > // InternalRecord 初始化时，就初始化了keys和values
