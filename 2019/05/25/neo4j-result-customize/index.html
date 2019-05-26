@@ -96,11 +96,11 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://pengshiliang.coding.me/2019/05/25/neo4j-result-customize/1558855632893.png">
 <meta property="og:image" content="https://pengshiliang.coding.me/2019/05/25/neo4j-result-customize/1558855741039.png">
-<meta property="og:image" content="https://pengshiliang.coding.me/2019/05/25/neo4j-result-customize/neo4j-result-customize/1558856486723.png">
-<meta property="og:image" content="https://pengshiliang.coding.me/2019/05/25/neo4j-result-customize/neo4j-result-customize/1558856654020.png">
-<meta property="og:image" content="https://pengshiliang.coding.me/2019/05/25/neo4j-result-customize/neo4j-result-customize/1558860175754.png">
-<meta property="og:image" content="https://pengshiliang.coding.me/2019/05/25/neo4j-result-customize/neo4j-result-customize/1558860211942.png">
-<meta property="og:updated_time" content="2019-05-26T14:14:30.384Z">
+<meta property="og:image" content="https://pengshiliang.coding.me/2019/05/25/neo4j-result-customize/1558856486723.png">
+<meta property="og:image" content="https://pengshiliang.coding.me/2019/05/25/neo4j-result-customize/1558856654020.png">
+<meta property="og:image" content="https://pengshiliang.coding.me/2019/05/25/neo4j-result-customize/1558860175754.png">
+<meta property="og:image" content="https://pengshiliang.coding.me/2019/05/25/neo4j-result-customize/1558860211942.png">
+<meta property="og:updated_time" content="2019-05-26T14:34:28.418Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java连接neo4j及自定义查询返回格式">
 <meta name="twitter:description" content="由于neo4j不像mysql一样有固定的字段，同时也因为neo4j不如mysql使用那么频繁，公开的工具类比较稀少。因而不得不自定义其结果返回格式。">
@@ -450,9 +450,7 @@
 <p><img src="/2019/05/25/neo4j-result-customize/1558855741039.png" alt="1558855741039"></p>
 <p>大致关系是：StatementResult中包含Record(类似mysql中的行)，Record可以获取包含的Value,Value有多种可能：Node, Relationship,Path,String.所以，具体解析，要根据cypher语句中return 部分的内容。就如写msyql查询时，要根据select后的字段来书写对应的java bean。</p>
 </blockquote>
-<h3 id="各数据类型查看及解析方式"><a href="#各数据类型查看及解析方式" class="headerlink" title="各数据类型查看及解析方式"></a>各数据类型查看及解析方式</h3><h4 id="1、-Internal-StatementResult"><a href="#1、-Internal-StatementResult" class="headerlink" title="1、(Internal)StatementResult"></a>1、(Internal)StatementResult</h4><div style="float:left"><img src="/2019/05/25/neo4j-result-customize/./neo4j-result-customize/1558856486723.png"></div>
-<div style="float:left;margin-left:20px"><img src="/2019/05/25/neo4j-result-customize/./neo4j-result-customize/1558856654020.png"></div>
-
+<h3 id="各数据类型查看及解析方式"><a href="#各数据类型查看及解析方式" class="headerlink" title="各数据类型查看及解析方式"></a>各数据类型查看及解析方式</h3><h4 id="1、-Internal-StatementResult"><a href="#1、-Internal-StatementResult" class="headerlink" title="1、(Internal)StatementResult"></a>1、(Internal)StatementResult</h4><p><img src="/2019/05/25/neo4j-result-customize/1558856486723.png" alt><br><img src="/2019/05/25/neo4j-result-customize/1558856654020.png" alt></p>
 <blockquote>
 <p>keys()</p>
 <p>返回的就是 cypher语句中return 后面的内容，勉强当做列的字段名吧。</p>
@@ -484,9 +482,7 @@
 <p>emmm，这个嘛，主要接口里面有，不得不实现下。没有用也不能用的方法。因为：</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="meta">@Override</span></span><br><span class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">()</span></span></span><br><span class="line"><span class="function">&gt; </span>&#123;</span><br><span class="line">&gt;     <span class="keyword">throw</span> <span class="keyword">new</span> ClientException( <span class="string">"Removing records from a result is not supported."</span> );</span><br><span class="line">&gt; &#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
-<h4 id="2、-Internal-Record"><a href="#2、-Internal-Record" class="headerlink" title="2、(Internal)Record"></a>2、(Internal)Record</h4><div style="float:left"><img src="/2019/05/25/neo4j-result-customize/./neo4j-result-customize/1558860175754.png"></div>
-<div style="float:left;margin-left:20px"><img src="/2019/05/25/neo4j-result-customize/./neo4j-result-customize/1558860211942.png"></div>
-
+<h4 id="2、-Internal-Record"><a href="#2、-Internal-Record" class="headerlink" title="2、(Internal)Record"></a>2、(Internal)Record</h4><p><img src="/2019/05/25/neo4j-result-customize/1558860175754.png" alt><br><img src="/2019/05/25/neo4j-result-customize/1558860211942.png" alt></p>
 <blockquote>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="comment">// InternalRecord 初始化时，就初始化了keys和values</span></span><br><span class="line">&gt; <span class="keyword">private</span> <span class="keyword">final</span> List&lt;String&gt; keys;</span><br><span class="line">&gt; <span class="keyword">private</span> <span class="keyword">final</span> Value[] values;</span><br><span class="line">&gt; <span class="function"><span class="keyword">public</span> <span class="title">InternalRecord</span><span class="params">( List&lt;String&gt; keys, Value[] values )</span></span></span><br><span class="line"><span class="function">&gt; </span>&#123;</span><br><span class="line">&gt;     <span class="keyword">this</span>.keys = keys;</span><br><span class="line">&gt;     <span class="keyword">this</span>.values = values;</span><br><span class="line">&gt; &#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
