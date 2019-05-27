@@ -496,3 +496,536 @@ class BSTIterator {
  */
 ```
 
+## [189. Rotate Array](https://leetcode-cn.com/problems/rotate-array/)
+
+> Given an array, rotate the array to the right by *k* steps, where *k* is non-negative.
+>
+> **Example 1:**
+>
+> ```
+> Input: [1,2,3,4,5,6,7] and k = 3
+> Output: [5,6,7,1,2,3,4]
+> Explanation:
+> rotate 1 steps to the right: [7,1,2,3,4,5,6]
+> rotate 2 steps to the right: [6,7,1,2,3,4,5]
+> rotate 3 steps to the right: [5,6,7,1,2,3,4]
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: [-1,-100,3,99] and k = 2
+> Output: [3,99,-1,-100]
+> Explanation: 
+> rotate 1 steps to the right: [99,-1,-100,3]
+> rotate 2 steps to the right: [3,99,-1,-100]
+> ```
+>
+> **Note:**
+>
+> - Try to come up as many solutions as you can, there are at least 3 different ways to solve this problem.
+> - Could you do it in-place with O(1) extra space?
+
+```java
+class Solution {
+    public void rotate(int[] nums, int k) {
+        int length = nums.length;
+        k = k % length;
+        revert(nums, 0, length - 1);//整体翻转
+        revert(nums, 0, k - 1);//前面k个数翻转
+        revert(nums, k, length - 1);//后面length - k个数翻转
+    }
+    private void revert(int[] nums, int start, int end){
+        while(start < end){
+            int tmp = nums[start];
+            nums[start ++] = nums[end];
+            nums[end --] = tmp;
+        }
+    }
+}
+```
+
+```java
+ /**
+     * 循环交换
+     * 时间复杂度：O(n)
+     * 空间复杂度：O(1)
+     */ 
+public void rotate_3(int[] nums, int k) {
+        int n = nums.length;
+        k %= n;
+        // 第一次交换完毕后，前 k 位数字位置正确，后 n-k 位数字中最后 k 位数字顺序错误，继续交换
+        for (int start = 0; start < nums.length && k != 0; n -= k, start += k, k %= n) {
+            for (int i = 0; i < k; i++) {
+                swap(nums, start + i, nums.length - k + i);
+            }
+        }
+ }
+ /**
+     * 递归交换
+     * 时间复杂度：O(n)
+     * 空间复杂度：O(n/k)
+     */
+    public void rotate(int[] nums, int k) {
+        // 原理同上
+        recursiveSwap(nums, k, 0, nums.length);
+    }
+
+    private void recursiveSwap(int[] nums, int k, int start, int length) {
+        k %= length;
+        if (k != 0) {
+            for (int i = 0; i < k; i++) {
+                swap(nums, start + i, nums.length - k + i);
+            }
+            recursiveSwap(nums, k, start + k, length - k);
+        }
+    }
+
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
+    }
+}
+```
+
+## [187. Repeated DNA Sequences](https://leetcode-cn.com/problems/repeated-dna-sequences/)
+
+> All DNA is composed of a series of nucleotides abbreviated as A, C, G, and T, for example: "ACGAATTCCG". When studying DNA, it is sometimes useful to identify repeated sequences within the DNA.
+>
+> Write a function to find all the **10-letter-long** sequences (substrings) that occur more than once in a DNA molecule.
+>
+> **Example:**
+>
+> ```
+> Input: s = "AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"
+> 
+> Output: ["AAAAACCCCC", "CCCCCAAAAA"]
+> ```
+
+```java
+class Solution {
+    public List<String> findRepeatedDnaSequences(String s) {
+       Set<String> set = new HashSet<>();
+        Set<String> help = new HashSet<>();
+        for(int i = 0; i <= s.length()-10; i++){
+            String cur = s.substring(i, i+10);
+            if(!set.add(cur)) help.add(cur);
+        }
+        return new ArrayList<String>(help);
+    }
+}
+```
+
+## [190. Reverse Bits](https://leetcode-cn.com/problems/reverse-bits/)
+
+> Reverse bits of a given 32 bits unsigned integer.
+>
+>  
+>
+> **Example 1:**
+>
+> ```
+> Input: 00000010100101000001111010011100
+> Output: 00111001011110000010100101000000
+> Explanation: The input binary string 00000010100101000001111010011100 represents the unsigned integer 43261596, so return 964176192 which its binary representation is 00111001011110000010100101000000.
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: 11111111111111111111111111111101
+> Output: 10111111111111111111111111111111
+> Explanation: The input binary string 11111111111111111111111111111101 represents the unsigned integer 4294967293, so return 3221225471 which its binary representation is 10101111110010110010011101101001.
+> ```
+>
+>  
+>
+> **Note:**
+>
+> - Note that in some languages such as Java, there is no unsigned integer type. In this case, both input and output will be given as signed integer type and should not affect your implementation, as the internal binary representation of the integer is the same whether it is signed or unsigned.
+> - In Java, the compiler represents the signed integers using [2's complement notation](https://en.wikipedia.org/wiki/Two%27s_complement). Therefore, in **Example 2** above the input represents the signed integer `-3` and the output represents the signed integer `-1073741825`.
+
+```java
+public class Solution {
+    // you need treat n as an unsigned value
+    public int reverseBits(int n) {
+        int res = 0;
+        for(int i = 0; i < 32; i++){
+            res = (res << 1) | (n & 0x01);
+            //res = (res << 1) ^ (n & 0x01);
+            n = n >> 1;
+        }
+        return res;
+    }
+}
+```
+
+```java
+public class Solution {
+    // you need treat n as an unsigned value
+    public int reverseBits(int n) {
+        int a=0;
+        for(int i=0;i<=31;i++){
+            a=a+((1&(n>>i))<<(31-i));
+        }
+        return a;
+    }
+}
+```
+
+## [191. Number of 1 Bits](https://leetcode-cn.com/problems/number-of-1-bits/)
+
+> Write a function that takes an unsigned integer and return the number of '1' bits it has (also known as the [Hamming weight](http://en.wikipedia.org/wiki/Hamming_weight)).
+>
+>  
+>
+> **Example 1:**
+>
+> ```
+> Input: 00000000000000000000000000001011
+> Output: 3
+> Explanation: The input binary string 00000000000000000000000000001011 has a total of three '1' bits.
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: 00000000000000000000000010000000
+> Output: 1
+> Explanation: The input binary string 00000000000000000000000010000000 has a total of one '1' bit.
+> ```
+>
+> **Example 3:**
+>
+> ```
+> Input: 11111111111111111111111111111101
+> Output: 31
+> Explanation: The input binary string 11111111111111111111111111111101 has a total of thirty one '1' bits.
+> ```
+>
+>  
+>
+> **Note:**
+>
+> - Note that in some languages such as Java, there is no unsigned integer type. In this case, the input will be given as signed integer type and should not affect your implementation, as the internal binary representation of the integer is the same whether it is signed or unsigned.
+> - In Java, the compiler represents the signed integers using [2's complement notation](https://en.wikipedia.org/wiki/Two%27s_complement). Therefore, in **Example 3** above the input represents the signed integer `-3`.
+
+```java
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        int count = 0;
+    	while (n != 0) {
+    		count++;
+    		n &= (n - 1);// n&(n-1)时，正好只有去除最后一个1，当所有的1都去除后，就是0了
+    	}
+    	
+    	return count;
+    }
+}
+```
+
+```java
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        int count = 0;
+        while(n != 0){
+            count += (n & 0x01);
+            n = n >>> 1;
+        }
+        return count;
+    }
+}
+public class Solution {
+    // you need to treat n as an unsigned value
+    public int hammingWeight(int n) {
+        int count = 0;
+        for(int i = 0; i < 32; i++){
+            count += (n & 0x01);
+            n = n >> 1;
+        }
+        return count;
+    }
+}
+```
+
+## awk-[192. Word Frequency](https://leetcode-cn.com/problems/word-frequency/)
+
+> Write a bash script to calculate the frequency of each word in a text file `words.txt`.
+>
+> For simplicity sake, you may assume:
+>
+> - `words.txt` contains only lowercase characters and space `' '` characters.
+> - Each word must consist of lowercase characters only.
+> - Words are separated by one or more whitespace characters.
+>
+> **Example:**
+>
+> Assume that `words.txt` has the following content:
+>
+> ```
+> the day is sunny the the
+> the sunny is is
+> ```
+>
+> Your script should output the following, sorted by descending frequency:
+>
+> ```
+> the 4
+> is 3
+> sunny 2
+> day 1
+> ```
+>
+> **Note:**
+>
+> - Don't worry about handling ties, it is guaranteed that each word's frequency count is unique.
+> - Could you write it in one-line using [Unix pipes](http://tldp.org/HOWTO/Bash-Prog-Intro-HOWTO-4.html)?
+
+```java
+# Read from the file words.txt and output the word frequency list to stdout.
+cat words.txt |tr -s ' ' '\n' |sort |uniq -c |sort -r |awk '{print $2" "$1}'
+```
+
+## [198. House Robber](https://leetcode-cn.com/problems/house-robber/)
+
+> You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and **it will automatically contact the police if two adjacent houses were broken into on the same night**.
+>
+> Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight **without alerting the police**.
+>
+> **Example 1:**
+>
+> ```
+> Input: [1,2,3,1]
+> Output: 4
+> Explanation: Rob house 1 (money = 1) and then rob house 3 (money = 3).
+>              Total amount you can rob = 1 + 3 = 4.
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: [2,7,9,3,1]
+> Output: 12
+> Explanation: Rob house 1 (money = 2), rob house 3 (money = 9) and rob house 5 (money = 1).
+>              Total amount you can rob = 2 + 9 + 1 = 12.
+> ```
+
+```java
+class Solution {
+    public int rob(int[] nums) {
+        int n = nums.length;
+        if(n == 0) return 0;
+        if(n == 1) return nums[0];
+        int[] dp = new int[n];
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0],nums[1]);
+        for(int i=2;i<n;i++){
+            dp[i] = Math.max(dp[i-1],dp[i-2]+nums[i]);
+        }
+        return dp[n-1];
+    }
+}
+```
+
+```java
+class Solution {  
+   public int rob(int[] nums) {
+        memo = new int[nums.length];
+        Arrays.fill(memo, -1);
+        return tryRob(nums, 0);
+    }
+    private int tryRob(int[] nums, int index) {
+        if (index >= nums.length) {
+            return 0;
+        }
+        // 记忆化搜索可以避免重叠子问题的重复运算
+        if (memo[index] != -1) {
+            return memo[index];
+        }
+        // 下面是对状态转移方程的描述
+        int res = 0;
+        for (int i = index; i < nums.length; i++) {
+            res = Math.max(res, nums[i] + tryRob(nums, i + 2));
+        }
+        memo[index] = res;
+        return res;
+    }
+   
+}
+```
+
+## [199. Binary Tree Right Side View](https://leetcode-cn.com/problems/binary-tree-right-side-view/)
+
+> Given a binary tree, imagine yourself standing on the *right* side of it, return the values of the nodes you can see ordered from top to bottom.
+>
+> **Example:**
+>
+> ```
+> Input: [1,2,3,null,5,null,4]
+> Output: [1, 3, 4]
+> Explanation:
+> 
+>    1            <---
+>  /   \
+> 2     3         <---
+>  \     \
+>   5     4       <---
+> ```
+
+题目意思是，只能看到最右边的数字，右边的数字会遮挡遍的数字。
+
+> 最快能想到的就是用两个栈保存每层的节点，一个从左往右，一个从右往左。
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> result = new ArrayList();
+        if(null == root)return result;
+        Stack<TreeNode> stack1 = new Stack();
+        Stack<TreeNode> stack2 = new Stack();
+        stack1.push(root);
+        while(!(stack1.isEmpty() && stack2.isEmpty())){
+            TreeNode last = null;
+            if(!stack1.isEmpty()){  
+                result.add(stack1.peek().val);
+                while(!stack1.isEmpty()){
+                    last = stack1.pop();
+                    if(last.right != null) stack2.push(last.right);
+                    if(last.left != null) stack2.push(last.left);
+                }                
+            }else{
+                while(!stack2.isEmpty()){
+                    last = stack2.pop();
+                    if(last.left != null) stack1.push(last.left);
+                    if(last.right != null) stack1.push(last.right);                    
+                }
+                result.add(last.val);
+            }
+        }        
+        return result;
+    }
+}
+```
+
+> 从模型上最符合的方法，每次都优先添加右边的节点(每次下一层的节点都是偏右边的先被遍历到)，如果最右边的节点是当前深度最大的，则为能看到的点。
+
+```java
+class Solution {
+    List<Integer> list=new ArrayList<Integer>();
+    int maxdepth=0;
+    public List<Integer> rightSideView(TreeNode root) {
+        if(root==null) return list;
+        return right(root,1);
+    }
+    public  List<Integer> right(TreeNode root,int depth){
+        if(depth>maxdepth){
+            list.add(root.val);
+            maxdepth=depth;            
+        }
+        //调换位置可以改变输出顺序
+        if(root.right!=null) right(root.right,depth+1);
+        if(root.left!=null) right(root.left,depth+1);   
+        return list;
+    }
+}
+```
+
+> 这个方法其实和双栈的方法差不多。
+
+```java
+class Solution {
+    public List<Integer> rightSideView(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        while (!queue.isEmpty()) {
+            List<Integer> list = new ArrayList<>();
+            int i = queue.size();
+            for (; i > 0; i--) {
+                if (queue.peek().left != null) {
+                    queue.offer(queue.peek().left);
+                }
+                if (queue.peek().right != null) {
+                    queue.offer(queue.peek().right);
+                }
+                list.add(queue.poll().val);
+            }
+            result.add(list.get(list.size()-1));
+        }
+        return result;
+    }
+}
+```
+
+## s-[200. Number of Islands](https://leetcode-cn.com/problems/number-of-islands/)
+
+> Given a 2d grid map of `'1'`s (land) and `'0'`s (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
+>
+> **Example 1:**
+>
+> ```
+> Input:
+> 11110
+> 11010
+> 11000
+> 00000
+> 
+> Output: 1
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input:
+> 11000
+> 11000
+> 00100
+> 00011
+> 
+> Output: 3
+> ```
+
+> 遍历地图，直到遇到第一个‘1’（岛屿），以它为root开始通过DFS搜索这座岛屿的其它部分，并把他们全部转化为‘2’，同时把岛屿数量+1。之后接着遍历地图，由于我们将搜索过的岛屿转化为‘2’，因此不会再遇到‘1’。
+
+```java
+class Solution {
+    public int numIslands(char[][] grid) {
+         if(grid == null || grid.length == 0)
+            return 0;
+        int islands = 0;
+        for(int i = 0; i < grid.length; i++)
+            for(int j = 0; j < grid[0].length; j++){
+                if(grid[i][j] == '1'){
+                    islands+=1;
+                    dfs(grid,i,j);                    
+                }
+            }
+        return islands;
+    }
+    
+    private void dfs(char[][] grid, int x, int y){
+        if(x < 0 || y < 0 || x >= grid.length || y >= grid[0].length || grid[x][y] == '0' || grid[x][y] == '2') return;
+        grid[x][y] = '2';
+        dfs(grid,x+1,y);
+        dfs(grid,x-1,y);
+        dfs(grid,x,y+1);
+        dfs(grid,x,y-1);
+    }
+}
+```
+
