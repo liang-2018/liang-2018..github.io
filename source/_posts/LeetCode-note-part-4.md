@@ -972,7 +972,7 @@ class Solution {
 }
 ```
 
-## s-[200. Number of Islands](https://leetcode-cn.com/problems/number-of-islands/)
+## s-dp-[200. Number of Islands](https://leetcode-cn.com/problems/number-of-islands/)
 
 > Given a 2d grid map of `'1'`s (land) and `'0'`s (water), count the number of islands. An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
 >
@@ -1025,6 +1025,285 @@ class Solution {
         dfs(grid,x-1,y);
         dfs(grid,x,y+1);
         dfs(grid,x,y-1);
+    }
+}
+```
+
+## [201. Bitwise AND of Numbers Range](https://leetcode-cn.com/problems/bitwise-and-of-numbers-range/)
+
+> Given a range [m, n] where 0 <= m <= n <= 2147483647, return the bitwise AND of all numbers in this range, inclusive.
+>
+> **Example 1:**
+>
+> ```
+> Input: [5,7]
+> Output: 4
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: [0,1]
+> Output: 0
+> ```
+
+```java
+class Solution {
+    public int rangeBitwiseAnd(int m, int n) {
+        while(m<n){
+            n = n & (n-1);
+        }
+        return n;
+    }
+}
+class Solution {
+    public int rangeBitwiseAnd(int m, int n) {
+        if(m == n)return m;
+        int count = 0;
+        while(m != n){
+            n = n >> 1;
+            m = m >> 1;
+            count ++;
+        }
+        for(int i = 0; i < count; i++){
+            m = m << 1;
+        }
+        return m;
+    }
+}
+```
+
+## [202. Happy Number](https://leetcode-cn.com/problems/happy-number/)
+
+> Write an algorithm to determine if a number is "happy".
+>
+> A happy number is a number defined by the following process: Starting with any positive integer, replace the number by the sum of the squares of its digits, and repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1. Those numbers for which this process ends in 1 are happy numbers.
+>
+> **Example:** 
+>
+> ```
+> Input: 19
+> Output: true
+> Explanation: 
+> 12 + 92 = 82
+> 82 + 22 = 68
+> 62 + 82 = 100
+> 12 + 02 + 02 = 1
+> ```
+
+```java
+class Solution {
+    public boolean isHappy(int n) {
+        int x = n;
+        int sum = 0;
+        if(n == 1) return true;
+        while(sum != 1) {
+            sum = 0;
+            while(x != 0) {
+                int y = x % 10;
+                sum += y * y;
+                x = x / 10;
+            }
+            if(sum == n) return false;
+            if(sum == 4) return false;
+            x = sum;
+        }
+        return true;
+    }
+}
+```
+
+```java
+class Solution {
+    public boolean isHappy(int n) {
+        int slow = happy(n);
+        int fast = happy(happy(n));
+        while (fast != 1) {
+            slow = happy(slow);
+            fast = happy(happy(fast));
+            if (slow == fast) {
+                return false;
+            }
+        }
+        return true;
+    }
+    private int happy(int n) {
+        int res = 0;
+        while (n > 0) {
+            int b = n % 10;
+            n /= 10;
+            res += b * b;
+        }
+        return res;
+    }
+}
+```
+
+```java
+class Solution {
+    private Set<Integer> sumSet = new HashSet();
+    public boolean isHappy(int n) {
+        if(sumSet.contains(n))return false;
+        sumSet.add(n);
+        if( n == 1)return true;        
+        int sum = 0;
+        while(n > 0){
+            int one = n % 10;
+            sum += one * one;
+            n = n / 10;
+        }
+        return isHappy(sum);
+    }
+}
+```
+
+## [203. Remove Linked List Elements](https://leetcode-cn.com/problems/remove-linked-list-elements/)
+
+> Remove all elements from a linked list of integers that have value **val**.
+>
+> **Example:**
+>
+> ```
+> Input:  1->2->6->3->4->5->6, val = 6
+> Output: 1->2->3->4->5
+> ```
+
+```java
+/**
+ * Definition for singly-linked list.
+ * public class ListNode {
+ *     int val;
+ *     ListNode next;
+ *     ListNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        ListNode preHead = new ListNode(-1);
+        preHead.next = head;
+        ListNode prev = preHead;
+        ListNode cur = preHead;    
+        while(cur != null){
+            if(cur.val == val){
+                prev.next = cur.next;
+                cur = cur.next;
+            }else{
+                prev = cur;
+                cur = cur.next;
+            }          
+        }
+        return preHead.next;
+    }
+}
+```
+
+```java
+class Solution {
+    public ListNode removeElements(ListNode head, int val) {
+        if(head == null)return null;        
+        head.next = removeElements(head.next,val);
+        return head.val == val ? head.next : head;
+    }
+}
+```
+
+## [204. Count Primes](https://leetcode-cn.com/problems/count-primes/)
+
+> Count the number of prime numbers less than a non-negative number, **n**.
+>
+> **Example:**
+>
+> ```
+> Input: 10
+> Output: 4
+> Explanation: There are 4 prime numbers less than 10, they are 2, 3, 5, 7.
+> ```
+
+> ![img](http://upload.wikimedia.org/wikipedia/commons/b/b9/Sieve_of_Eratosthenes_animation.gif)
+>
+> **埃拉托斯特尼筛法**:从2开始遍历到根号n，先找到第一个质数2，然后将其所有的倍数全部标记出来，然后到下一个质数3，标记其所有倍数，一次类推，直到根号n，此时数组中未被标记的数字就是质数。
+
+```java
+public int countPrimes(int n) {
+   boolean[] isPrime = new boolean[n];
+   for (int i = 2; i < n; i++) {
+      isPrime[i] = true;
+   }
+   // Loop's ending condition is i * i < n instead of i < sqrt(n)
+   // to avoid repeatedly calling an expensive function sqrt().
+   for (int i = 2; i * i < n; i++) {
+      if (!isPrime[i]) continue;
+      for (int j = i * i; j < n; j += i) {
+         isPrime[j] = false;
+      }
+   }
+   int count = 0;
+   for (int i = 2; i < n; i++) {
+      if (isPrime[i]) count++;
+   }
+   return count;
+}
+```
+
+```java
+class Solution {
+    public int countPrimes(int n) {
+        boolean[] isPrime = new boolean[n];
+       int count = 0;
+        for(int i = 2; i < n; i ++){
+            if(isPrime[i]) continue;
+            count ++;
+            for(long j = (long)i * i;j < n; j += i){
+                isPrime[(int)j] = true;
+            }
+        }      
+        return count;
+    }
+}
+```
+
+## [205. Isomorphic Strings](https://leetcode-cn.com/problems/isomorphic-strings/)
+
+> Given two strings **s** and **t**, determine if they are isomorphic.
+>
+> Two strings are isomorphic if the characters in **s** can be replaced to get **t**.
+>
+> All occurrences of a character must be replaced with another character while preserving the order of characters. No two characters may map to the same character but a character may map to itself.
+>
+> **Example 1:**
+>
+> ```
+> Input: s = "egg", t = "add"
+> Output: true
+> ```
+>
+> **Example 2:**
+>
+> ```
+> Input: s = "foo", t = "bar"
+> Output: false
+> ```
+>
+> **Example 3:**
+>
+> ```
+> Input: s = "paper", t = "title"
+> Output: true
+> ```
+
+```java
+class Solution {
+    public boolean isIsomorphic(String s, String t) {
+        char[] sc = s.toCharArray();
+        char[] tc = t.toCharArray();
+        char[] map = new char[256];
+        for (int i = sc.length-1;i >= 0;i--) {
+            if (map[sc[i]] != map[tc[i]+128]) {
+                return false;
+            }
+            map[sc[i]] = map[tc[i] + 128] = sc[i];
+        }
+        return true;
     }
 }
 ```
