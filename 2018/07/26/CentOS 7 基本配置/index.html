@@ -97,7 +97,7 @@
 <meta property="og:image" content="https://pengshiliang.coding.me/2018/07/26/CentOS%207%20基本配置/1557630187530.png">
 <meta property="og:image" content="https://pengshiliang.coding.me/2018/07/26/CentOS%207%20基本配置/1557630828590.png">
 <meta property="og:image" content="https://pengshiliang.coding.me/2018/07/26/CentOS%207%20基本配置/1557648489002.png">
-<meta property="og:updated_time" content="2019-05-13T14:29:57.595Z">
+<meta property="og:updated_time" content="2019-06-03T06:44:09.947Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CentOS 7 基本配置">
 <meta name="twitter:description" content="CentOS7 从新装到常用软件、常用配置指令等的配置笔记 [TOC]">
@@ -410,7 +410,7 @@
 <p>[TOC]</p>
 </blockquote>
 <a id="more"></a>
-<h2 id="一、-安装图形界面"><a href="#一、-安装图形界面" class="headerlink" title="一、 安装图形界面"></a>一、 安装图形界面</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装 "X Window System"</span></span><br><span class="line">yum groupinstall <span class="string">"X Window System"</span> -y</span><br><span class="line"><span class="comment"># 查看支持的软件（已安装的和可安装的）</span></span><br><span class="line">yum grouplist</span><br></pre></td></tr></table></figure>
+<h2 id="一、-预备工作"><a href="#一、-预备工作" class="headerlink" title="一、 预备工作"></a>一、 预备工作</h2><h3 id="1、图形界面安装"><a href="#1、图形界面安装" class="headerlink" title="1、图形界面安装"></a>1、图形界面安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装 "X Window System"</span></span><br><span class="line">yum groupinstall <span class="string">"X Window System"</span> -y</span><br><span class="line"><span class="comment"># 查看支持的软件（已安装的和可安装的）</span></span><br><span class="line">yum grouplist</span><br></pre></td></tr></table></figure>
 <p><img src="/2018/07/26/CentOS 7 基本配置/1557630187530.png" alt="1557630187530"></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装图形界面</span></span><br><span class="line">yum groupinstall <span class="string">"GNOME Desktop"</span> <span class="string">"Graphical Administration Tools"</span> -y</span><br><span class="line"><span class="comment"># 启动图形界面</span></span><br><span class="line">startx</span><br></pre></td></tr></table></figure>
 <blockquote>
@@ -419,6 +419,8 @@
 <p>分析出错提示可以看出是在安装fwupdate-efi-12-5.e17.centosx86_64这个软件包时和系统自带的grub2-common1:2.02-0.64.e17.centos.noarch软件包有冲突。将该包更新，然后安装fwupdate-efi-12-5.e17.centosx86_64。最后重新执行“X Window System”安装。测试如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&gt; yum update grub2-commonn</span><br><span class="line">&gt; yum install fwupdate-efi -y</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
+<h3 id="2、配置阿里云yum源"><a href="#2、配置阿里云yum源" class="headerlink" title="2、配置阿里云yum源"></a>2、配置阿里云yum源</h3><p>来源：<a href="https://www.cnblogs.com/aiaiduo/p/8093898.html" target="_blank" rel="noopener">https://www.cnblogs.com/aiaiduo/p/8093898.html</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载Centos7对应的repo文件</span></span><br><span class="line">wget http://mirrors.aliyun.com/repo/Centos-7.repo</span><br><span class="line"><span class="comment"># 备份并替换系统原有的repo文件</span></span><br><span class="line">cp Centos-7.repo /etc/yum.repos.d/</span><br><span class="line"><span class="built_in">cd</span> /etc/yum.repos.d/</span><br><span class="line">mv CentOS-Base.repo CentOS-Base.repo.bak</span><br><span class="line">mv Centos-7.repo CentOS-Base.repo</span><br><span class="line"><span class="comment"># 更新yum源</span></span><br><span class="line">yum clean all</span><br><span class="line">yum makecache</span><br><span class="line">yum update</span><br></pre></td></tr></table></figure>
 <h2 id="二、相关软件安装配置"><a href="#二、相关软件安装配置" class="headerlink" title="二、相关软件安装配置"></a>二、相关软件安装配置</h2><h3 id="1、VNC-远程连接配置"><a href="#1、VNC-远程连接配置" class="headerlink" title="1、VNC 远程连接配置"></a>1、VNC 远程连接配置</h3><blockquote>
 <p>vnc安装与配置</p>
 </blockquote>
@@ -430,8 +432,17 @@
 <p>如<code>192.168.128.118:1</code> <code>192.168.128.118:5901</code> <code>192.168.128.118::5901</code>(两个冒号也可以…)</p>
 </blockquote>
 <p><img src="/2018/07/26/CentOS 7 基本配置/1557648489002.png" alt="1557648489002"></p>
-<h2 id="三、防火墙操作"><a href="#三、防火墙操作" class="headerlink" title="三、防火墙操作"></a>三、防火墙操作</h2><blockquote>
-<p>人懒，直接转载别人的 <a href="https://www.cnblogs.com/moxiaoan/p/5683743.html，侵删" target="_blank" rel="noopener">https://www.cnblogs.com/moxiaoan/p/5683743.html，侵删</a></p>
+<h3 id="2、ssh互信"><a href="#2、ssh互信" class="headerlink" title="2、ssh互信"></a>2、ssh互信</h3><blockquote>
+<p>修改配置文件</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sudo vim /etc/ssh/sshd_config</span><br><span class="line"><span class="comment">#将以下内容前的#号去掉</span></span><br><span class="line">RSAAuthentication yes</span><br><span class="line">PubkeyAuthentication yes</span><br><span class="line"><span class="comment">#重启ssh服务</span></span><br><span class="line">systemctl restart sshd</span><br><span class="line">AuthorizedKeysFile      .ssh/authorized_keys</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>传输公钥并追加到认证文件中</p>
+</blockquote>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将master的公钥复制到worker1中</span></span><br><span class="line">scp /root/.ssh/id_rsa.pub root@worker1:/root/.ssh/id_rsa.pub.master</span><br><span class="line"><span class="comment"># 登陆到worker1后执行，将master公钥追加到认证文件后</span></span><br><span class="line">cat /root/.ssh/id_rsa.pub.master &gt;&gt;/root/.ssh/authorized_keys</span><br><span class="line"><span class="comment"># 也可以使用ssh-copy-id来完成以上两步,第一次使用时，需要密码</span></span><br><span class="line">ssh-copy-id -i .ssh/id_rsa.pub root@worker1</span><br></pre></td></tr></table></figure>
+<h3 id="3、MySQL安装"><a href="#3、MySQL安装" class="headerlink" title="3、MySQL安装"></a>3、MySQL安装</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#before installation,we need to uninstall mariadb</span></span><br><span class="line">rpm -qa | grep -i mariadb</span><br><span class="line"><span class="comment"># the edition might be different</span></span><br><span class="line">rpm -e --nodeps mariadb-libs-5.5.52-1.el7.x86_64</span><br><span class="line"><span class="comment">#download the mysql</span></span><br><span class="line"> wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.23-1.el7.x86_64.rpm-bundle.tar</span><br><span class="line"><span class="comment">#mysql need the support by perl</span></span><br><span class="line">yum install perl -y</span><br><span class="line"><span class="comment"># installation</span></span><br><span class="line">rpm -ivh mysql-community-common-5.7.23-1.el7.x86_64.rpm</span><br><span class="line">rpm -ivh mysql-community-libs-5.7.23-1.el7.x86_64.rpm</span><br><span class="line">rpm -ivh mysql-community-client-5.7.23-1.el7.x86_64.rpm</span><br><span class="line">rpm install libaio</span><br><span class="line">rpm -ivh mysql-community-server-5.7.23-1.el7.x86_64.rpm</span><br><span class="line"><span class="comment">#init</span></span><br><span class="line">systemctl start mysqld.service</span><br><span class="line"><span class="comment"># query the temporary password</span></span><br><span class="line">cat /var/<span class="built_in">log</span>/mysqld.log |grep temporary</span><br><span class="line"><span class="comment"># log in </span></span><br><span class="line">mysql -u root -p </span><br><span class="line"><span class="comment"># change the password</span></span><br><span class="line"><span class="built_in">set</span> password = passsord(<span class="string">'ScuImage@502'</span>);</span><br><span class="line"><span class="comment"># allow the remote access </span></span><br><span class="line">grant all privileges on *.* to <span class="string">'root'</span> @<span class="string">'%'</span> identified by <span class="string">'ScuImage@502'</span>;</span><br><span class="line">flush privileges;</span><br><span class="line"><span class="comment">#开启3306端口</span></span><br><span class="line">firewall-cmd --zone=public --add-port=3306/tcp --permanent  </span><br><span class="line"><span class="comment">#刷新防火墙</span></span><br><span class="line">firewall-cmd --reload  </span><br><span class="line"><span class="comment">#设置开机自启动</span></span><br><span class="line">chkconfig mysqld on</span><br></pre></td></tr></table></figure>
+<h2 id="三、防火墙操作"><a href="#三、防火墙操作" class="headerlink" title="三、防火墙操作"></a>三、防火墙操作</h2><p>人懒，直接<strong>转载别人的 <a href="https://www.cnblogs.com/moxiaoan/p/5683743.html" target="_blank" rel="noopener">https://www.cnblogs.com/moxiaoan/p/5683743.html</a></strong>，侵删<br>&gt;</p>
+<blockquote>
 <ol>
 <li>firewalld的基本使用</li>
 </ol>
@@ -469,7 +480,8 @@
 <p>删除</p>
 <p>firewall-cmd —zone=public —remove-port=80/tcp —permanent</p>
 </blockquote>
-<h2 id="四、主题优化"><a href="#四、主题优化" class="headerlink" title="四、主题优化"></a>四、主题优化</h2>
+<h2 id="四、主题优化"><a href="#四、主题优化" class="headerlink" title="四、主题优化"></a>四、主题优化</h2><h2 id="五、常用其他指令"><a href="#五、常用其他指令" class="headerlink" title="五、常用其他指令"></a>五、常用其他指令</h2><h3 id="1、查看端口占用"><a href="#1、查看端口占用" class="headerlink" title="1、查看端口占用"></a>1、查看端口占用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看端口 88 端口占用情况</span></span><br><span class="line">netstat -lnp | grep 88</span><br></pre></td></tr></table></figure>
+
       
     </div>
     
@@ -613,7 +625,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">11</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -624,7 +636,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">9</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -635,7 +647,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -684,7 +696,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、-安装图形界面"><span class="nav-text">一、 安装图形界面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、相关软件安装配置"><span class="nav-text">二、相关软件安装配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、VNC-远程连接配置"><span class="nav-text">1、VNC 远程连接配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、防火墙操作"><span class="nav-text">三、防火墙操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、主题优化"><span class="nav-text">四、主题优化</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、-预备工作"><span class="nav-text">一、 预备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、图形界面安装"><span class="nav-text">1、图形界面安装</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、配置阿里云yum源"><span class="nav-text">2、配置阿里云yum源</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、相关软件安装配置"><span class="nav-text">二、相关软件安装配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、VNC-远程连接配置"><span class="nav-text">1、VNC 远程连接配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、ssh互信"><span class="nav-text">2、ssh互信</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、MySQL安装"><span class="nav-text">3、MySQL安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、防火墙操作"><span class="nav-text">三、防火墙操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、主题优化"><span class="nav-text">四、主题优化</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、常用其他指令"><span class="nav-text">五、常用其他指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、查看端口占用"><span class="nav-text">1、查看端口占用</span></a></li></ol></li></ol></div>
             
 
           </div>
