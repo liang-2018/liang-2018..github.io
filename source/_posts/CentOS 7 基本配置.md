@@ -16,7 +16,9 @@ categories:
 
 <!-- more -->
 
-## 一、 安装图形界面
+## 一、 预备工作
+
+### 1、图形界面安装
 
 ```bash
 # 安装 "X Window System"
@@ -44,6 +46,26 @@ startx
 > yum update grub2-commonn
 > yum install fwupdate-efi -y
 > ```
+
+### 2、配置阿里云yum源
+
+来源：https://www.cnblogs.com/aiaiduo/p/8093898.html
+
+```bash
+# 下载Centos7对应的repo文件
+wget http://mirrors.aliyun.com/repo/Centos-7.repo
+# 备份并替换系统原有的repo文件
+cp Centos-7.repo /etc/yum.repos.d/
+cd /etc/yum.repos.d/
+mv CentOS-Base.repo CentOS-Base.repo.bak
+mv Centos-7.repo CentOS-Base.repo
+# 更新yum源
+yum clean all
+yum makecache
+yum update
+```
+
+
 
 ## 二、相关软件安装配置
 
@@ -80,9 +102,72 @@ vncserver -kill :2
 
 ![1557648489002](CentOS 7 基本配置/1557648489002.png)
 
+### 2、ssh互信
+
+> 修改配置文件
+
+```bash
+sudo vim /etc/ssh/sshd_config
+#将以下内容前的#号去掉
+RSAAuthentication yes
+PubkeyAuthentication yes
+#重启ssh服务
+systemctl restart sshd
+AuthorizedKeysFile      .ssh/authorized_keys
+```
+
+> 传输公钥并追加到认证文件中
+
+```bash
+# 将master的公钥复制到worker1中
+scp /root/.ssh/id_rsa.pub root@worker1:/root/.ssh/id_rsa.pub.master
+# 登陆到worker1后执行，将master公钥追加到认证文件后
+cat /root/.ssh/id_rsa.pub.master >>/root/.ssh/authorized_keys
+# 也可以使用ssh-copy-id来完成以上两步,第一次使用时，需要密码
+ssh-copy-id -i .ssh/id_rsa.pub root@worker1
+```
+
+### 3、MySQL安装
+
+```bash
+#before installation,we need to uninstall mariadb
+rpm -qa | grep -i mariadb
+# the edition might be different
+rpm -e --nodeps mariadb-libs-5.5.52-1.el7.x86_64
+#download the mysql
+ wget https://cdn.mysql.com//Downloads/MySQL-5.7/mysql-5.7.23-1.el7.x86_64.rpm-bundle.tar
+#mysql need the support by perl
+yum install perl -y
+# installation
+rpm -ivh mysql-community-common-5.7.23-1.el7.x86_64.rpm
+rpm -ivh mysql-community-libs-5.7.23-1.el7.x86_64.rpm
+rpm -ivh mysql-community-client-5.7.23-1.el7.x86_64.rpm
+rpm install libaio
+rpm -ivh mysql-community-server-5.7.23-1.el7.x86_64.rpm
+#init
+systemctl start mysqld.service
+# query the temporary password
+cat /var/log/mysqld.log |grep temporary
+# log in 
+mysql -u root -p 
+# change the password
+set password = passsord('ScuImage@502');
+# allow the remote access 
+grant all privileges on *.* to 'root' @'%' identified by 'ScuImage@502';
+flush privileges;
+#开启3306端口
+firewall-cmd --zone=public --add-port=3306/tcp --permanent  
+#刷新防火墙
+firewall-cmd --reload  
+#设置开机自启动
+chkconfig mysqld on
+```
+
+
+
 ## 三、防火墙操作
 
-> 人懒，直接转载别人的 https://www.cnblogs.com/moxiaoan/p/5683743.html，侵删
+人懒，直接**转载别人的 https://www.cnblogs.com/moxiaoan/p/5683743.html**，侵删
 >
 > 1. firewalld的基本使用
 >
@@ -149,4 +234,13 @@ vncserver -kill :2
 > firewall-cmd --zone=public --remove-port=80/tcp --permanent
 
 ## 四、主题优化
+
+## 五、常用其他指令
+
+### 1、查看端口占用
+
+```bash
+# 查看端口 88 端口占用情况
+netstat -lnp | grep 88
+```
 
