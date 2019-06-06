@@ -101,9 +101,22 @@ service dockerstart
 docker version
 ```
 
+### 3、卸载
+
+```bash
+# 列出安装包
+yum list installed |grep docker
+# 删除安装包
+yum -y remove docker-XXX
+# 删除镜像、容器等
+rm -rf /var/lib/docker
+```
+
+
+
 ## 二、Docker镜像
 
-### 1、切换为阿里云镜像
+### 1、切换为阿里云镜像源
 
 进入阿里云镜像仓库库 参考链接：
 
@@ -191,12 +204,77 @@ docker image rm mysql:5.6.31 centos:latest
 docker image rm $(docker image ls -q) -f
 ```
 
+#### （4）镜像导出与导入
+
+```bash
+# 镜像导出 docker save [--help] [-o|--output[=OUTPUT]] IMAGE [IMAGE...]
+docker save centos > centos.tar
+docker save --output=centos.tar centos:latest
+# 镜像导入 docker load [--help] [-i|--input[=INPUT]] [-q|--quiet]
+docker load < centos.tar
+docker load --input centos.tar
+```
+
 ## 三、Docker容器
 
 ### 1、容器启动（run）
 
-> 参考链接：https://www.cnblogs.com/vikings-blog/p/4238062.html
+> 详细内容 参考链接：https://www.cnblogs.com/vikings-blog/p/4238062.html
 >
 > 或者 输入： docker run --help
 >
 > 调用格式：docker run [OPTIONS] IMAGE [COMMAND] [ARG...] 
+
+> 常用的参数主要有：
+>
+> + -it : 启动容器后会自动进入容器交互命令行，快捷键**Ctrl+PQ** 断开容器shell连接但是容器后台运行
+>
+> + -d : 启动容器后，不进入容器命令交互行 
+> + --name : 指定容器运行后的名字，若不指定，随机生成
+> + -p ：指定交互的端口映射, -p linux_port:docker_container_port
+> + -P ：随机分配端口，一般不这样用
+> + -v  :  挂在指定volume，用于容器与实际文件交互 -v linux_absolut_path:container_absolute_path
+> + --link ：使容器与容器能够互相通信，--link [容器名/id]:[连接名]
+> + --restart :利用重启策略自我修复容器，always在重启docker服务后，会自动重启容器(即使在重启服务前停止了该容器)，unless-stopped则不会；on-failure会在容器退出并且返回值不是0的时候重启容器。
+
+```bash
+# 以指定镜像运行容器
+docker run -d --name tomcat -p 8080:8080 tomcat:latest
+docker run -d -p 3306:3306 --name mysql selfbuild_mysql
+# 指定挂载volume
+cur_path=`pwd` # "="前后别加空格
+docker run -d -p 8080:8080 --name tomcat --link mysql:docker_mysql -v ${cur_path}/webapps:/opt/apache-tomcat-9.0.20/webapps centos_tomcat
+```
+
+说明：从其他主机访问docker部署的主机8080端口，能够得到docker centos_tomcat镜像实例容器tomcat8080端口的内容，由于项目需要访问mysql，故而需要mysql容器与tomcat容器能够通信，在tomcat中，访问mysql数据库的连接url可以为：
+
+```
+jdbc:mysql://docker_mysql:3306/database?useUnicode=true&characterEncoding=UTF-8
+```
+
+### 2、容器其他操作
+
+```bash
+# 查看所有在运行的容器
+docker container ls
+docker ps
+# 查看所有容器，已停止的容器也会显示
+docker container ls -a
+docker ps -a
+# 停止运行容器
+docker kill container_id/container_name
+docker stop container_id/container_name
+# 启动停止了的容器
+docker start container_id/container_name
+# 删除未运行的容器
+docker container rm docker stop container_id/container_name
+# 查看容器配置的细节和运行时信息
+docker container inspect docker stop container_id/container_name
+# 对运行时的容器，运行bash命令
+docker container exec docker stop container_id/container_name bash_commands
+# 后面添加 -it 会连接到容器的shell进程
+docker container exec -it docker stop container_id/container_name bash_commands
+```
+
+
+
