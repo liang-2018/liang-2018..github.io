@@ -1308,3 +1308,181 @@ class Solution {
 }
 ```
 
+## method-[207. Course Schedule](https://leetcode-cn.com/problems/course-schedule/)
+
+There are a total of n courses you have to take, labeled from 0 to n-1.
+
+Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]
+
+Given the total number of courses and a list of prerequisite pairs, is it possible for you to finish all courses?
+
+Example 1:
+```
+Input: 2, [[1,0]] 
+Output: true
+Explanation: There are a total of 2 courses to take. 
+             To take course 1 you should have finished course 0. So it is possible.
+```
+Example 2:
+```
+Input: 2, [[1,0],[0,1]]
+Output: false
+Explanation: There are a total of 2 courses to take. 
+             To take course 1 you should have finished course 0, and to take course 0 you should
+             also have finished course 1. So it is impossible.
+```
+Note:
+
+The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.
+You may assume that there are no duplicate edges in the input prerequisites.
+
+> 1、构建邻接表
+> 2、DFS遍历，三种状态，0 未遍历，1正在遍历，2已遍历，在DFS遍历过程中，如果再次遍历到处于1状态的节点说明存在环。
+
+```java
+class Solution {
+    
+    public static int[] visitStatus;
+    public static ArrayList<ArrayList<Integer>> adjList;
+    public boolean canFinish(int numCourses, int[][] prerequisites) {        
+        adjList=new ArrayList<>();
+        visitStatus=new int[numCourses];// 每个节点的状态
+        // 构建邻接表
+        for(int i=0;i<numCourses;i++)
+            adjList.add(new ArrayList<>());
+        
+        for(int[] tmp:prerequisites)
+        {
+            adjList.get(tmp[1]).add(tmp[0]);
+        }
+        
+        for(int i=0;i<numCourses;i++)
+        {
+            if(visitStatus[i]!=0)
+                continue;
+            if(!dfs(i))
+                return false;
+        }
+        return true;
+    }
+    
+    public static boolean dfs(int i)
+    {
+        visitStatus[i]=1; // 遍历中
+        for(int j=0;j<adjList.get(i).size();j++)
+        {
+            int m=adjList.get(i).get(j);
+            if(visitStatus[m]==2)
+                continue;
+            if(visitStatus[m]==1)// 说明有环
+                return false;
+            if(!dfs(m))// 递归调用
+                return false;
+        }
+        visitStatus[i]=2; // 已遍历
+        return true;
+    }
+}
+```
+
+```java
+class Solution {
+    HashSet<Integer> set = new HashSet<Integer>();
+    boolean[][] adjMat;
+    boolean[] visited;
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        adjMat = new boolean[numCourses][numCourses];
+        visited = new boolean[numCourses];
+         /**
+          * 构建邻接矩阵
+         */
+        for(int i=0;i<prerequisites.length;i++){
+            adjMat[prerequisites[i][1]][prerequisites[i][0]] = true;
+        }
+        /**
+          * 深度优先搜索
+         */
+        for(int i=0;i<numCourses;i++){
+            if(!visited[i]){
+                set.clear();
+                if(!DFS(i))
+                    return false;
+            }
+        }
+        return true;
+    }
+    
+    private boolean DFS(int index){
+        visited[index] = true;
+        set.add(index);
+        for(int i=0;i<visited.length;i++){
+            if(adjMat[index][i]&&set.contains(i))// index 有边指向i，但是此次遍历i遍历过的点，说明有环
+                return false;
+            if(!visited[i]&&adjMat[index][i]){//i没有被遍历且index有边指向i
+                if(!DFS(i))
+                    return false;
+            }
+        }
+        set.remove(index);
+        return true;
+    }
+}
+```
+
+```java
+class Solution {
+    class Solution {
+    public boolean canFinish(int numCourses, int[][] prerequisites) {
+        EdgeNode[] edges = new EdgeNode[numCourses]; 
+        Node temp = null;
+        int topoSize = 0;
+        for(int i=0;i<numCourses;i++){
+            edges[i] = new EdgeNode();
+            edges[i].in = 0;
+            edges[i].val = i;// 节点id
+        }
+         for(int i=0;i<prerequisites.length;i++){
+            temp = edges[prerequisites[i][1]].next; // 如果没有则为null
+            Node newNode = new Node();
+            newNode.val = prerequisites[i][0];// 目标节点的id
+            edges[prerequisites[i][1]].next = newNode;// 起始节点指向 目标节点
+            newNode.next = temp;// 将边插入到原来边中
+            edges[prerequisites[i][0]].in ++;
+        }
+        Stack<EdgeNode> stack = new Stack<EdgeNode>();//存储入度为0的结点
+        for(int i=0;i<numCourses;i++){                //将入度为0的结点压入栈中
+            if(edges[i].in==0){
+                stack.push(edges[i]);
+            }
+        }
+        EdgeNode deletedNode = null;
+        while(!stack.isEmpty()){                      
+            topoSize++;
+            deletedNode = stack.pop();               //删除入读为0的结点
+            temp = deletedNode.next;
+            while(temp!=null){                       //更新其邻接点的入度
+                if(edges[temp.val].in>0){ // 大于0的点说明是没有遍历过的
+                    edges[temp.val].in --;
+                    if(edges[temp.val].in == 0)      //如果更新后的邻接结点的入度为0，将其压入栈中
+                        stack.push(edges[temp.val]);
+                }
+                temp = temp.next;
+            }
+        }
+        return topoSize == numCourses;
+        
+    }
+    class EdgeNode{
+        int in;
+        int val;
+        Node next;
+    }
+    
+    class Node{
+        int val;
+        Node next;
+    }
+}
+}
+```
+
