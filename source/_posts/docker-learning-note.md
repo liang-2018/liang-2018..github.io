@@ -278,6 +278,37 @@ docker container exec -it docker stop container_id/container_name bash_commands
 
 ## 四、应用容器化(Docker镜像构建)
 
+### 1、镜像构建常用指令
+
+> + ADD  
+>   + 将主机目录下文件拷贝到镜像，且会自动处理url和tar压缩包
+> + COPY 
+>   + 和ADD类似，区别是不会自动解压，从源路径到镜像内目标路径
+> + FROM
+>   + 基础镜像，当前新镜像基于那个镜像拓展
+> + RUN
+>   + 构建容器时要运行的bash命令
+> + EXPOSE
+>   + 创建容器后对外暴露出的端口
+> + WORKDIR
+>   + 创建容器后，终端默认登陆进入的工作目录
+> + ENV
+>   + 构建镜像过程中设置的环境变量
+> + VOLUME
+>   + 容器数据卷，用于数据保存和持久化工作
+> + CMD
+>   + 指定容器启动时要运行的命令，可以有多个，但是只有最后一个会生效，可在docker run 后通过指令进行参数替换
+> + ENTRYPOINT
+>   + 容器启动时要运行的命令，目的和CMD一样
+> + ONBUILD
+>   + 当前镜像被继承使用时，出发该语句后的内容
+> + MAINTAINER
+>   + 镜像维护者的姓名和邮箱地址
+
+### 2、tomcat mysql构建 Dockerfile
+
+
+
 ## 五、Docker Compose部署
 
 ## 六、Docker Swarm

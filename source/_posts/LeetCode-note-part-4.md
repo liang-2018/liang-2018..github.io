@@ -1486,3 +1486,94 @@ class Solution {
 }
 ```
 
+## [208. Implement Trie (Prefix Tree)](https://leetcode-cn.com/problems/implement-trie-prefix-tree/)
+
+Implement a trie with insert, search, and startsWith methods.
+
+Example:
+```java
+Trie trie = new Trie();
+
+trie.insert("apple");
+trie.search("apple");   // returns true
+trie.search("app");     // returns false
+trie.startsWith("app"); // returns true
+trie.insert("app");   
+trie.search("app");     // returns true
+```
+Note:
+
+You may assume that all inputs are consist of lowercase letters a-z.
+All inputs are guaranteed to be non-empty strings.
+
+> 前缀树，将每个单词以树的形式存储起来，只不过每个节点有27个子节点，字母为26个，多一个用于存储结束标记来判断当前word是否存在，比如 apple 存在时，appl 不一定存在，需要有一个标记，用于表示word结束。当然，这个标记也可以在内部类中额外用一个boolean变量来标记，相对来说这个更节省内存。
+
+```java
+class Trie {
+    private TrieNode root;//定义根节点
+    /** Initialize your data structure here. */
+    public Trie() {
+      root = new TrieNode();
+      root.val = ' ';//根节点为空
+    }
+    
+    /** Inserts a word into the trie. */
+    public void insert(String word) {
+      TrieNode ws = root;//root赋值给新变量
+      //遍历全部的word
+      for(int i = 0; i < word.length(); i++){
+        //获取word中的单个字符
+        char c = word.charAt(i);//获取字符
+        if(ws.children[c - 'a'] == null){//判断该字符是否存在于当前的节点的子节点中
+          ws.children[c - 'a'] = new TrieNode(c);//赋予节点对象          
+        }
+        ws = ws.children[c - 'a'];//下一个节点为ws的子节点        
+      }
+      ws.isWord =  true;
+    }
+    
+    /** Returns if the word is in the trie. */
+    public boolean search(String word) {
+      TrieNode ws = root;
+      for(int i = 0; i < word.length();i++){
+        char c = word.charAt(i);
+        if(ws.children[c - 'a'] == null){
+          return false;
+        }
+        ws = ws.children[c - 'a'];
+      
+      }  
+      return ws.isWord;
+    }
+    
+    /** Returns if there is any word in the trie that starts with the given prefix. */
+    public boolean startsWith(String prefix) {
+        TrieNode ws = root;
+      for(int i = 0; i < prefix.length();i++){
+        char c = prefix.charAt(i);
+        if(ws.children[c - 'a'] == null)
+          return false;
+         ws = ws.children[c - 'a'];
+      }
+      return true;
+    }
+}
+class TrieNode{//定义节点类
+  public char val;
+  public boolean isWord;//是否一个单词的最后的节点
+  public TrieNode[] children = new TrieNode[26];//26个小写的孩子节点
+  public TrieNode(){}
+  public TrieNode(char c){
+    isWord = false;
+    this.val = c;
+  }
+}
+/**
+ * Your Trie object will be instantiated and called as such:
+ * Trie obj = new Trie();
+ * obj.insert(word);
+ * boolean param_2 = obj.search(word);
+ * boolean param_3 = obj.startsWith(prefix);
+ */
+```
+
