@@ -1458,7 +1458,7 @@ class Solution {
         EdgeNode deletedNode = null;
         while(!stack.isEmpty()){                      
             topoSize++;
-            deletedNode = stack.pop();               //删除入读为0的结点
+            deletedNode = stack.pop();               //删除入度为0的结点
             temp = deletedNode.next;
             while(temp!=null){                       //更新其邻接点的入度
                 if(edges[temp.val].in>0){ // 大于0的点说明是没有遍历过的
@@ -1575,5 +1575,130 @@ class TrieNode{//定义节点类
  * boolean param_2 = obj.search(word);
  * boolean param_3 = obj.startsWith(prefix);
  */
+```
+
+## [209. Minimum Size Subarray Sum](https://leetcode-cn.com/problems/minimum-size-subarray-sum/)
+
+Given an array of n positive integers and a positive integer s, find the minimal length of a contiguous subarray of which the sum ≥ s. If there isn't one, return 0 instead.
+
+Example: 
+```
+Input: s = 7, nums = [2,3,1,2,4,3]
+Output: 2
+Explanation: the subarray [4,3] has the minimal length under the problem 
+```
+constraint.
+Follow up:
+If you have figured out the O(n) solution, try coding another solution of which the time complexity is O(n log n). 
+
+> 使用滑动窗口，如果和小于s，则窗口右边界右移，否则左边界右移
+
+```java
+class Solution {
+    public int minSubArrayLen(int s, int[] nums) {
+        int min = Integer.MAX_VALUE;
+        int left = 0;
+        int right = 0;
+        int sum = 0;
+        while( right < nums.length ){
+            if(sum + nums[right] < s){
+                sum = sum + nums[right];              
+                right ++;
+            }else{
+                sum = sum - nums[left];
+                if(right - left < min){
+                  	min = right - left + 1;  
+                } 
+                left ++;
+            }
+        }
+        return min == Integer.MAX_VALUE ? 0 : min;
+    }
+}
+```
+
+## [210. Course Schedule II](https://leetcode-cn.com/problems/course-schedule-ii/)
+
+There are a total of n courses you have to take, labeled from 0 to n-1.
+Some courses may have prerequisites, for example to take course 0 you have to first take course 1, which is expressed as a pair: [0,1]
+Given the total number of courses and a list of prerequisite pairs, return the ordering of courses you should take to finish all courses.
+There may be multiple correct orders, you just need to return one of them. If it is impossible to finish all courses, return an empty array.
+
+```
+Example 1:
+Input: 2, [[1,0]] 
+Output: [0,1]
+Explanation: There are a total of 2 courses to take. To take course 1 you should have finished   
+             course 0. So the correct course order is [0,1] .
+```
+```
+Example 2:
+
+Input: 4, [[1,0],[2,0],[3,1],[3,2]]
+Output: [0,1,2,3] or [0,2,1,3]
+Explanation: There are a total of 4 courses to take. To take course 3 you should have finished both     
+             courses 1 and 2. Both courses 1 and 2 should be taken after you finished course 0. 
+             So one correct course order is [0,1,2,3]. Another correct ordering is [0,2,1,3] .
+```
+Note:
+
+The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.
+You may assume that there are no duplicate edges in the input prerequisites.
+
+>  
+
+```java
+class Solution {
+        
+    public static int[] reversePost;
+    public static int idx;
+    public static int[] visitStatus;
+    public static ArrayList<ArrayList<Integer>> adjList;//邻接表
+    
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        
+        idx=numCourses-1;
+        reversePost=new int[numCourses];
+        
+        adjList=new ArrayList<>();
+        visitStatus=new int[numCourses];
+        for(int i=0;i<numCourses;i++)
+            adjList.add(new ArrayList<>());
+        
+        for(int[] tmp:prerequisites)
+        {
+            adjList.get(tmp[1]).add(tmp[0]);
+        }
+        
+        for(int i=0;i<numCourses;i++)
+        {
+            if(visitStatus[i]!=0)
+                continue;
+            if(!dfs(i))
+                return new int[0];
+        }
+        return reversePost;
+        
+    }
+    
+    public static boolean dfs(int i)
+    {
+        visitStatus[i]=1;
+        for(int j=0;j<adjList.get(i).size();j++)
+        {
+            int m=adjList.get(i).get(j);
+            if(visitStatus[m]==2)
+                continue;
+            if(visitStatus[m]==1)
+                return false;
+            if(!dfs(m))
+                return false;
+        }
+        visitStatus[i]=2;
+        reversePost[idx--]=i;
+        return true;
+    }
+    
+}
 ```
 
