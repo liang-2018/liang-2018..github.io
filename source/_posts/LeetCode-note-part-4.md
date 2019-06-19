@@ -1645,7 +1645,10 @@ Note:
 The input prerequisites is a graph represented by a list of edges, not adjacency matrices. Read more about how a graph is represented.
 You may assume that there are no duplicate edges in the input prerequisites.
 
->  
+>  邻接表保存，对应顺序的列表保存着修完改课程才能修读的课程
+>
+>  1、构建邻接表
+>  2、逐个节点dfs遍历，并从后往前保存遍历的节点，如果有环说明不可行，排序队列不存在
 
 ```java
 class Solution {
@@ -1699,6 +1702,306 @@ class Solution {
         return true;
     }
     
+}
+```
+
+>  1、构建图，每个Edge保存着需要先修完本课程才能修的课
+>  2、查找入度为0的节点，加入到栈
+>  3、栈弹出一个节点，并将该点加入到修读结果中，遍历该节点可达的全部节点tartget，并将target的入度减1，若target入度为0，加入栈
+>  4、若栈为空时，所有节点入度为0或者修读结果列表大小正好是节点总数则说明有向图中不存在环(存在该排序)
+
+```java
+class Solution {
+   
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        EdgeNode[] graph = new EdgeNode[numCourses];    
+        for(int i = 0; i < numCourses; i++){
+            graph[i] = new EdgeNode();
+            graph[i].val = i;
+            graph[i].in = 0;
+        }
+        for(int[] edge : prerequisites){
+            Node tmp = graph[edge[1]].next;
+            Node newNode = new Node();
+            newNode.val = edge[0];
+            graph[edge[1]].next = newNode;
+            newNode.next = tmp;
+            graph[edge[0]].in ++;
+        }
+        Stack<EdgeNode> stack = new Stack<>();
+        for(int i = 0; i < numCourses; i++){
+            if(graph[i].in == 0){
+                stack.push(graph[i]);
+            }
+        }
+        List<Integer> list = new ArrayList();
+        EdgeNode node2delete = null;
+        while(! stack.isEmpty()){
+            node2delete = stack.pop();
+            list.add(node2delete.val);
+            Node temp = node2delete.next;
+            while( temp != null){
+                if(graph[temp.val].in >0 ){
+                    graph[temp.val].in --;
+                    if(graph[temp.val].in == 0)stack.push(graph[temp.val]);
+                }
+                temp = temp.next;
+            }
+        }
+        if(list.size() == numCourses){
+            int[]  result = new int[numCourses];
+            for(int i = 0; i < numCourses; i++){
+                result[i] = list.get(i);
+            }
+            return result;
+        }else{
+            return new int[0];
+        }
+    }
+    class EdgeNode{
+        int in; // 入度数
+        int val;
+        Node next;
+    }
+    class Node{
+        int val;
+        Node next;
+    }
+}
+```
+
+> 原理和方法一样，只是使用List代替Node类和入度值(该方法只适用这种规律强，id连续的图)
+
+```java
+class Solution {
+    public int[] findOrder(int numCourses, int[][] prerequisites) {
+        int[] res = new int[numCourses];
+        int[] degrees = new int[numCourses];
+        List[] edges = new ArrayList[numCourses];
+        for (int i = 0; i < numCourses; ++i) {
+            edges[i] = new ArrayList<>();
+        }
+        for (int[] pre : prerequisites) {
+            ++degrees[pre[0]];
+            edges[pre[1]].add(pre[0]);
+        }
+        Queue<Integer> q = new LinkedList<>();
+        for (int i = 0; i < numCourses; ++i) {
+            if (degrees[i] == 0) {
+                q.offer(i);
+            }
+        }
+        int cnt = 0;
+        while (!q.isEmpty()) {
+            int n = q.poll();
+            res[cnt++] = n;
+            for (int i = 0; i < edges[n].size(); ++i) {
+                int nei = (int) edges[n].get(i);
+                --degrees[nei];
+                if (degrees[nei] == 0) {
+                    q.offer(nei);
+                }
+            }
+        }
+        return cnt == numCourses ? res : new int[0];
+    }
+}
+```
+
+## [211. Add and Search Word - Data structure design](https://leetcode-cn.com/problems/add-and-search-word-data-structure-design/)
+
+Design a data structure that supports the following two operations:
+
+void addWord(word)
+bool search(word)
+search(word) can search a literal word or a regular expression string containing only letters a-z or .. A . means it can represent any one letter.
+
+Example:
+```
+addWord("bad")
+addWord("dad")
+addWord("mad")
+search("pad") -> false
+search("bad") -> true
+search(".ad") -> true
+search("b..") -> true
+```
+Note:
+You may assume that all words are consist of lowercase letters a-z.
+
+> + 题外话，同样的代码，中文leetcode会超时，但是实际上这是排在前百分之九十的答案，比别人的差太多了，还每次占题的时候要求附带链接。。。。。我有点无奈 
+
+> 其实这题和208题基本差不多，唯一就是'.'的处理
+
+```java
+class WordDictionary {
+    
+    private TreeNode root;
+    /** Initialize your data structure here. */
+    public WordDictionary() {
+        root = new TreeNode('0');    
+    }
+    
+    /** Adds a word into the data structure. */
+    public void addWord(String word) {
+        if(word==null || word.length()==0){
+            return;
+        }
+        TreeNode node = root;
+        for(int i = 0; i < word.length(); i++){
+            char c = word.charAt(i);
+            int pos = c - 'a';
+            if(node.children[pos] == null){
+                node.children[pos] = new TreeNode(c);
+            }
+            node = node.children[pos];
+        }
+        node.isWord = true;
+    }
+    
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+    public boolean search(String word) {
+        if(word==null || word.length()==0){
+            return true;
+        }
+        return search(root, word, 0);
+    }
+    
+    private boolean search(TreeNode node, String word, int index){
+        if(word.length() == index){            
+            return node.isWord;            
+        }
+        if(word.charAt(index) == '.'){
+            for(int i = 0; i < 26; i++){
+                if(node.children[i] != null){
+                    if(search(node.children[i], word, index + 1)) return true;
+                }
+            }
+            return false;
+        }else{
+            char c = word.charAt(index);
+            int pos = c - 'a';
+            if(node.children[pos] != null){
+                return search(node.children[pos], word, index + 1);
+            }
+            return false;
+        }                
+    }
+    
+    class TreeNode{
+        char val;
+        boolean isWord;
+        TreeNode[] children = new TreeNode[26];
+        public TreeNode(char c){
+            isWord = false;
+            this.val = c;
+        }
+    }
+}
+
+```
+
+>   
+
+```java
+class WordDictionary {
+    
+    class Trie {
+        Trie[] tries = new Trie[26];
+        boolean isWord = false;
+        void insert(String word, int index) {
+            if(index == word.length()) isWord = true;
+            else {
+                if(tries[word.charAt(index) - 'a'] == null)tries[word.charAt(index) - 'a'] = new Trie();
+                tries[word.charAt(index) - 'a'].insert(word,index+1);
+            }
+        }
+        
+        boolean find(String word, int index) {
+            if(index== word.length()) return isWord;
+            if(word.charAt(index) == '.') {
+                for(int i = 0 ; i < 26;i++) {
+                    if(tries[i] != null && tries[i].find(word,index+1)) return true;
+                }
+                return false;
+            }else return tries[word.charAt(index) - 'a'] != null && tries[word.charAt(index) - 'a'].find(word,index+1);
+        }
+    }
+    
+    Trie root = new Trie();
+
+    /** Initialize your data structure here. */
+    public WordDictionary() {
+        
+    }
+    
+    /** Adds a word into the data structure. */
+    public void addWord(String word) {
+        root.insert(word,0);
+    }
+    
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+    public boolean search(String word) {
+        return root.find(word,0);
+    }
+}
+
+```
+
+>  
+
+```java
+class WordDictionary {
+
+    Map<Integer, List<String>> map = new HashMap<>();
+    /** Initialize your data structure here. */
+    public WordDictionary() {
+        
+    }
+    
+    /** Adds a word into the data structure. */
+    public void addWord(String word) {
+        int index =  word.length();
+        
+        if(!map.containsKey(index)){
+            List<String> list = new ArrayList<>();
+            
+            list.add(word);
+            
+            map.put(index, list);
+        }
+        else{
+            map.get(index).add(word);
+        }
+    }
+    
+    /** Returns if the word is in the data structure. A word could contain the dot character '.' to represent any one letter. */
+    public boolean search(String word) {
+        int index= word.length();
+        
+        if(!map.containsKey(index)){
+            return false;
+        }
+        
+        List<String> list = map.get(index);
+        
+        for(String s: list){
+            if(isSame(s, word)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public boolean isSame(String s, String word){
+        
+        for(int i = 0; i < s.length();i++){
+            if(word.charAt(i) != '.' &&  word.charAt(i) != s.charAt(i)){
+                return false;
+            }
+        }
+        return true;
+    }
 }
 ```
 
