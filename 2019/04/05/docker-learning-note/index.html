@@ -96,7 +96,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://pengshiliang.coding.me/2019/04/05/docker-learning-note/1559736972755.png">
 <meta property="og:image" content="https://pengshiliang.coding.me/2019/04/05/docker-learning-note/1559740258069.png">
-<meta property="og:updated_time" content="2019-06-09T08:40:06.297Z">
+<meta property="og:updated_time" content="2019-06-16T14:36:39.954Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker学习笔记">
 <meta name="twitter:description" content="当前更多是集群环境，从部署到运维相对工作量大。Docker一次构建，处处运行。 实验室相关项目最终也决定使用docker部署">
@@ -486,7 +486,59 @@
 <p>说明：从其他主机访问docker部署的主机8080端口，能够得到docker centos_tomcat镜像实例容器tomcat8080端口的内容，由于项目需要访问mysql，故而需要mysql容器与tomcat容器能够通信，在tomcat中，访问mysql数据库的连接url可以为：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">jdbc:mysql://docker_mysql:3306/database?useUnicode=true&amp;characterEncoding=UTF-8</span><br></pre></td></tr></table></figure>
 <h3 id="2、容器其他操作"><a href="#2、容器其他操作" class="headerlink" title="2、容器其他操作"></a>2、容器其他操作</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 查看所有在运行的容器</span></span><br><span class="line">docker container ls</span><br><span class="line">docker ps</span><br><span class="line"><span class="comment"># 查看所有容器，已停止的容器也会显示</span></span><br><span class="line">docker container ls -a</span><br><span class="line">docker ps -a</span><br><span class="line"><span class="comment"># 停止运行容器</span></span><br><span class="line">docker <span class="built_in">kill</span> container_id/container_name</span><br><span class="line">docker stop container_id/container_name</span><br><span class="line"><span class="comment"># 启动停止了的容器</span></span><br><span class="line">docker start container_id/container_name</span><br><span class="line"><span class="comment"># 删除未运行的容器</span></span><br><span class="line">docker container rm docker stop container_id/container_name</span><br><span class="line"><span class="comment"># 查看容器配置的细节和运行时信息</span></span><br><span class="line">docker container inspect docker stop container_id/container_name</span><br><span class="line"><span class="comment"># 对运行时的容器，运行bash命令</span></span><br><span class="line">docker container <span class="built_in">exec</span> docker stop container_id/container_name bash_commands</span><br><span class="line"><span class="comment"># 后面添加 -it 会连接到容器的shell进程</span></span><br><span class="line">docker container <span class="built_in">exec</span> -it docker stop container_id/container_name bash_commands</span><br></pre></td></tr></table></figure>
-<h2 id="四、应用容器化-Docker镜像构建"><a href="#四、应用容器化-Docker镜像构建" class="headerlink" title="四、应用容器化(Docker镜像构建)"></a>四、应用容器化(Docker镜像构建)</h2><h2 id="五、Docker-Compose部署"><a href="#五、Docker-Compose部署" class="headerlink" title="五、Docker Compose部署"></a>五、Docker Compose部署</h2><h2 id="六、Docker-Swarm"><a href="#六、Docker-Swarm" class="headerlink" title="六、Docker Swarm"></a>六、Docker Swarm</h2><h2 id="七、Docker网络"><a href="#七、Docker网络" class="headerlink" title="七、Docker网络"></a>七、Docker网络</h2><h2 id="八、Docker卷与持久化"><a href="#八、Docker卷与持久化" class="headerlink" title="八、Docker卷与持久化"></a>八、Docker卷与持久化</h2>
+<h2 id="四、应用容器化-Docker镜像构建"><a href="#四、应用容器化-Docker镜像构建" class="headerlink" title="四、应用容器化(Docker镜像构建)"></a>四、应用容器化(Docker镜像构建)</h2><h3 id="1、镜像构建常用指令"><a href="#1、镜像构建常用指令" class="headerlink" title="1、镜像构建常用指令"></a>1、镜像构建常用指令</h3><blockquote>
+<ul>
+<li>ADD  <ul>
+<li>将主机目录下文件拷贝到镜像，且会自动处理url和tar压缩包</li>
+</ul>
+</li>
+<li>COPY <ul>
+<li>和ADD类似，区别是不会自动解压，从源路径到镜像内目标路径</li>
+</ul>
+</li>
+<li>FROM<ul>
+<li>基础镜像，当前新镜像基于那个镜像拓展</li>
+</ul>
+</li>
+<li>RUN<ul>
+<li>构建容器时要运行的bash命令</li>
+</ul>
+</li>
+<li>EXPOSE<ul>
+<li>创建容器后对外暴露出的端口</li>
+</ul>
+</li>
+<li>WORKDIR<ul>
+<li>创建容器后，终端默认登陆进入的工作目录</li>
+</ul>
+</li>
+<li>ENV<ul>
+<li>构建镜像过程中设置的环境变量</li>
+</ul>
+</li>
+<li>VOLUME<ul>
+<li>容器数据卷，用于数据保存和持久化工作</li>
+</ul>
+</li>
+<li>CMD<ul>
+<li>指定容器启动时要运行的命令，可以有多个，但是只有最后一个会生效，可在docker run 后通过指令进行参数替换</li>
+</ul>
+</li>
+<li>ENTRYPOINT<ul>
+<li>容器启动时要运行的命令，目的和CMD一样</li>
+</ul>
+</li>
+<li>ONBUILD<ul>
+<li>当前镜像被继承使用时，出发该语句后的内容</li>
+</ul>
+</li>
+<li>MAINTAINER<ul>
+<li>镜像维护者的姓名和邮箱地址</li>
+</ul>
+</li>
+</ul>
+</blockquote>
+<h3 id="2、tomcat-mysql构建-Dockerfile"><a href="#2、tomcat-mysql构建-Dockerfile" class="headerlink" title="2、tomcat mysql构建 Dockerfile"></a>2、tomcat mysql构建 Dockerfile</h3><h2 id="五、Docker-Compose部署"><a href="#五、Docker-Compose部署" class="headerlink" title="五、Docker Compose部署"></a>五、Docker Compose部署</h2><h2 id="六、Docker-Swarm"><a href="#六、Docker-Swarm" class="headerlink" title="六、Docker Swarm"></a>六、Docker Swarm</h2><h2 id="七、Docker网络"><a href="#七、Docker网络" class="headerlink" title="七、Docker网络"></a>七、Docker网络</h2><h2 id="八、Docker卷与持久化"><a href="#八、Docker卷与持久化" class="headerlink" title="八、Docker卷与持久化"></a>八、Docker卷与持久化</h2>
       
     </div>
     
@@ -701,7 +753,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Docker安装"><span class="nav-text">一、Docker安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、依赖检查"><span class="nav-text">1、依赖检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、安装"><span class="nav-text">2、安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）脚本安装"><span class="nav-text">（1）脚本安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）yum指令安装"><span class="nav-text">（2）yum指令安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（3）离线安装"><span class="nav-text">（3）离线安装</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、卸载"><span class="nav-text">3、卸载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Docker镜像"><span class="nav-text">二、Docker镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、切换为阿里云镜像源"><span class="nav-text">1、切换为阿里云镜像源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、Docker状态查询"><span class="nav-text">2、Docker状态查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、镜像操作"><span class="nav-text">3、镜像操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）镜像查看"><span class="nav-text">（1）镜像查看</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）镜像查询与拉取"><span class="nav-text">（2）镜像查询与拉取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（3）镜像删除"><span class="nav-text">（3）镜像删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（4）镜像导出与导入"><span class="nav-text">（4）镜像导出与导入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Docker容器"><span class="nav-text">三、Docker容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、容器启动（run）"><span class="nav-text">1、容器启动（run）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、容器其他操作"><span class="nav-text">2、容器其他操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、应用容器化-Docker镜像构建"><span class="nav-text">四、应用容器化(Docker镜像构建)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、Docker-Compose部署"><span class="nav-text">五、Docker Compose部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、Docker-Swarm"><span class="nav-text">六、Docker Swarm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、Docker网络"><span class="nav-text">七、Docker网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八、Docker卷与持久化"><span class="nav-text">八、Docker卷与持久化</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Docker安装"><span class="nav-text">一、Docker安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、依赖检查"><span class="nav-text">1、依赖检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、安装"><span class="nav-text">2、安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）脚本安装"><span class="nav-text">（1）脚本安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）yum指令安装"><span class="nav-text">（2）yum指令安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（3）离线安装"><span class="nav-text">（3）离线安装</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、卸载"><span class="nav-text">3、卸载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Docker镜像"><span class="nav-text">二、Docker镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、切换为阿里云镜像源"><span class="nav-text">1、切换为阿里云镜像源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、Docker状态查询"><span class="nav-text">2、Docker状态查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、镜像操作"><span class="nav-text">3、镜像操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）镜像查看"><span class="nav-text">（1）镜像查看</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）镜像查询与拉取"><span class="nav-text">（2）镜像查询与拉取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（3）镜像删除"><span class="nav-text">（3）镜像删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（4）镜像导出与导入"><span class="nav-text">（4）镜像导出与导入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Docker容器"><span class="nav-text">三、Docker容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、容器启动（run）"><span class="nav-text">1、容器启动（run）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、容器其他操作"><span class="nav-text">2、容器其他操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、应用容器化-Docker镜像构建"><span class="nav-text">四、应用容器化(Docker镜像构建)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、镜像构建常用指令"><span class="nav-text">1、镜像构建常用指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、tomcat-mysql构建-Dockerfile"><span class="nav-text">2、tomcat mysql构建 Dockerfile</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、Docker-Compose部署"><span class="nav-text">五、Docker Compose部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、Docker-Swarm"><span class="nav-text">六、Docker Swarm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、Docker网络"><span class="nav-text">七、Docker网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八、Docker卷与持久化"><span class="nav-text">八、Docker卷与持久化</span></a></li></ol></div>
             
 
           </div>
