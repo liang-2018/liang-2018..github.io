@@ -267,13 +267,13 @@ docker stop container_id/container_name
 # 启动停止了的容器
 docker start container_id/container_name
 # 删除未运行的容器
-docker container rm docker stop container_id/container_name
+docker container rm container_id/container_name
 # 查看容器配置的细节和运行时信息
-docker container inspect docker stop container_id/container_name
+docker container inspect  container_id/container_name
 # 对运行时的容器，运行bash命令
-docker container exec docker stop container_id/container_name bash_commands
+docker container exec container_id/container_name bash_commands
 # 后面添加 -it 会连接到容器的shell进程
-docker container exec -it docker stop container_id/container_name bash_commands
+docker container exec -it container_id/container_name bash_commands
 ```
 
 ## 四、应用容器化(Docker镜像构建)

@@ -823,7 +823,7 @@ class Solution {
         dp[0] = nums[0];
         dp[1] = Math.max(nums[0],nums[1]);
         for(int i=2;i<n;i++){
-            dp[i] = Math.max(dp[i-1],dp[i-2]+nums[i]);
+            dp[i] = Math.max(dp[i-1],dp[i-2]+nums[i]);// 从0开始偷，偷到i为止，最大的偷取收益值
         }
         return dp[n-1];
     }
@@ -855,6 +855,86 @@ class Solution {
     }
    
 }
+```
+## [213. House Robber II](https://leetcode-cn.com/problems/house-robber-ii/)
+
+Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.
+
+Example 1:
+```
+Input: [2,3,2]
+Output: 3
+Explanation: You cannot rob house 1 (money = 2) and then rob house 3 (money = 2),
+             because they are adjacent houses.
+```
+Example 2:
+```
+Input: [1,2,3,1]
+Output: 4
+Explanation: Rob house 1 (money = 1) and then rob house 3 (money = 3).
+             Total amount you can rob = 1 + 3 = 4.
+
+```
+
+>与上一题基本一致，重点在于，抢了0不能抢n-1,抢了n-1不能抢0
+
+```java
+class Solution {
+    public int rob(int[] nums) {
+        int len = nums.length;
+        if(len == 0)return 0;
+        if(len == 1)return nums[0];
+        int[] dp = new int[len];
+        int[] dp2 = new int[len];
+        dp[0] = nums[0];
+        dp2[len - 1] = nums[len - 1];
+        dp[1] = Math.max(nums[0], nums[1]);
+        dp2[len - 2] = Math.max(nums[len - 1], nums[len - 2]);
+        for(int i = 2; i < len - 1; i ++){
+            dp[i] = Math.max(dp[i - 1], dp[i-2] + nums[i]);            
+        }
+        for(int i = len - 3; i > 0; i --){
+            dp2[i] = Math.max(dp2[i + 1], dp2[i + 2] + nums[i]);
+        }
+        return dp[len-2] > dp2[1]? dp[len-2]:dp2[1];
+    }
+}
+```
+
+## [337. House Robber III](https://leetcode-cn.com/problems/house-robber-iii/)
+
+The thief has found himself a new place for his thievery again. There is only one entrance to this area, called the "root." Besides the root, each house has one and only one parent house. After a tour, the smart thief realized that "all houses in this place forms a binary tree". It will automatically contact the police if two directly-linked houses were broken into on the same night.
+
+Determine the maximum amount of money the thief can rob tonight without alerting the police.
+
+Example 1:
+```
+Input: [3,2,3,null,3,null,1]
+
+     3
+    / \
+   2   3
+    \   \ 
+     3   1
+
+Output: 7 
+Explanation: Maximum amount of money the thief can rob = 3 + 3 + 1 = 7.
+```
+Example 2:
+```
+Input: [3,4,5,1,3,null,1]
+
+     3
+    / \
+   4   5
+  / \   \ 
+ 1   3   1
+
+Output: 9
+Explanation: Maximum amount of money the thief can rob = 4 + 5 = 9.
+```
+```java
+
 ```
 
 ## [199. Binary Tree Right Side View](https://leetcode-cn.com/problems/binary-tree-right-side-view/)
@@ -1901,7 +1981,7 @@ class WordDictionary {
 
 ```
 
->   
+>   原理上和上一方法一样,只是没用内部类,而是用的数组
 
 ```java
 class WordDictionary {
@@ -1948,7 +2028,8 @@ class WordDictionary {
 
 ```
 
->  
+>  1、添加word时，以word的长度为key，添加入map，value使用链表存储
+>  2、查找时，根据长度在map的value中遍历比较查找
 
 ```java
 class WordDictionary {
@@ -2004,4 +2085,6 @@ class WordDictionary {
     }
 }
 ```
+
+
 
