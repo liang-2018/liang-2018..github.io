@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="J2EE, Plants">
+  <meta name="keywords" content="LeetCode,Algorithm,">
 
 
 
@@ -86,18 +86,18 @@
 
 
 
-<meta name="description" content="一个喜欢养花养草的扫地僧">
-<meta name="keywords" content="养花养草，bug制造师">
-<meta property="og:type" content="website">
-<meta property="og:title" content="文章分类">
-<meta property="og:url" content="https://pengshiliang.coding.me/categories/index.html">
+<meta name="description" content="背景：网络爬虫后结构化的数据和原文数据存储在MySQL数据库中，使用Lucene进行全文检索，通过定时器每日定时更新Lucene的索引文件，但是有时候会因为莫名原因导致Lucene索引更新失败，最终查看tomcat日志才知道是MySQL连接超时。">
+<meta name="keywords" content="LeetCode,Algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="连接池丢失MySQL连接">
+<meta property="og:url" content="https://pengshiliang.coding.me/2018/08/09/MySQL_loseConnection/index.html">
 <meta property="og:site_name" content="初心不忘">
-<meta property="og:description" content="一个喜欢养花养草的扫地僧">
+<meta property="og:description" content="背景：网络爬虫后结构化的数据和原文数据存储在MySQL数据库中，使用Lucene进行全文检索，通过定时器每日定时更新Lucene的索引文件，但是有时候会因为莫名原因导致Lucene索引更新失败，最终查看tomcat日志才知道是MySQL连接超时。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-04-08T02:40:33.975Z">
+<meta property="og:updated_time" content="2019-06-29T08:56:46.705Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="文章分类">
-<meta name="twitter:description" content="一个喜欢养花养草的扫地僧">
+<meta name="twitter:title" content="连接池丢失MySQL连接">
+<meta name="twitter:description" content="背景：网络爬虫后结构化的数据和原文数据存储在MySQL数据库中，使用Lucene进行全文检索，通过定时器每日定时更新Lucene的索引文件，但是有时候会因为莫名原因导致Lucene索引更新失败，最终查看tomcat日志才知道是MySQL连接超时。">
 
 
 
@@ -127,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="https://pengshiliang.coding.me/categories/">
+  <link rel="canonical" href="https://pengshiliang.coding.me/2018/08/09/MySQL_loseConnection/">
 
 
 
 
 
-  <title>文章分类 | 初心不忘</title>
+  <title>连接池丢失MySQL连接 | 初心不忘</title>
   
 
 
@@ -290,40 +290,217 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://pengshiliang.coding.me/2018/08/09/MySQL_loseConnection/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/head-32x32.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="初心不忘">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">文章分类</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="category-all-page">
-            <div class="category-all-title">
-                目前共计 10 个分类
-            </div>
-            <div class="category-all">
-              <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/J2EE/">J2EE</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/LeetCode/">LeetCode</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/Linux/">Linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/MySQL/">MySQL</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/database/">database</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/node-js/">node.js</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tools/">tools</a><span class="category-list-count">2</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tools/J2EE/">J2EE</a><span class="category-list-count">1</span></li></ul></li></ul>
-            </div>
-          </div>
+          <h1 class="post-title" itemprop="name headline">连接池丢失MySQL连接</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-09T11:44:39+08:00">
+                2018-08-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/MySQL/" itemprop="url" rel="index">
+                    <span itemprop="name">MySQL</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/08/09/MySQL_loseConnection/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/08/09/MySQL_loseConnection/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <blockquote>
+<p>背景：网络爬虫后结构化的数据和原文数据存储在MySQL数据库中，使用Lucene进行全文检索，通过定时器每日定时更新Lucene的索引文件，但是<strong>有时候</strong>会因为莫名原因导致Lucene索引更新失败，最终查看tomcat日志才知道是MySQL连接超时。</p>
+</blockquote>
+<a id="more"></a>
+<blockquote>
+<p>连接池中的链接空闲超过一定时间后，再次访问数据库时候会出现连接超时异常。</p>
+<p>mysql wait_timeout默认值为28800秒，即为8小时。即在默认情况下，Mysql在经过8小时（28800秒）不使用后会自动关闭已打开的连接。</p>
+</blockquote>
+<p>抛出异常内容：</p>
+<blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; The last packet successfully received from the server was **** milliseconds ago.  </span><br><span class="line">&gt; The last packet sent successfully to the server was **** milliseconds ago.; </span><br><span class="line">&gt; nested exception is com.mysql.jdbc.exceptions.</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>解决方案：</p>
+<p>参考链接：<a href="https://blog.csdn.net/frankcheng5143/article/details/50589264" target="_blank" rel="noopener">https://blog.csdn.net/frankcheng5143/article/details/50589264</a></p>
+<blockquote>
+<p>本人使用的c3p0连接池，最后在c3p0.properties文件中，添加了如下条件</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">c3p0.miniPoolSize=10</span><br><span class="line">c3p0.maxPoolSize=200</span><br><span class="line">c3p0.initialPoolSize=20</span><br><span class="line">c3p0.maxIdleTime=25000</span><br><span class="line">c3p0.acquireIncrement=1</span><br><span class="line">c3p0.acquireRetryAttempts=30</span><br><span class="line">c3p0.acquireRetryDelay=1000</span><br><span class="line"># 一步检测链接的有效性</span><br><span class="line">c3p0.testConnectionOnCheckin=true</span><br><span class="line"># 用来检测链接是否有效的空表，注意，必须是空表</span><br><span class="line">c3p0.automaticTestTable=c3p0test</span><br><span class="line"># 每隔多少秒检测链接的有效性，比 8*3600 小就行，单位是秒</span><br><span class="line">c3p0.idleConnectionTestPeriod =18000</span><br><span class="line">c3p0.checkoutTimeout=3000</span><br></pre></td></tr></table></figure>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Liang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://pengshiliang.coding.me/2018/08/09/MySQL_loseConnection/" title="连接池丢失MySQL连接">https://pengshiliang.coding.me/2018/08/09/MySQL_loseConnection/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/LeetCode/" rel="tag"># LeetCode</a>
+          
+            <a href="/tags/Algorithm/" rel="tag"># Algorithm</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/07/26/cypher学习笔记/" rel="next" title="cypher学习笔记">
+                <i class="fa fa-chevron-left"></i> cypher学习笔记
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/10/09/LeetCode-note-part-1/" rel="prev" title="LeetCode note - part 1">
+                LeetCode note - part 1 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -332,6 +509,13 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -1014,6 +1198,26 @@
   
 
   
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
   
 
 

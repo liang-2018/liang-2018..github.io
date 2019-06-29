@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://pengshiliang.coding.me/2019/04/05/docker-learning-note/</loc>
-    <lastmod>2019-06-27</lastmod>
+    <loc>https://pengshiliang.coding.me/2018/08/09/MySQL_loseConnection/</loc>
+    <lastmod>2019-06-29</lastmod>
   </url>  <url>
     <loc>https://pengshiliang.coding.me/2019/05/03/LeetCode-note-part-4/</loc>
+    <lastmod>2019-06-27</lastmod>
+  </url>  <url>
+    <loc>https://pengshiliang.coding.me/2019/04/05/docker-learning-note/</loc>
     <lastmod>2019-06-27</lastmod>
   </url>  <url>
     <loc>https://pengshiliang.coding.me/2018/07/26/CentOS%207%20%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE/</loc>
