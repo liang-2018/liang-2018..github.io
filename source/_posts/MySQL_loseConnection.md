@@ -4,8 +4,8 @@ toc: true
 mathjax: true
 date: 2018-8-09 11:44:39
 tags: 
-- LeetCode
-- Algorithm
+- MySQl
+- c3p0
 categories: MySQL
 ---
 
