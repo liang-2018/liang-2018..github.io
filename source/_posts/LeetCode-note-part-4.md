@@ -2086,5 +2086,166 @@ class WordDictionary {
 }
 ```
 
+## [215. Kth Largest Element in an Array](https://leetcode-cn.com/problems/kth-largest-element-in-an-array/)
 
+>  Find the kth largest element in an unsorted array. Note that it is the kth largest element in the sorted order, not the kth distinct element.
+
+Example 1:
+```
+Input: [3,2,1,5,6,4] and k = 2
+Output: 5
+```
+Example 2:
+```
+Input: [3,2,3,1,2,4,5,5,6] and k = 4
+Output: 4
+```
+>  Note: 
+> You may assume k is always valid, 1 ≤ k ≤ array's length.
+
+> 方法一，Java桶排序，O(n),统计最小到最大数值出现的次数，再从大到小计算查找
+
+```java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        int curMax = Integer.MIN_VALUE;
+        int curMin = Integer.MAX_VALUE;
+        List<Integer> list = new ArrayList<>();
+        for(int i = 0; i < nums.length; i ++){
+            int curNum = nums[i];
+            if(curNum > curMax)curMax = curNum;
+            if(curNum < curMin)curMin = curNum;
+        }
+        int len = curMax - curMin;
+        int[] array = new int[len + 1];
+        for(int num :nums){
+            array[num - curMin] ++;
+        }
+        for(int i = len; i >=0; i --){
+            if(array[i] > 0){
+                k -= array[i];
+            }
+            if(k <= 0 )
+                return i + curMin;
+        }
+        return 0;
+    }
+}
+```
+
+> 方法二：变种快排，只排序数值大的部分，然后定位第K大的数
+>
+> 分两种情况，需查找数在左边和右边,从而进行有选择排序
+
+```java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        if(nums == null || k > nums.length)return Integer.MAX_VALUE;
+        // 为什么要分这两种情况不同排序，还在想，
+        // 因为？判定使用的是start和k比较的原因，减少start判定次数，即回调次数，如果使用end来判定个，if判断正好相反？
+        if(k>=nums.length/2)
+        {
+            //当数组长度大于等于k的两倍时，左边小，右边大进行排序
+            quickSort(nums,0,nums.length-1,nums[0],nums.length-k+1,0);
+            return nums[nums.length-k];
+        }
+        else
+        {   
+            // 左边大右边小排序，最终正好k-1位置左边更大，右边更小，
+            quickSort(nums,0,nums.length-1,nums[0],k,1);
+            return nums[k-1];
+        }
+    }
+
+    public void quickSort(int[] topk, int start,int end,int std,int k,int flag)
+    {
+        int tmp = 0;
+        int startrc = start;
+        int endrc = end;
+        if(flag == 1)
+        {
+            while(start < end)
+            {
+                while(start < end && topk[start] >= std){
+                    start++;
+                }
+                while(start < end && topk[end] < std){
+                    end--;
+                }
+                if(start < end)
+                {
+                    tmp = topk[start];
+                    topk[start] = topk[end];
+                    topk[end] = tmp;
+                }
+            }
+            if(topk[start] < std)//避免在end>=start时值不对的情况
+            {
+                start--;
+            }
+        }
+        else
+        {
+            while(start < end)
+            {
+                while(start < end && topk[start] <= std){
+                    start++;
+                }
+                while(start < end && topk[end] > std){
+                    end--;
+                }
+                if(start < end)
+                {
+                    tmp = topk[start];
+                    topk[start] = topk[end];
+                    topk[end] = tmp;
+                }
+            }
+            if(topk[start] > std)//避免在end>=start时值不对的情况
+            {
+                start--;
+            }
+        }
+        tmp = topk[start];
+        topk[start] = topk[startrc];
+        topk[startrc] = tmp;
+        if(start+1 == k)
+        {
+            return;
+        }
+        else if(start+1 > k)
+        {
+            quickSort(topk,startrc,start-1,topk[startrc],k,flag);//左边
+        }
+        else
+        {
+            quickSort(topk,start+1,endrc,topk[start+1],k,flag);//右边
+        }
+    }
+}
+```
+
+> 方法三、优先队列,利用优先队列排序的效果，控制队列长度为k个，在大于等于k时，每次加入更大的数时，去除最小数，如此最终的最小数即为第K个最大数
+
+```java
+class Solution {
+    public int findKthLargest(int[] nums, int k) {
+        PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+        if(nums.length<k){
+            return 0;
+        }
+        for(int i=0;i<k;i++){
+            pq.add(nums[i]);
+        }
+        
+        for(int i=k;i<nums.length;i++){
+            if(nums[i]>pq.peek()){
+                pq.poll();
+                pq.add(nums[i]);
+            }
+        }
+        return pq.peek();
+    }
+}
+```
 
