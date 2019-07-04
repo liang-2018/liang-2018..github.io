@@ -2249,3 +2249,305 @@ class Solution {
 }
 ```
 
+## [216. Combination Sum III](https://leetcode-cn.com/problems/combination-sum-iii/)
+
+Find all possible combinations of k numbers that add up to a number n, given that only numbers from 1 to 9 can be used and each combination should be a unique set of numbers.
+
+Note:
+
+All numbers will be positive integers.
+The solution set must not contain duplicate combinations.
+Example 1:
+```
+Input: k = 3, n = 7
+Output: [[1,2,4]]
+```
+```
+Example 2:
+
+Input: k = 3, n = 9
+Output: [[1,2,6], [1,3,5], [2,3,4]]
+```
+
+>  回溯法
+
+```java
+class Solution {
+    private  List<List<Integer>> result;
+    public List<List<Integer>> combinationSum3(int k, int n) {
+        result = new ArrayList();
+        List<Integer> list = new ArrayList();
+        // 排列组合，判断总和，若大于则后续不需要，
+        combinationSum3(k, n, 0, list);
+        return result;
+    }
+    public void combinationSum3(int k, int sum, int start, List<Integer> list){
+         if(sum < 0 || k < 0)return ;
+        if(sum == 0 && k == 0){
+            result.add(new ArrayList(list));
+        }       
+
+        for(int i = start + 1; i <= 9; i ++){
+                if(i > sum)break;
+                list.add(i);
+                combinationSum3(k-1, sum - i, i, list);
+                list.remove(list.size()-1);//尽量通过位置定位，而不是元素值（强转为Object）
+        }
+    }
+}
+```
+
+## [217. Contains Duplicate](https://leetcode-cn.com/problems/contains-duplicate/)
+
+> Given an array of integers, find if the array contains any duplicates.
+>
+> Your function should return true if any value appears at least twice in the array, and it should return false if every element is distinct.
+
+Example 1:
+```
+Input: [1,2,3,1]
+Output: true
+```
+Example 2:
+```
+Input: [1,2,3,4]
+Output: false
+```
+Example 3:
+```
+Input: [1,1,1,3,3,4,3,2,4,2]
+Output: true
+```
+
+> 利用Java桶排序，O(n)
+
+```java
+class Solution {
+    public boolean containsDuplicate(int[] nums) {
+        if(nums.length == 0 || nums.length == 1)return false;
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        for(int num : nums){
+            if(num < min)min = num;
+            if(num > max)max = num;
+        }
+        int[]  values = new int[max - min + 1];
+        for(int num : nums){
+            values[num - min] ++ ;
+        }
+        for(int value: values){
+            if(value > 1)return true;
+        }
+        return false;
+    }
+}
+```
+
+> 其他方法，排序后比较相邻数值是否相等，使用set去重，使用Map/Set，可以在遍历时判断是否已包含;也有使用堆排的。
+
+## [219. Contains Duplicate II](https://leetcode-cn.com/problems/contains-duplicate-ii/)
+
+>  Given an array of integers and an integer k, find out whether there are two distinct indices i and j in the array such that nums[i] = nums[j] and the absolute difference between i and j is at most k.
+
+Example 1:
+```
+Input: nums = [1,2,3,1], k = 3
+Output: true
+```
+Example 2:
+```
+Input: nums = [1,0,1,1], k = 1
+Output: true
+```
+Example 3:
+```
+Input: nums = [1,2,3,1,2,3], k = 2
+Output: false
+```
+
+> 利用map记录相关值当前遍历最后一次出现的位置，通过比较两次出现位置的差值是否小于k进行判断
+
+```java
+class Solution {
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        if(nums.length == 0 || nums.length == 1)return false;
+        Map<Integer, Integer> map = new HashMap();
+        for(int i = 0; i < nums.length; i ++){
+            if(map.get(nums[i]) != null){              
+                int index = (int)map.get(nums[i]);
+                if(i - index <= k){
+                    return true;    
+                }              
+            }
+              map.put(nums[i], i);
+        }       
+        return false;
+    }
+}
+```
+
+> 用数据记录最大值位置，配合索引差条件减少遍历次数
+
+```java
+class Solution {
+    public boolean containsNearbyDuplicate(int[] nums, int k) {
+        int max=0;
+        for(int i=1;i<nums.length;i++){
+            if(nums[i]>nums[max]){//如果是最大值，说明之前肯定没出现过
+                max=i;
+            }
+            else{//小于或等于最大值，可能出现过
+                for(int j=i-1;j>=i-k && j>=0;j--){
+                    if(nums[j]==nums[i]){
+                        return true;
+                    }
+                }
+            }
+        }        
+        return false;
+    }
+}
+```
+
+## [220. Contains Duplicate III](https://leetcode-cn.com/problems/contains-duplicate-iii/)
+
+> Given an array of integers, find out whether there are two distinct indices i and j in the array such that the absolute difference between nums[i] and nums[j] is at most t and the absolute difference between i and j is at most k.
+
+Example 1:
+```
+Input: nums = [1,2,3,1], k = 3, t = 0
+Output: true
+```
+
+Example 2:
+```
+Input: nums = [1,0,1,1], k = 1, t = 2
+Output: true
+```
+Example 3:
+```
+Input: nums = [1,5,9,1,5,9], k = 2, t = 3
+Output: false
+```
+
+> 暴力法+ 面向测试用例编程
+
+```java
+class Solution {
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+         if(k == 10000) return false;//评论区大把的王境泽，我试了下，确实很香
+        for(int i = 1; i < nums.length; i ++){
+            for(int j = i - 1; j >=0 && j + k >= i; j--){
+                if(Math.abs((long)nums[i] - (long)nums[j]) <= t ){
+                    return true;
+                } 
+            }
+        }
+        return false;
+    }
+}
+```
+
+> [二叉搜索树](https://leetcode-cn.com/problems/contains-duplicate-iii/solution/cun-zai-zhong-fu-yuan-su-iii-by-leetcode/)
+>
+> 如果窗口中维护的元素是有序的，只需要用二分搜索检查条件二是否是满足的就可以了。
+> 利用自平衡二叉搜索树，可以在对数时间内通过 插入 和 删除 来对滑动窗口内元素排序
+
+```java
+public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+    TreeSet<Integer> set = new TreeSet<>();
+    for (int i = 0; i < nums.length; ++i) {
+        // Find the successor of current element
+        Integer s = set.ceiling(nums[i]);//大于或者等于nums[i]的最小元素,若无，返回null
+        if (s != null && s <= nums[i] + t) return true;
+
+        // Find the predecessor of current element
+        Integer g = set.floor(nums[i]);// 小于或者等于nums[i]的最大元素，若无，返回null
+        if (g != null && nums[i] <= g + t) return true;
+
+        set.add(nums[i]);
+        if (set.size() > k) {// 保证TreeSet的容量为k
+            set.remove(nums[i - k]);
+        }
+    }
+    return false;
+}
+```
+
+> 桶排序，以k+1为桶容量，其最值差最大为k，因而如果桶中有两个元素则满足条件；每次遍历时保证桶中总数值个数，移除k个前添加的数，保证总数字量。
+
+```java
+public class Solution {
+    // Get the ID of the bucket from element value x and bucket width w
+    // In Java, `-3 / 5 = 0` and but we need `-3 / 5 = -1`.
+    private long getID(long x, long w) {
+        return x < 0 ? (x + 1) / w - 1 : x / w;
+    }
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        if (t < 0) return false;
+        Map<Long, Long> d = new HashMap<>();
+        long w = (long)t + 1;// 以 t+1为桶容量
+        for (int i = 0; i < nums.length; ++i) {
+            long m = getID(nums[i], w);
+            // check if bucket m is empty, each bucket may contain at most one element
+            if (d.containsKey(m))
+                return true;
+            // check the nei***or buckets for almost duplicate
+            if (d.containsKey(m - 1) && Math.abs(nums[i] - d.get(m - 1)) < w)
+                return true;
+            if (d.containsKey(m + 1) && Math.abs(nums[i] - d.get(m + 1)) < w)
+                return true;
+            // now bucket m is empty and no almost duplicate in nei***or buckets
+            d.put(m, (long)nums[i]);
+            if (i >= k) d.remove(getID(nums[i - k], w));// remove elment nums[i-k] to ensure the capacity k
+        }
+        return false;
+    }
+}
+```
+
+> 纯数组操作，其实无论哪种方法，实质上都是滑动窗口的不同实现。
+
+```java
+class Solution {
+    public boolean containsNearbyAlmostDuplicate(int[] nums, int k, int t) {
+        if (k <= 0) {
+        return false;
+    }
+    int len = nums.length;
+    int end = 1;
+    int start = 0;
+    while (start < len - 1) {
+        if (start != end && Math.abs((long) nums[start] - nums[end]) <= t) {
+            return true;
+        }
+        if (end - start == k || len - 1 == end) {
+            start++;
+            if (t != 0) {
+                end = start + 1;
+            }
+        } else {
+            end++;
+        }
+    }
+    return false;
+    }
+}
+```
+
+ ## [221. Maximal Square](https://leetcode-cn.com/problems/maximal-square/)
+
+Given a 2D binary matrix filled with 0's and 1's, find the largest square containing only 1's and return its area.
+
+Example:
+```
+Input: 
+
+1 0 1 0 0
+1 0 1 1 1
+1 1 1 1 1
+1 0 0 1 0
+
+Output: 4
+```
+
