@@ -2632,3 +2632,105 @@ public class Solution {
 }
 ```
 
+## [222. Count Complete Tree Nodes](https://leetcode-cn.com/problems/count-complete-tree-nodes/)
+
+Given a complete binary tree, count the number of nodes.
+
+Note:
+
+Definition of a complete binary tree from Wikipedia:
+In a complete binary tree every level, except possibly the last, is completely filled, and all nodes in the last level are as far left as possible. It can have between 1 and 2h nodes inclusive at the last level h.
+
+Example:
+```
+Input: 
+    1
+   / \
+  2   3
+ / \  /
+4  5 6
+
+Output: 6
+```
+
+> 递归法
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int countNodes(TreeNode root) {
+        if(root == null)return 0;
+        return 1 + countNodes(root.left) + countNodes(root.right);
+    }
+}
+```
+
+> 循环
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    public int countNodes(TreeNode root) {
+        if(root == null)return 0;
+        int count = 0;
+        Stack<TreeNode> stack = new Stack();
+        stack.push(root);
+        while(!stack.isEmpty()){
+            TreeNode node = stack.pop();
+            count ++;
+            if(node.left != null){
+                stack.push(node.left);
+            }
+            if(node.right != null){
+                stack.push(node.right);
+            }
+        }
+        return count;
+    }
+}
+```
+
+> 根据完整二叉树定义求解,
+> 左右子树只深度只有两种情况，**相等或者左边大于右边，**因为节点都是从左往有填满，如果相等，则同层左树填满，右树至少填充一个子节点；否则左边深度肯定大于右边
+
+```java
+class Solution {
+    public int countNodes(TreeNode root) {
+        int lefth=0;
+        int righth=0;
+        if (root==null)
+            return 0;
+        lefth=getlength(root.left);
+        righth=getlength(root.right);
+        if (lefth==righth)
+           return (int)Math.pow(2,lefth)+countNodes(root.right);
+        return countNodes(root.left)+(int)Math.pow(2,righth);
+    }
+    public int getlength(TreeNode node){
+        int count=0;
+        while(node!=null){
+            count++;
+            node=node.left;
+        }
+
+        return count;
+    }
+}
+```
+
