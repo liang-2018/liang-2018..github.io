@@ -302,6 +302,828 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://pengshiliang.coding.me/2019/02/12/Java_3_default_classloaders/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/head-32x32.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="初心不忘">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/12/Java_3_default_classloaders/" itemprop="url">Java类加载器--默认的三种类加载器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-12T18:52:23+08:00">
+                2019-02-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Source-Code/" itemprop="url" rel="index">
+                    <span itemprop="name">Source Code</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/12/Java_3_default_classloaders/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/02/12/Java_3_default_classloaders/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>作者：可乐丶<br>来源：CSDN<br>原文：<a href="https://blog.csdn.net/u013412772/article/details/80837735" target="_blank" rel="noopener">https://blog.csdn.net/u013412772/article/details/80837735</a><br>版权声明：本文为博主原创文章，转载请附上博文链接！</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/12/Java_3_default_classloaders/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://pengshiliang.coding.me/2019/02/12/JDK_Learning_Class/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/head-32x32.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="初心不忘">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/12/JDK_Learning_Class/" itemprop="url">Class源码阅读</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-12T18:52:23+08:00">
+                2019-02-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Source-Code/" itemprop="url" rel="index">
+                    <span itemprop="name">Source Code</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/12/JDK_Learning_Class/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/02/12/JDK_Learning_Class/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <a id="more"></a>
+<h2 id="一-获取-Class-实例途径"><a href="#一-获取-Class-实例途径" class="headerlink" title="一. 获取 Class 实例途径"></a>一. 获取 Class 实例途径</h2><ul>
+<li>通过应用类型调用 getClass() 方法获取</li>
+<li>使用类的 class 成员属性</li>
+<li>使用 Class 类的 forName(String class_path) 获取，该方法只能用于引用类型</li>
+<li>其他方式，通过包装类 TYPE 属性获取</li>
+</ul>
+<h2 id="二-常用方法"><a href="#二-常用方法" class="headerlink" title="二.常用方法"></a>二.常用方法</h2><h3 id="1-toGenericString"><a href="#1-toGenericString" class="headerlink" title="1. toGenericString()"></a>1. toGenericString()</h3><blockquote>
+<p>返回类的构造方法相关字段,使用 StringBuilder 进行拼接<br>如Set会返回public abstract interface java.util.Set<e><br>但是如果是9种原始类型（8种基础数据类型和void类型）则相当于调用toString方法</e></p>
+</blockquote>
+<h3 id="2-forName-String"><a href="#2-forName-String" class="headerlink" title="2. forName(String)"></a>2. forName(String)</h3><blockquote>
+<p>通过给出的类名或者接口名，返回对应的对象，利用反射和类的加载器实现</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//返回对应类的实例</span></span><br><span class="line">Object a = Class.forName(<span class="string">"java.lang.Object"</span>).newInstance();</span><br><span class="line">System.out.println(a.toString()); <span class="comment">// java.lang.Object@5ce5c367</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Class&lt;?&gt; forName(String className)</span><br><span class="line">               <span class="keyword">throws</span> ClassNotFoundException &#123;</span><br><span class="line">       Class&lt;?&gt; caller = Reflection.getCallerClass();</span><br><span class="line">       <span class="keyword">return</span> forName0(className, <span class="keyword">true</span>, ClassLoader.getClassLoader(caller), caller);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> Class&lt;?&gt; forName(String name, <span class="keyword">boolean</span> initialize,</span><br><span class="line">                                  ClassLoader loader)</span><br><span class="line">       <span class="keyword">throws</span> ClassNotFoundException</span><br><span class="line">   &#123;</span><br><span class="line">       Class&lt;?&gt; caller = <span class="keyword">null</span>;</span><br><span class="line">       SecurityManager sm = System.getSecurityManager();</span><br><span class="line">       <span class="keyword">if</span> (sm != <span class="keyword">null</span>) &#123;</span><br><span class="line">           <span class="comment">// Reflective call to get caller class is only needed if a security manager</span></span><br><span class="line">           <span class="comment">// is present.  Avoid the overhead of making this call otherwise.</span></span><br><span class="line">           caller = Reflection.getCallerClass();</span><br><span class="line">           <span class="keyword">if</span> (sun.misc.VM.isSystemDomainLoader(loader)) &#123;</span><br><span class="line">               ClassLoader ccl = ClassLoader.getClassLoader(caller);</span><br><span class="line">               <span class="keyword">if</span> (!sun.misc.VM.isSystemDomainLoader(ccl)) &#123;</span><br><span class="line">                   sm.checkPermission(</span><br><span class="line">                       SecurityConstants.GET_CLASSLOADER_PERMISSION);</span><br><span class="line">               &#125;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> forName0(name, initialize, loader, caller);</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="3-newInstance"><a href="#3-newInstance" class="headerlink" title="3. newInstance()"></a>3. newInstance()</h3><blockquote>
+<p>创建类的实例，实例化时使用的空参构造<br>该方法的避开了编译时错误以提升效率，编译时错误由编译器检查</p>
+<p>使用newInstance()方法时，必须保证：1、这个类已经加载；2、这个类已经连接了。而完成上面两个步骤的正是Class的静态方法forName()所完成的，这个静态方法调用了启动类加载器，即加载java API的加载器。</p>
+</blockquote>
+<p>new关键字和newInstance()方法的区别：</p>
+<blockquote>
+<ul>
+<li>newInstance: 弱类型。低效率。只能调用无参构造。 </li>
+<li>new: 强类型。相对高效。能调用任何public构造</li>
+</ul>
+</blockquote>
+<p>Constructor.newInstance()与Class.newInstance()区别：</p>
+<blockquote>
+<p>Class.newInstance() 只能够调用无参的构造函数，即默认的构造函数；<br>Constructor.newInstance() 可以根据传入的参数，调用任意构造构造函数。</p>
+<p>Class.newInstance() 抛出所有 由被调用构造函数抛出的异常。<br>Class.newInstance() 要求被调用的构造函数是可见的，也即必须是public类型的;<br>Constructor.newInstance() 在特定的情况下，可以调用私有的构造函数。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> T <span class="title">newInstance</span><span class="params">()</span></span></span><br><span class="line"><span class="function">       <span class="keyword">throws</span> InstantiationException, IllegalAccessException</span></span><br><span class="line"><span class="function">   </span>&#123;</span><br><span class="line">       <span class="keyword">if</span> (System.getSecurityManager() != <span class="keyword">null</span>) &#123;</span><br><span class="line">           checkMemberAccess(Member.PUBLIC, Reflection.getCallerClass(), <span class="keyword">false</span>);</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="comment">// <span class="doctag">NOTE:</span> the following code may not be strictly correct under</span></span><br><span class="line">       <span class="comment">// the current Java memory model.</span></span><br><span class="line"></span><br><span class="line">       <span class="comment">// Constructor lookup</span></span><br><span class="line">       <span class="keyword">if</span> (cachedConstructor == <span class="keyword">null</span>) &#123;</span><br><span class="line">           <span class="keyword">if</span> (<span class="keyword">this</span> == Class.class) &#123;</span><br><span class="line">           <span class="comment">// 如果加载的类是 Class 类，则报错;即类似如调用则抛出 </span></span><br><span class="line">		<span class="comment">//	Can not call newInstance() on the Class for java.lang.Class 异常</span></span><br><span class="line">           <span class="comment">/*</span></span><br><span class="line"><span class="comment">           	Class clazz = Class.forName("java.lang.Class");</span></span><br><span class="line"><span class="comment">			clazz.newInstance(); </span></span><br><span class="line"><span class="comment">           */</span></span><br><span class="line">               <span class="keyword">throw</span> <span class="keyword">new</span> IllegalAccessException(</span><br><span class="line">                   <span class="string">"Can not call newInstance() on the Class for java.lang.Class"</span></span><br><span class="line">               );</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="keyword">try</span> &#123;</span><br><span class="line">               Class&lt;?&gt;[] empty = &#123;&#125;;</span><br><span class="line">               <span class="comment">//获取空参构造方法</span></span><br><span class="line">               <span class="keyword">final</span> Constructor&lt;T&gt; c = getConstructor0(empty, Member.DECLARED);</span><br><span class="line">               <span class="comment">// Disable accessibility checks on the constructor</span></span><br><span class="line">               <span class="comment">// since we have to do the security check here anyway</span></span><br><span class="line">               <span class="comment">// (the stack depth is wrong for the Constructor's</span></span><br><span class="line">               <span class="comment">// security check to work)</span></span><br><span class="line">               java.security.AccessController.doPrivileged(</span><br><span class="line">                   <span class="keyword">new</span> java.security.PrivilegedAction&lt;Void&gt;() &#123;</span><br><span class="line">                       <span class="function"><span class="keyword">public</span> Void <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                               c.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">                               <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">                           &#125;</span><br><span class="line">                       &#125;);</span><br><span class="line">               cachedConstructor = c;<span class="comment">// 将构造方法存储起来</span></span><br><span class="line">           &#125; <span class="keyword">catch</span> (NoSuchMethodException e) &#123;</span><br><span class="line">               <span class="keyword">throw</span> (InstantiationException)</span><br><span class="line">                   <span class="keyword">new</span> InstantiationException(getName()).initCause(e);</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">// 通过之前缓存的构造方法定义临时构造方法</span></span><br><span class="line">       Constructor&lt;T&gt; tmpConstructor = cachedConstructor;</span><br><span class="line">       <span class="comment">// Security check (same as in java.lang.reflect.Constructor)</span></span><br><span class="line">       <span class="keyword">int</span> modifiers = tmpConstructor.getModifiers();</span><br><span class="line">       <span class="keyword">if</span> (!Reflection.quickCheckMemberAccess(<span class="keyword">this</span>, modifiers)) &#123;</span><br><span class="line">           Class&lt;?&gt; caller = Reflection.getCallerClass();</span><br><span class="line">           <span class="keyword">if</span> (newInstanceCallerCache != caller) &#123;</span><br><span class="line">               Reflection.ensureMemberAccess(caller, <span class="keyword">this</span>, <span class="keyword">null</span>, modifiers);</span><br><span class="line">               newInstanceCallerCache = caller;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="comment">// Run constructor</span></span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">       <span class="comment">// 通过临时构造方法创建实例，并返回</span></span><br><span class="line">           <span class="keyword">return</span> tmpConstructor.newInstance((Object[])<span class="keyword">null</span>);</span><br><span class="line">       &#125; <span class="keyword">catch</span> (InvocationTargetException e) &#123;</span><br><span class="line">           Unsafe.getUnsafe().throwException(e.getTargetException());</span><br><span class="line">           <span class="comment">// Not reached</span></span><br><span class="line">           <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="4-getResourceAsStream"><a href="#4-getResourceAsStream" class="headerlink" title="4. getResourceAsStream"></a>4. getResourceAsStream</h3><blockquote>
+<ol>
+<li>Class.getResourceAsStream(String path) ： path 不以’/‘开头时默认是从此类所在的包下取资源，以’/‘开头则是从ClassPath根下获取。其只是通过path构造一个绝对路径，最终还是由ClassLoader获取资源。 </li>
+<li>Class.getClassLoader.getResourceAsStream(String path) ：默认则是从ClassPath根下获取，path不能以’/‘开头，最终是由ClassLoader获取资源。 </li>
+<li>ServletContext. getResourceAsStream(String path)：默认从WebAPP根目录下取资源，Tomcat下path是否以’/‘开头无所谓，当然这和具体的容器实现有关。 </li>
+<li>Jsp下的application内置对象就是上面的ServletContext的一种实现</li>
+</ol>
+</blockquote>
+<p>getResourceAsStream 主要用法：</p>
+<blockquote>
+<ul>
+<li><p>前面有“/”。“/”代表了工程的classpath，即编译后 classes 文件夹，一般文件在类的上级目录时使用<br>例如“/”代表了项目的classpath<br>me.class.getResourceAsStream(“/com/x/file/myfile.xml”); </p>
+</li>
+<li><p>前面没有“/”。代表类所处目录，一般文件和类在同目录(或同处一个大目录) ，用这种方式<br>me.class.getResourceAsStream(“myfile.xml”);<br>me.class.getResourceAsStream(“file/myfile.xml”); </p>
+</li>
+</ul>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 原理与 getResource 差不多，看下面 getResource 解释就成，只不过这个是返回InputStream 而 getResource 返回的是 URL</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> InputStream <span class="title">getResourceAsStream</span><span class="params">(String name)</span> </span>&#123; </span><br><span class="line">        name = resolveName(name);</span><br><span class="line">        ClassLoader cl = getClassLoader0();</span><br><span class="line">        <span class="keyword">if</span> (cl==<span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="comment">// A system class.</span></span><br><span class="line">            <span class="keyword">return</span> ClassLoader.getSystemResourceAsStream(name);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cl.getResourceAsStream(name);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="5-getResource"><a href="#5-getResource" class="headerlink" title="5. getResource"></a>5. getResource</h3><blockquote>
+<p>从最终生成的.class文件为着手点，不要以.java文件的路径为出发点，因为真正使用的就是.class，不会拿个.java文件使用。path不以’/‘开头时，我们就能获取与当前类所在的路径相对路径的资源文件(将包路径的点换成反斜杠)，而以’/‘开头时可以获取ClassPath根下任意路径的资源</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> java.net.<span class="function">URL <span class="title">getResource</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        name = resolveName(name);<span class="comment">// 将字符串做预处理便于类加载器处理</span></span><br><span class="line">        ClassLoader cl = getClassLoader0();</span><br><span class="line">    <span class="comment">// 如果该类由 the bootstrap class loader(启动类加载器) 加载，则方法授权给ClassLoader.getSystemResource来加载资源</span></span><br><span class="line">        <span class="keyword">if</span> (cl==<span class="keyword">null</span>) &#123;       </span><br><span class="line">            <span class="comment">// A system class.</span></span><br><span class="line">            <span class="keyword">return</span> ClassLoader.getSystemResource(name);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> cl.getResource(name);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Add a package name prefix if the name is not absolute, Remove leading "/" if name is absolute </span></span><br><span class="line"><span class="comment">// 如果字符串不是绝对路径，则添加包前缀(文件相对路径的前缀)，</span></span><br><span class="line"><span class="comment">// 如果字符串是绝对路径，将开头的 "/" 去掉</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> String <span class="title">resolveName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (name == <span class="keyword">null</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> name;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (!name.startsWith(<span class="string">"/"</span>)) &#123;</span><br><span class="line">            Class&lt;?&gt; c = <span class="keyword">this</span>;</span><br><span class="line">            <span class="keyword">while</span> (c.isArray()) &#123;</span><br><span class="line">                c = c.getComponentType();</span><br><span class="line">            &#125;</span><br><span class="line">            String baseName = c.getName();</span><br><span class="line">            <span class="keyword">int</span> index = baseName.lastIndexOf(<span class="string">'.'</span>);</span><br><span class="line">            <span class="keyword">if</span> (index != -<span class="number">1</span>) &#123;</span><br><span class="line">                name = baseName.substring(<span class="number">0</span>, index).replace(<span class="string">'.'</span>, <span class="string">'/'</span>)</span><br><span class="line">                    +<span class="string">"/"</span>+name;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            name = name.substring(<span class="number">1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="判断相关方法"><a href="#判断相关方法" class="headerlink" title="判断相关方法"></a>判断相关方法</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>方法名</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>isLocalClass</td>
+<td><em>是不是局部类</em></td>
+</tr>
+<tr>
+<td>isMemberClass</td>
+<td><em>是不是成员内部类</em></td>
+</tr>
+<tr>
+<td>isAnonymousClass</td>
+<td><em>是不是匿名类</em></td>
+</tr>
+<tr>
+<td>isAnnotation</td>
+<td><em>是否是注释类型</em></td>
+</tr>
+<tr>
+<td>isAnnotationPresent</td>
+<td>是否指定类型的注释存在于此元素</td>
+</tr>
+<tr>
+<td>isAssignableFrom</td>
+<td>此 Class 对象所表示的类或接口与指定的 Class 参数所表示的类或接口是否相同，或是否是其超类或超接口</td>
+</tr>
+<tr>
+<td>isEnum</td>
+<td>当且仅当该类声明为源代码中的枚举时返回 true</td>
+</tr>
+<tr>
+<td>isInstance</td>
+<td>Object 是否与此 Class 所表示的对象赋值兼容</td>
+</tr>
+<tr>
+<td>isInterface</td>
+<td>Class 对象是否表示一个接口类型</td>
+</tr>
+<tr>
+<td>isPrimitive</td>
+<td>Class 对象是否表示一个基本类型</td>
+</tr>
+<tr>
+<td>isSynthetic</td>
+<td>此类是否为复合类</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="反射相关方法"><a href="#反射相关方法" class="headerlink" title="反射相关方法"></a><a href="https://blog.csdn.net/pan_junbiao/article/details/85236087" target="_blank" rel="noopener">反射相关方法</a></h3><table border="1" cellpadding="1" cellspacing="1"><thead><tr><th scope="col" style="width:120px;">组成部分</th>
+            <th scope="col" style="width:271px;">访问方法</th>
+            <th scope="col" style="width:146px;">返回值类型</th>
+            <th scope="col" style="width:352px;">说明</th>
+        </tr></thead><tbody><tr><td style="width:82px;">包路径</td>
+            <td style="width:271px;">getPackage()&nbsp;</td>
+            <td style="width:146px;">Package对象</td>
+            <td style="width:352px;">获取该类的存放路径</td>
+        </tr><tr><td colspan="1" rowspan="3" style="width:82px;">类名称</td>
+            <td style="width:271px;">getName()&nbsp;</td>
+            <td style="width:146px;">String对象</td>
+            <td style="width:352px;">获取该类的名称</td>
+        </tr><tr><td style="width:271px;">getSimpleName()</td>
+            <td style="width:146px;">String对象</td>
+            <td style="width:352px;">源代码中给出的底层类的简称。如果底层类是匿名的则返回一个空字符串</td>
+        </tr>tr><td style="width:271px;">getCanonicalName()</td>
+            <td style="width:146px;">String对象</td>
+            <td style="width:352px;">底层类规范化名称</td>
+        <tr><td style="width:82px;">继承类</td>
+            <td style="width:271px;">getSuperclass()</td>
+            <td style="width:146px;">Class对象</td>
+            <td style="width:352px;">获取该类继承的类</td>
+        </tr><tr><td style="width:82px;">实现接口</td>
+            <td style="width:271px;">getInterfaces()</td>
+            <td style="width:146px;">Class型数组</td>
+            <td style="width:352px;">获取该类实现的所有接口</td>
+        </tr><tr><td colspan="1" rowspan="4" style="width:82px;">构造方法</td>
+            <td style="width:271px;">getConstructors()</td>
+            <td style="width:146px;">Constructor型数组</td>
+            <td style="width:352px;">获取所有权限为public的构造方法</td>
+        </tr><tr><td style="width:271px;">getConstructor(Class&lt;?&gt;... parameterTypes)</td>
+            <td style="width:146px;">Constructor对象</td>
+            <td style="width:352px;">获取权限为public的指定构造方法</td>
+        </tr><tr><td style="width:271px;">getDeclaredConstructors()</td>
+            <td style="width:146px;">Constructor型数组</td>
+            <td style="width:352px;">获取所有构造方法，按照声明顺序返回</td>
+        </tr><tr><td style="width:271px;">getDeclaredConstructor(Class&lt;?&gt;... parameterTypes)</td>
+            <td style="width:146px;">Constructor对象</td>
+            <td style="width:352px;">获取指定构造方法</td>
+        </tr><tr><td colspan="1" rowspan="4" style="width:82px;">方法</td>
+            <td style="width:271px;">getMethods()</td>
+            <td style="width:146px;">Method型数组</td>
+            <td style="width:352px;">获取所有权限为public的方法</td>
+        </tr><tr><td style="width:271px;">getMethod(String name, Class&lt;?&gt;... parameterTypes)</td>
+            <td style="width:146px;">Method对象</td>
+            <td style="width:352px;">获取权限为public的指定方法</td>
+        </tr><tr><td style="width:271px;">getDeclaredMethods()</td>
+            <td style="width:146px;">Method型数组</td>
+            <td style="width:352px;">获取所以方法，按照声明顺序返回</td>
+        </tr><tr><td style="width:271px;">getDeclaredMethod(String name, Class&lt;?&gt;... parameterTypes)</td>
+            <td style="width:146px;">Method对象</td>
+            <td style="width:352px;">获取指定方法</td>
+        </tr><tr><td colspan="1" rowspan="4" style="width:82px;">成员变量</td>
+            <td style="width:271px;">getFields()</td>
+            <td style="width:146px;">Field型数组</td>
+            <td style="width:352px;">获取所有权限为public的成员变量</td>
+        </tr><tr><td style="width:271px;">getField(String name)</td>
+            <td style="width:146px;">Field对象</td>
+            <td style="width:352px;">获取权限为public的指定成员变量</td>
+        </tr><tr><td style="width:271px;">getDeclaredFields()</td>
+            <td style="width:146px;">Field型数组</td>
+            <td style="width:352px;">获取所有成员变量，按照声明顺序返回</td>
+        </tr><tr><td style="width:271px;">getDeclaredField(String name)</td>
+            <td style="width:146px;">Field对象</td>
+            <td style="width:352px;">获取指定成员变量</td>
+        </tr><tr><td colspan="1" rowspan="2" style="width:82px;">内部类</td>
+            <td style="width:271px;">getClasses()</td>
+            <td style="width:146px;">Class型数组</td>
+            <td style="width:352px;">获取所有权限为public的内部类</td>
+        </tr><tr><td style="width:271px;">getDeclaredClasses()</td>
+            <td style="width:146px;">Class型数组</td>
+            <td style="width:352px;">获取所有内部类</td>
+        </tr><tr><td style="width:82px;">内部类的声明类</td>
+            <td style="width:271px;">getDeclaringClass()</td>
+            <td style="width:146px;">Class对象</td>
+            <td style="width:352px;">如果该类的内部类，则返回它的成员类，否则返回null</td>
+        </tr></tbody></table>
+
+<h3 id="Modifier-值对应含义"><a href="#Modifier-值对应含义" class="headerlink" title="Modifier 值对应含义"></a>Modifier 值对应含义</h3><blockquote>
+<p>Class.getModifiers()</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line">	<span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> PUBLIC           = <span class="number">0x00000001</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> PRIVATE          = <span class="number">0x00000002</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> PROTECTED        = <span class="number">0x00000004</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> STATIC           = <span class="number">0x00000008</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> FINAL            = <span class="number">0x00000010</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SYNCHRONIZED     = <span class="number">0x00000020</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> VOLATILE         = <span class="number">0x00000040</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> TRANSIENT        = <span class="number">0x00000080</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> NATIVE           = <span class="number">0x00000100</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> INTERFACE        = <span class="number">0x00000200</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> ABSTRACT         = <span class="number">0x00000400</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> STRICT           = <span class="number">0x00000800</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// Bits not (yet) exposed in the public API either because they</span></span><br><span class="line">    <span class="comment">// have different meanings for fields and methods and there is no</span></span><br><span class="line">    <span class="comment">// way to distinguish between the two in this class, or because</span></span><br><span class="line">    <span class="comment">// they are not Java programming language keywords</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BRIDGE    = <span class="number">0x00000040</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> VARARGS   = <span class="number">0x00000080</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SYNTHETIC = <span class="number">0x00001000</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> ANNOTATION  = <span class="number">0x00002000</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> ENUM      = <span class="number">0x00004000</span>;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MANDATED  = <span class="number">0x00008000</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toString</span><span class="params">(<span class="keyword">int</span> mod)</span> </span>&#123;</span><br><span class="line">        StringBuilder sb = <span class="keyword">new</span> StringBuilder();</span><br><span class="line">        <span class="keyword">int</span> len;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> ((mod &amp; PUBLIC) != <span class="number">0</span>)        sb.append(<span class="string">"public "</span>);</span><br><span class="line">        <span class="keyword">if</span> ((mod &amp; PROTECTED) != <span class="number">0</span>)     sb.append(<span class="string">"protected "</span>);</span><br><span class="line">        <span class="keyword">if</span> ((mod &amp; PRIVATE) != <span class="number">0</span>)       sb.append(<span class="string">"private "</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* Canonical order */</span></span><br><span class="line">        <span class="keyword">if</span> ((mod &amp; ABSTRACT) != <span class="number">0</span>)      sb.append(<span class="string">"abstract "</span>);</span><br><span class="line">        <span class="keyword">if</span> ((mod &amp; STATIC) != <span class="number">0</span>)        sb.append(<span class="string">"static "</span>);</span><br><span class="line">        <span class="keyword">if</span> ((mod &amp; FINAL) != <span class="number">0</span>)         sb.append(<span class="string">"final "</span>);</span><br><span class="line">        <span class="keyword">if</span> ((mod &amp; TRANSIENT) != <span class="number">0</span>)     sb.append(<span class="string">"transient "</span>);</span><br><span class="line">        <span class="keyword">if</span> ((mod &amp; VOLATILE) != <span class="number">0</span>)      sb.append(<span class="string">"volatile "</span>);</span><br><span class="line">        <span class="keyword">if</span> ((mod &amp; SYNCHRONIZED) != <span class="number">0</span>)  sb.append(<span class="string">"synchronized "</span>);</span><br><span class="line">        <span class="keyword">if</span> ((mod &amp; NATIVE) != <span class="number">0</span>)        sb.append(<span class="string">"native "</span>);</span><br><span class="line">        <span class="keyword">if</span> ((mod &amp; STRICT) != <span class="number">0</span>)        sb.append(<span class="string">"strictfp "</span>);</span><br><span class="line">        <span class="keyword">if</span> ((mod &amp; INTERFACE) != <span class="number">0</span>)     sb.append(<span class="string">"interface "</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> ((len = sb.length()) &gt; <span class="number">0</span>)    <span class="comment">/* trim trailing space */</span></span><br><span class="line">            <span class="keyword">return</span> sb.toString().substring(<span class="number">0</span>, len-<span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> <span class="string">""</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="三、内部类"><a href="#三、内部类" class="headerlink" title="三、内部类"></a>三、内部类</h2><blockquote>
+<p>待完善……..</p>
+</blockquote>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://blog.csdn.net/javazejian/article/details/70768369" target="_blank" rel="noopener">深入理解Java类型信息(Class对象)与反射机制</a></p>
+<p><a href="https://blog.csdn.net/pan_junbiao/article/details/85236087" target="_blank" rel="noopener">Java反射：Class类的使用</a></p>
+<p><a href="https://xiaohuafyle.iteye.com/blog/1607258" target="_blank" rel="noopener">Instance() 的参数版本与无参数版本详解</a></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://pengshiliang.coding.me/2019/02/12/JDK_Learning_Object/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/head-32x32.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="初心不忘">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2019/02/12/JDK_Learning_Object/" itemprop="url">Object 源码阅读</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-12T18:52:23+08:00">
+                2019-02-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Source-Code/" itemprop="url" rel="index">
+                    <span itemprop="name">Source Code</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/12/JDK_Learning_Object/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/02/12/JDK_Learning_Object/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>Object 类源码阅读</p>
+</blockquote>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2019/02/12/JDK_Learning_Object/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://pengshiliang.coding.me/2018/10/28/node.js创建流媒体服务器/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/head-32x32.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="初心不忘">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/10/28/node.js创建流媒体服务器/" itemprop="url">node.js创建流媒体服务器</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-10-28T00:00:00+08:00">
+                2018-10-28
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/node-js/" itemprop="url" rel="index">
+                    <span itemprop="name">node.js</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/10/28/node.js创建流媒体服务器/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2018/10/28/node.js创建流媒体服务器/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="系统：linux"><a href="#系统：linux" class="headerlink" title="系统：linux"></a>系统：linux</h2><h2 id="npm安装"><a href="#npm安装" class="headerlink" title="npm安装"></a>npm安装</h2><p>Ubuntu：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 安装 npm</span></span><br><span class="line">sudo apt-get install npm </span><br><span class="line"><span class="comment"># npm 升级</span></span><br><span class="line">sudo npm install -g npm</span><br><span class="line"><span class="comment"># 切换到淘宝镜像源</span></span><br><span class="line">npm install -g cnpm --registry=http://registry.npm.taobao.org</span><br></pre></td></tr></table></figure></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/10/28/node.js创建流媒体服务器/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://pengshiliang.coding.me/2018/10/09/LeetCode-note-part-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1288,7 +2110,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">20</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
