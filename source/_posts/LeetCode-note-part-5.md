@@ -9,6 +9,8 @@ tags:
 categories: LeetCode
 ---
 
+> leetcode笔记，待整理
+
 <!-- more -->
 
 ## [223. Rectangle Area](https://leetcode-cn.com/problems/rectangle-area/)
