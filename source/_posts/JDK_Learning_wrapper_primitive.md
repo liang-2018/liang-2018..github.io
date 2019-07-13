@@ -222,11 +222,186 @@ public String toString() {
 }
 ```
 
+> hashCode， byte的hashcode就是本身的值
+
+```java
+ public int hashCode() {
+        return Byte.hashCode(value);
+ }
+ public static int hashCode(byte value) {
+        return (int)value;
+ }
+```
+
+> 比较
+
+```java
+ public static int compare(byte x, byte y) {
+        return x - y;
+ }
+ public int compareTo(Byte anotherByte) {
+        return compare(this.value, anotherByte.value);
+ }
+```
+
+> 转型
+
+```java
+public static int toUnsignedInt(byte x) {
+        return ((int) x) & 0xff; // 转换为int，32位长度，仅保留8位有值部分
+}
+public static long toUnsignedLong(byte x) {
+        return ((long) x) & 0xffL;
+}
+```
+
+> 内存占用大小
+
+```java
+public static final int SIZE = 8;
+public static final int BYTES = SIZE / Byte.SIZE;
+```
+
 ## 3. Short
+
+> short类型范围  -32768 ~ 32767 即：-$2^{15}​$~$2^{15}-1​$
+
+```java
+public static final short   MIN_VALUE = -32768;
+public static final short   MAX_VALUE = 32767;
+```
+
+![1563028033179](JDK_Learning_wrapper_primitive/1563028033179.png)
+
+> 余下代码原理基本和Byte中的转换一致，只是 Short 类型值域范围更大
+> 同时，需要注意的是，Short 类型的值，在 -128~127 之间的值使用的是 ShortCache 静态内部类，与 Byte 类似，即 -128~127之间的值，指向的常量池同一个地方。
+
+```java
+    private static class ShortCache {
+        private ShortCache(){}
+
+        static final Short cache[] = new Short[-(-128) + 127 + 1];
+
+        static {
+            for(int i = 0; i < cache.length; i++)
+                cache[i] = new Short((short)(i - 128));
+        }
+    }
+
+    public static Short valueOf(short s) {
+        final int offset = 128;
+        int sAsInt = s;
+        if (sAsInt >= -128 && sAsInt <= 127) { // must cache
+            return ShortCache.cache[sAsInt + offset];
+        }
+        return new Short(s);
+    }
+
+    public static final int SIZE = 16;
+
+    public static final int BYTES = SIZE / Byte.SIZE;
+	// 这里的倒转，以字节为单位倒转交换位置
+    public static short reverseBytes(short i) {
+        return (short) (((i & 0xFF00) >> 8) | (i << 8));
+    }
+
+    public static int toUnsignedInt(short x) {
+        return ((int) x) & 0xffff;
+    }
+    public static long toUnsignedLong(short x) {
+        return ((long) x) & 0xffffL;
+    }
+```
 
 ## 4. Integer
 
+> 值范围 -$2^{31}$~$2^{31}-1$
+
+```java
+ @Native public static final int   MIN_VALUE = 0x80000000;
+ @Native public static final int   MAX_VALUE = 0x7fffffff;
+```
+
+> Integer 使用常量数组提供 字符串数字的可能字符
+
+```java
+ final static char[] digits = {
+        '0' , '1' , '2' , '3' , '4' , '5' ,
+        '6' , '7' , '8' , '9' , 'a' , 'b' ,
+        'c' , 'd' , 'e' , 'f' , 'g' , 'h' ,
+        'i' , 'j' , 'k' , 'l' , 'm' , 'n' ,
+        'o' , 'p' , 'q' , 'r' , 's' , 't' ,
+        'u' , 'v' , 'w' , 'x' , 'y' , 'z'
+    };
+```
+
+> 将已有数值转换成不同进制的字符串形式
+
+```java
+public static String toString(int i, int radix) {
+    // Character.MIN_RADIX 值为2， Character.MAX_RADIX 值为36
+        if (radix < Character.MIN_RADIX || radix > Character.MAX_RADIX)
+            radix = 10;
+
+        /* Use the faster version */
+        if (radix == 10) {
+            return toString(i);
+        }
+
+        char buf[] = new char[33];
+        boolean negative = (i < 0);
+        int charPos = 32;
+
+        if (!negative) {// 先将数值都转换为正数来对待
+            i = -i;
+        }
+
+        while (i <= -radix) {//从后往前进行计算并记录值
+            buf[charPos--] = digits[-(i % radix)];
+            i = i / radix;
+        }
+        buf[charPos] = digits[-i];
+
+        if (negative) {// 如果是负数，添加负号
+            buf[--charPos] = '-';
+        }
+
+        return new String(buf, charPos, (33 - charPos));
+    }
+```
+
+> 相比 Short，Integer类多了如下方法
+>
+> + parseUnsignedInt(String ,int)
+> + toUnsignedString(int,int)
+> + formatUnsignedInt(int, int, char[], int, int )
+> + toHexString(int), toOctalString(int), toBinaryString(int)
+> + getchars(int,int, char[])
+> + stringSize(int)
+> + decode()
+> + compareUnsigned(int,int)
+> + dividedUnsigned(int,int)
+> + remainderUnsigned(int,int)
+> + HighestOneBit(int)
+> + lowesetOneBit(int)
+> + numberOfLeadingZeros(int)
+> + numberOfTrailingZeros(int)
+> + bitCount(int)
+> + rotateLeft(int,int)
+> + rotateRight(int,int)
+> + reverse(int)
+> + signum(int)
+> + sum(int,int)
+> + max(int,int)
+> + min(int,int)
+
 ## 5. Long
+
+> Long 和 Integer 相比，只是值范围的不同，或者说长度不同，其原理操作等其实是一致的
+>
+> 其中 toUnsignedBigInteger(long)相对有所不同
+
+![1563027878638](JDK_Learning_wrapper_primitive/1563027878638.png)
 
 ## 6. Float
 
