@@ -168,19 +168,6 @@ public static Byte valueOf(String s, int radix)
 >
 > 可解码的字符串，只能为十进制、十六进制、八进制
 
->
-> <dl>
-> <dt><i>DecodableString:</i>
-> <dd><i>Sign<sub>opt</sub> DecimalNumeral</i>
-> <dd><i>Sign<sub>opt</sub></i> {@code 0x} <i>HexDigits</i>
-> <dd><i>Sign<sub>opt</sub></i> {@code 0X} <i>HexDigits</i>
-> <dd><i>Sign<sub>opt</sub></i> {@code #} <i>HexDigits</i>
-> <dd><i>Sign<sub>opt</sub></i> {@code 0} <i>OctalDigits</i>
-> <dt><i>Sign:</i>
-> <dd>{@code -}
->  <dd>{@code +}
->  </dl>
-
 ```java
 public static Byte decode(String nm) throws NumberFormatException {
         int i = Integer.decode(nm);
