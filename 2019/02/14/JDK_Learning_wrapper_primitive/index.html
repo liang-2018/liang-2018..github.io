@@ -1,0 +1,1516 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="theme-color" content="#222">
+
+
+
+  
+  
+    
+    
+  <script src="/lib/pace/pace.min.js?v=1.0.2"></script>
+  <link href="/lib/pace/pace-theme-minimal.min.css?v=1.0.2" rel="stylesheet">
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css">
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css">
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/head-32x32.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/head-16x16.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JDK,">
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="Character Boolean Byte Short Integer Long Float Double Void">
+<meta name="keywords" content="JDK">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基础数据类型封装类源码阅读">
+<meta property="og:url" content="https://pengshiliang.coding.me/2019/02/14/JDK_Learning_wrapper_primitive/index.html">
+<meta property="og:site_name" content="初心不忘">
+<meta property="og:description" content="Character Boolean Byte Short Integer Long Float Double Void">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://pengshiliang.coding.me/2019/02/14/JDK_Learning_wrapper_primitive/1563028033179.png">
+<meta property="og:image" content="https://pengshiliang.coding.me/2019/02/14/JDK_Learning_wrapper_primitive/1563027878638.png">
+<meta property="og:image" content="https://pengshiliang.coding.me/2019/02/14/JDK_Learning_wrapper_primitive/1563085069398.png">
+<meta property="og:image" content="https://pengshiliang.coding.me/2019/02/14/JDK_Learning_wrapper_primitive/1563112202621.png">
+<meta property="og:updated_time" content="2019-07-14T14:36:39.078Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="基础数据类型封装类源码阅读">
+<meta name="twitter:description" content="Character Boolean Byte Short Integer Long Float Double Void">
+<meta name="twitter:image" content="https://pengshiliang.coding.me/2019/02/14/JDK_Learning_wrapper_primitive/1563028033179.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"always","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://pengshiliang.coding.me/2019/02/14/JDK_Learning_wrapper_primitive/">
+
+
+
+
+
+  <title>基础数据类型封装类源码阅读 | 初心不忘</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta custom-logo">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">初心不忘</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br>
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br>
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br>
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br>
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br>
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br>
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off" placeholder="搜索..." spellcheck="false" type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://pengshiliang.coding.me/2019/02/14/JDK_Learning_wrapper_primitive/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/head-32x32.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="初心不忘">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">基础数据类型封装类源码阅读</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-14T18:55:23+08:00">
+                2019-02-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Source-Code/" itemprop="url" rel="index">
+                    <span itemprop="name">Source Code</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/14/JDK_Learning_wrapper_primitive/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/02/14/JDK_Learning_wrapper_primitive/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>Character Boolean Byte Short Integer Long Float Double Void</p>
+</blockquote>
+<a id="more"></a>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">基础类型</th>
+<th style="text-align:center">大小(字节)</th>
+<th style="text-align:center">默认值</th>
+<th style="text-align:center">封装类</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">byte</td>
+<td style="text-align:center">1</td>
+<td style="text-align:center">(byte)0</td>
+<td style="text-align:center">Byre</td>
+</tr>
+<tr>
+<td style="text-align:center">short</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">(short)0</td>
+<td style="text-align:center">Short</td>
+</tr>
+<tr>
+<td style="text-align:center">int</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">0</td>
+<td style="text-align:center">Integer</td>
+</tr>
+<tr>
+<td style="text-align:center">long</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">0L</td>
+<td style="text-align:center">Long</td>
+</tr>
+<tr>
+<td style="text-align:center">float</td>
+<td style="text-align:center">4</td>
+<td style="text-align:center">0.0f</td>
+<td style="text-align:center">Float</td>
+</tr>
+<tr>
+<td style="text-align:center">double</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">0.0d</td>
+<td style="text-align:center">Double</td>
+</tr>
+<tr>
+<td style="text-align:center">boolean</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">false</td>
+<td style="text-align:center">Boolean</td>
+</tr>
+<tr>
+<td style="text-align:center">char</td>
+<td style="text-align:center">2</td>
+<td style="text-align:center">\u0000(null)</td>
+<td style="text-align:center">Character</td>
+</tr>
+<tr>
+<td style="text-align:center">void</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">-</td>
+<td style="text-align:center">Void</td>
+</tr>
+</tbody>
+</table>
+</div>
+<blockquote>
+<p>boolean类型占了单独使用是4个字节，在数组中又是1个字节;<br><strong>原因</strong>：<strong>单个的boolean</strong> 类型变量在编译的时候是<strong>使用的int 类型</strong>。而对于boolean 类型的数组时，在编译的时候是作为byte array来编译的所以boolean 数组里面的每一个元件占一个字节</p>
+<p> <a href="https://www.cnblogs.com/alternative/p/7520332.html" target="_blank" rel="noopener">参考链接</a></p>
+<ol>
+<li>Java中的数值都是有符号的，不存在无符号的数，它们的取值范围也是固定的，不会随着硬件环境或者操作系统的改变而改变。</li>
+<li>原始数据类型在传递参数时都是按值传递，封装类都是按引用传递。</li>
+<li>Java语言中，默认声明的小数是double类型的，因此对float类型的变量进行初始化时需要进行类型转换。float类型变量有两种初始化方法：float f = 1.0f  或者 float f =(float) 1.0 。</li>
+<li><p>“==”和”equals（）”方法：</p>
+<p>　　　　1）基本型和基本型封装型进行“==”运算符的比较，基本型封装型将会自动拆箱变为基本型后再进行比较，因此Integer(0)会自动拆箱为int类型再进行比较，显然返回true。<br>　　　　2）两个Integer类型进行“==”比较，如果其值在-128至127，那么返回true，否则返回false, 这跟Integer.valueOf()的缓冲对象有关.<br>　　　　3）两个基本型的封装型进行equals()比较，首先equals()会比较类型，如果类型相同，则继续比较值，如果值也相同，返回true。<br>　　　　4）基本型封装类型调用equals(),但是参数是基本类型，这时候，先会进行自动装箱，基本型转换为其封装类型，再进行3）中的比较。</p>
+</li>
+</ol>
+</blockquote>
+<h2 id="1-Boolean"><a href="#1-Boolean" class="headerlink" title="1. Boolean"></a>1. Boolean</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">final</span> <span class="class"><span class="keyword">class</span> <span class="title">Boolean</span> <span class="keyword">implements</span> <span class="title">java</span>.<span class="title">io</span>.<span class="title">Serializable</span>,</span></span><br><span class="line"><span class="class">                                      <span class="title">Comparable</span>&lt;<span class="title">Boolean</span>&gt;</span></span><br><span class="line"><span class="class">	// 表明这个类的对象为原始数据类型 <span class="title">boolean</span>，推测是用于自动拆箱</span></span><br><span class="line"><span class="class">	<span class="title">public</span> <span class="title">static</span> <span class="title">final</span> <span class="title">Class</span>&lt;<span class="title">Boolean</span>&gt; <span class="title">TYPE</span> </span>= (Class&lt;Boolean&gt;) Class.getPrimitiveClass(<span class="string">"boolean"</span>);</span><br><span class="line">	<span class="comment">// 除了 true 字符串，都返回false</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">parseBoolean</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ((s != <span class="keyword">null</span>) &amp;&amp; s.equalsIgnoreCase(<span class="string">"true"</span>));</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Boolean <span class="title">valueOf</span><span class="params">(String s)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> parseBoolean(s) ? TRUE : FALSE;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 为 Boolean 实例比较值，否则返回false</span></span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (obj <span class="keyword">instanceof</span> Boolean) &#123;</span><br><span class="line">            <span class="keyword">return</span> value == ((Boolean)obj).booleanValue();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 只有字符串为 "true" 时返回true</span></span><br><span class="line"> 	<span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">getBoolean</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">boolean</span> result = <span class="keyword">false</span>;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            result = parseBoolean(System.getProperty(name));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (IllegalArgumentException | NullPointerException e) &#123;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toString</span><span class="params">(<span class="keyword">boolean</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> b ? <span class="string">"true"</span> : <span class="string">"false"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value ? <span class="string">"true"</span> : <span class="string">"false"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">//1231 代表true， 1237代表false</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">(<span class="keyword">boolean</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value ? <span class="number">1231</span> : <span class="number">1237</span>;</span><br><span class="line">    &#125;</span><br><span class="line"> </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(<span class="keyword">boolean</span> x, <span class="keyword">boolean</span> y)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (x == y) ? <span class="number">0</span> : (x ? <span class="number">1</span> : -<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// 逻辑与</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">logicalAnd</span><span class="params">(<span class="keyword">boolean</span> a, <span class="keyword">boolean</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a &amp;&amp; b;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">// 逻辑或</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">logicalOr</span><span class="params">(<span class="keyword">boolean</span> a, <span class="keyword">boolean</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a || b;</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">// 逻辑异或</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">logicalXor</span><span class="params">(<span class="keyword">boolean</span> a, <span class="keyword">boolean</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> a ^ b;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="2-Byte"><a href="#2-Byte" class="headerlink" title="2. Byte"></a>2. Byte</h2><blockquote>
+<p>byte 表示的最大值为 127 即 $2^7$-1，最小值为 -128 即 $-2^{7}$</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">byte</span>   MIN_VALUE = -<span class="number">128</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">byte</span>   MAX_VALUE = <span class="number">127</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>静态内部类，用于缓存范围内的值</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ByteCache</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">ByteCache</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">final</span> Byte cache[] = <span class="keyword">new</span> Byte[-(-<span class="number">128</span>) + <span class="number">127</span> + <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">static</span> &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; cache.length; i++)</span><br><span class="line">            cache[i] = <span class="keyword">new</span> Byte((<span class="keyword">byte</span>)(i - <span class="number">128</span>));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>通过 ByteCache 获取值来进行类型转换</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Byte <span class="title">valueOf</span><span class="params">(<span class="keyword">byte</span> b)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">final</span> <span class="keyword">int</span> offset = <span class="number">128</span>;</span><br><span class="line">        <span class="keyword">return</span> ByteCache.cache[(<span class="keyword">int</span>)b + offset];</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>根据进制将字符串转换为 int 类型，如果值在表示范围内，则返回；否则抛出 NumberFormatException 异常</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">byte</span> <span class="title">parseByte</span><span class="params">(String s, <span class="keyword">int</span> radix)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> NumberFormatException </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = Integer.parseInt(s, radix);</span><br><span class="line">        <span class="keyword">if</span> (i &lt; MIN_VALUE || i &gt; MAX_VALUE)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NumberFormatException(</span><br><span class="line">                <span class="string">"Value out of range. Value:\""</span> + s + <span class="string">"\" Radix:"</span> + radix);</span><br><span class="line">        <span class="keyword">return</span> (<span class="keyword">byte</span>)i;</span><br><span class="line">    &#125;</span><br><span class="line"><span class="comment">// 默认是 10 进制</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">byte</span> <span class="title">parseByte</span><span class="params">(String s)</span> <span class="keyword">throws</span> NumberFormatException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> parseByte(s, <span class="number">10</span>);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Byte</span><span class="params">(String s)</span> <span class="keyword">throws</span> NumberFormatException </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.value = parseByte(s, <span class="number">10</span>);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">byte</span> <span class="title">byteValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> value;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>将字符串转换为 Byte 对象，最终调用的其实是 parseByte</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Byte <span class="title">valueOf</span><span class="params">(String s, <span class="keyword">int</span> radix)</span></span></span><br><span class="line"><span class="function">        <span class="keyword">throws</span> NumberFormatException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> valueOf(parseByte(s, radix));</span><br><span class="line">    &#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Byte <span class="title">valueOf</span><span class="params">(String s)</span> <span class="keyword">throws</span> NumberFormatException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> valueOf(s, <span class="number">10</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>解码，先调用的 Integer 解码方法，详情见 Integer 类</p>
+<p>可解码的字符串，只能为十进制、十六进制、八进制</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Byte <span class="title">decode</span><span class="params">(String nm)</span> <span class="keyword">throws</span> NumberFormatException </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> i = Integer.decode(nm);</span><br><span class="line">        <span class="keyword">if</span> (i &lt; MIN_VALUE || i &gt; MAX_VALUE)</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> NumberFormatException(</span><br><span class="line">                    <span class="string">"Value "</span> + i + <span class="string">" out of range from input "</span> + nm);</span><br><span class="line">        <span class="keyword">return</span> valueOf((<span class="keyword">byte</span>)i);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>数据类型转换</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">byte</span> <span class="title">byteValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">short</span> <span class="title">shortValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> (<span class="keyword">short</span>)value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">intValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> (<span class="keyword">int</span>)value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">long</span> <span class="title">longValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> (<span class="keyword">long</span>)value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">float</span> <span class="title">floatValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> (<span class="keyword">float</span>)value;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">double</span> <span class="title">doubleValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">      <span class="keyword">return</span> (<span class="keyword">double</span>)value;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>byte 转字符串，调用的Integer的方法</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> Integer.toString((<span class="keyword">int</span>)value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>hashCode， byte的hashcode就是本身的值</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> Byte.hashCode(value);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">(<span class="keyword">byte</span> value)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> (<span class="keyword">int</span>)value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>比较</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">compare</span><span class="params">(<span class="keyword">byte</span> x, <span class="keyword">byte</span> y)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> x - y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">compareTo</span><span class="params">(Byte anotherByte)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> compare(<span class="keyword">this</span>.value, anotherByte.value);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>转型</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">toUnsignedInt</span><span class="params">(<span class="keyword">byte</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ((<span class="keyword">int</span>) x) &amp; <span class="number">0xff</span>; <span class="comment">// 转换为int，32位长度，仅保留8位有值部分</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">toUnsignedLong</span><span class="params">(<span class="keyword">byte</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> ((<span class="keyword">long</span>) x) &amp; <span class="number">0xffL</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>内存占用大小</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SIZE = <span class="number">8</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BYTES = SIZE / Byte.SIZE;</span><br></pre></td></tr></table></figure>
+<h2 id="3-Short"><a href="#3-Short" class="headerlink" title="3. Short"></a>3. Short</h2><blockquote>
+<p>short类型范围  -32768 ~ 32767 即：-$2^{15}​$~$2^{15}-1​$</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">short</span>   MIN_VALUE = -<span class="number">32768</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">short</span>   MAX_VALUE = <span class="number">32767</span>;</span><br></pre></td></tr></table></figure>
+<p><img src="/2019/02/14/JDK_Learning_wrapper_primitive/1563028033179.png" alt="1563028033179"></p>
+<blockquote>
+<p>余下代码原理基本和Byte中的转换一致，只是 Short 类型值域范围更大<br>同时，需要注意的是，Short 类型的值，在 -128~127 之间的值使用的是 ShortCache 静态内部类，与 Byte 类似，即 -128~127之间的值，指向的常量池同一个地方。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">   <span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">ShortCache</span> </span>&#123;</span><br><span class="line">       <span class="function"><span class="keyword">private</span> <span class="title">ShortCache</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">static</span> <span class="keyword">final</span> Short cache[] = <span class="keyword">new</span> Short[-(-<span class="number">128</span>) + <span class="number">127</span> + <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">       <span class="keyword">static</span> &#123;</span><br><span class="line">           <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; cache.length; i++)</span><br><span class="line">               cache[i] = <span class="keyword">new</span> Short((<span class="keyword">short</span>)(i - <span class="number">128</span>));</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Short <span class="title">valueOf</span><span class="params">(<span class="keyword">short</span> s)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">final</span> <span class="keyword">int</span> offset = <span class="number">128</span>;</span><br><span class="line">       <span class="keyword">int</span> sAsInt = s;</span><br><span class="line">       <span class="keyword">if</span> (sAsInt &gt;= -<span class="number">128</span> &amp;&amp; sAsInt &lt;= <span class="number">127</span>) &#123; <span class="comment">// must cache</span></span><br><span class="line">           <span class="keyword">return</span> ShortCache.cache[sAsInt + offset];</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> <span class="keyword">new</span> Short(s);</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> SIZE = <span class="number">16</span>;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> BYTES = SIZE / Byte.SIZE;</span><br><span class="line"><span class="comment">// 这里的倒转，以字节为单位倒转交换位置</span></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">short</span> <span class="title">reverseBytes</span><span class="params">(<span class="keyword">short</span> i)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> (<span class="keyword">short</span>) (((i &amp; <span class="number">0xFF00</span>) &gt;&gt; <span class="number">8</span>) | (i &lt;&lt; <span class="number">8</span>));</span><br><span class="line">   &#125;</span><br><span class="line"></span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">toUnsignedInt</span><span class="params">(<span class="keyword">short</span> x)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> ((<span class="keyword">int</span>) x) &amp; <span class="number">0xffff</span>;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">toUnsignedLong</span><span class="params">(<span class="keyword">short</span> x)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">return</span> ((<span class="keyword">long</span>) x) &amp; <span class="number">0xffffL</span>;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="4-Integer、Long"><a href="#4-Integer、Long" class="headerlink" title="4. Integer、Long"></a>4. Integer、Long</h2><blockquote>
+<p>值范围 -$2^{31}$~$2^{31}-1$； 同样，Integer 和 Long也有 对应的缓存内部类 IntegerCache 和 LongCache 用于存储 -128 ~ 127 的数值</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Native</span> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span>   MIN_VALUE = <span class="number">0x80000000</span>;</span><br><span class="line"><span class="meta">@Native</span> <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span>   MAX_VALUE = <span class="number">0x7fffffff</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>Integer 使用常量数组提供 字符串数字的可能字符</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">char</span>[] digits = &#123;</span><br><span class="line">       <span class="string">'0'</span> , <span class="string">'1'</span> , <span class="string">'2'</span> , <span class="string">'3'</span> , <span class="string">'4'</span> , <span class="string">'5'</span> ,</span><br><span class="line">       <span class="string">'6'</span> , <span class="string">'7'</span> , <span class="string">'8'</span> , <span class="string">'9'</span> , <span class="string">'a'</span> , <span class="string">'b'</span> ,</span><br><span class="line">       <span class="string">'c'</span> , <span class="string">'d'</span> , <span class="string">'e'</span> , <span class="string">'f'</span> , <span class="string">'g'</span> , <span class="string">'h'</span> ,</span><br><span class="line">       <span class="string">'i'</span> , <span class="string">'j'</span> , <span class="string">'k'</span> , <span class="string">'l'</span> , <span class="string">'m'</span> , <span class="string">'n'</span> ,</span><br><span class="line">       <span class="string">'o'</span> , <span class="string">'p'</span> , <span class="string">'q'</span> , <span class="string">'r'</span> , <span class="string">'s'</span> , <span class="string">'t'</span> ,</span><br><span class="line">       <span class="string">'u'</span> , <span class="string">'v'</span> , <span class="string">'w'</span> , <span class="string">'x'</span> , <span class="string">'y'</span> , <span class="string">'z'</span></span><br><span class="line">   &#125;;</span><br><span class="line"><span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">char</span> [] DigitTens = &#123;</span><br><span class="line">       <span class="string">'0'</span>, <span class="string">'0'</span>, <span class="string">'0'</span>, <span class="string">'0'</span>, <span class="string">'0'</span>, <span class="string">'0'</span>, <span class="string">'0'</span>, <span class="string">'0'</span>, <span class="string">'0'</span>, <span class="string">'0'</span>,</span><br><span class="line">       <span class="string">'1'</span>, <span class="string">'1'</span>, <span class="string">'1'</span>, <span class="string">'1'</span>, <span class="string">'1'</span>, <span class="string">'1'</span>, <span class="string">'1'</span>, <span class="string">'1'</span>, <span class="string">'1'</span>, <span class="string">'1'</span>,</span><br><span class="line">       <span class="string">'2'</span>, <span class="string">'2'</span>, <span class="string">'2'</span>, <span class="string">'2'</span>, <span class="string">'2'</span>, <span class="string">'2'</span>, <span class="string">'2'</span>, <span class="string">'2'</span>, <span class="string">'2'</span>, <span class="string">'2'</span>,</span><br><span class="line">       <span class="string">'3'</span>, <span class="string">'3'</span>, <span class="string">'3'</span>, <span class="string">'3'</span>, <span class="string">'3'</span>, <span class="string">'3'</span>, <span class="string">'3'</span>, <span class="string">'3'</span>, <span class="string">'3'</span>, <span class="string">'3'</span>,</span><br><span class="line">       <span class="string">'4'</span>, <span class="string">'4'</span>, <span class="string">'4'</span>, <span class="string">'4'</span>, <span class="string">'4'</span>, <span class="string">'4'</span>, <span class="string">'4'</span>, <span class="string">'4'</span>, <span class="string">'4'</span>, <span class="string">'4'</span>,</span><br><span class="line">       <span class="string">'5'</span>, <span class="string">'5'</span>, <span class="string">'5'</span>, <span class="string">'5'</span>, <span class="string">'5'</span>, <span class="string">'5'</span>, <span class="string">'5'</span>, <span class="string">'5'</span>, <span class="string">'5'</span>, <span class="string">'5'</span>,</span><br><span class="line">       <span class="string">'6'</span>, <span class="string">'6'</span>, <span class="string">'6'</span>, <span class="string">'6'</span>, <span class="string">'6'</span>, <span class="string">'6'</span>, <span class="string">'6'</span>, <span class="string">'6'</span>, <span class="string">'6'</span>, <span class="string">'6'</span>,</span><br><span class="line">       <span class="string">'7'</span>, <span class="string">'7'</span>, <span class="string">'7'</span>, <span class="string">'7'</span>, <span class="string">'7'</span>, <span class="string">'7'</span>, <span class="string">'7'</span>, <span class="string">'7'</span>, <span class="string">'7'</span>, <span class="string">'7'</span>,</span><br><span class="line">       <span class="string">'8'</span>, <span class="string">'8'</span>, <span class="string">'8'</span>, <span class="string">'8'</span>, <span class="string">'8'</span>, <span class="string">'8'</span>, <span class="string">'8'</span>, <span class="string">'8'</span>, <span class="string">'8'</span>, <span class="string">'8'</span>,</span><br><span class="line">       <span class="string">'9'</span>, <span class="string">'9'</span>, <span class="string">'9'</span>, <span class="string">'9'</span>, <span class="string">'9'</span>, <span class="string">'9'</span>, <span class="string">'9'</span>, <span class="string">'9'</span>, <span class="string">'9'</span>, <span class="string">'9'</span>,</span><br><span class="line">       &#125; ;</span><br><span class="line"></span><br><span class="line">   <span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">char</span> [] DigitOnes = &#123;</span><br><span class="line">       <span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>,</span><br><span class="line">       <span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>,</span><br><span class="line">       <span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>,</span><br><span class="line">       <span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>,</span><br><span class="line">       <span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>,</span><br><span class="line">       <span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>,</span><br><span class="line">       <span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>,</span><br><span class="line">       <span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>,</span><br><span class="line">       <span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>,</span><br><span class="line">       <span class="string">'0'</span>, <span class="string">'1'</span>, <span class="string">'2'</span>, <span class="string">'3'</span>, <span class="string">'4'</span>, <span class="string">'5'</span>, <span class="string">'6'</span>, <span class="string">'7'</span>, <span class="string">'8'</span>, <span class="string">'9'</span>,</span><br><span class="line">       &#125; ;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>将已有数值转换成不同进制的字符串形式</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toString</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> radix)</span> </span>&#123;</span><br><span class="line">    <span class="comment">// Character.MIN_RADIX 值为2， Character.MAX_RADIX 值为36</span></span><br><span class="line">        <span class="keyword">if</span> (radix &lt; Character.MIN_RADIX || radix &gt; Character.MAX_RADIX)</span><br><span class="line">            radix = <span class="number">10</span>;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/* Use the faster version */</span></span><br><span class="line">        <span class="keyword">if</span> (radix == <span class="number">10</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> toString(i);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">char</span> buf[] = <span class="keyword">new</span> <span class="keyword">char</span>[<span class="number">33</span>];</span><br><span class="line">        <span class="keyword">boolean</span> negative = (i &lt; <span class="number">0</span>);</span><br><span class="line">        <span class="keyword">int</span> charPos = <span class="number">32</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (!negative) &#123;<span class="comment">// 先将数值都转换为正数来对待</span></span><br><span class="line">            i = -i;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span> (i &lt;= -radix) &#123;<span class="comment">//从后往前进行计算并记录值</span></span><br><span class="line">            buf[charPos--] = digits[-(i % radix)];</span><br><span class="line">            i = i / radix;</span><br><span class="line">        &#125;</span><br><span class="line">        buf[charPos] = digits[-i];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (negative) &#123;<span class="comment">// 如果是负数，添加负号</span></span><br><span class="line">            buf[--charPos] = <span class="string">'-'</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> String(buf, charPos, (<span class="number">33</span> - charPos));</span><br><span class="line">    &#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toString</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (i == Integer.MIN_VALUE)</span><br><span class="line">            <span class="keyword">return</span> <span class="string">"-2147483648"</span>;</span><br><span class="line">        <span class="keyword">int</span> size = (i &lt; <span class="number">0</span>) ? stringSize(-i) + <span class="number">1</span> : stringSize(i);</span><br><span class="line">        <span class="keyword">char</span>[] buf = <span class="keyword">new</span> <span class="keyword">char</span>[size];</span><br><span class="line">        getChars(i, size, buf);</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> String(buf, <span class="keyword">true</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="getChars-int-i-int-index-char-buf"><a href="#getChars-int-i-int-index-char-buf" class="headerlink" title="getChars(int i, int index, char[] buf)"></a>getChars(int i, int index, char[] buf)</h3><blockquote>
+<p>专门用于10进制转换的，<br>大于 65536 时，每次转换两位，使用 4 + 32 + 64 =100来拆分成位运算<br>小于 65536 时，每次转换1位，使用 2 + 8 = 10来拆分成位运算</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">void</span> <span class="title">getChars</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> index, <span class="keyword">char</span>[] buf)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> q, r;</span><br><span class="line">        <span class="keyword">int</span> charPos = index;</span><br><span class="line">        <span class="keyword">char</span> sign = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (i &lt; <span class="number">0</span>) &#123;</span><br><span class="line">            sign = <span class="string">'-'</span>;</span><br><span class="line">            i = -i;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// Generate two digits per iteration</span></span><br><span class="line">        <span class="keyword">while</span> (i &gt;= <span class="number">65536</span>) &#123;</span><br><span class="line">            q = i / <span class="number">100</span>;</span><br><span class="line">        <span class="comment">// really: r = i - (q * 100);</span></span><br><span class="line">            r = i - ((q &lt;&lt; <span class="number">6</span>) + (q &lt;&lt; <span class="number">5</span>) + (q &lt;&lt; <span class="number">2</span>));</span><br><span class="line">            i = q;</span><br><span class="line">            buf [--charPos] = DigitOnes[r];</span><br><span class="line">            buf [--charPos] = DigitTens[r];</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">// Fall thru to fast mode for smaller numbers</span></span><br><span class="line">        <span class="comment">// assert(i &lt;= 65536, i);</span></span><br><span class="line">        <span class="keyword">for</span> (;;) &#123;<span class="comment">//2+8 =10, 小一些的数字用 10 转换</span></span><br><span class="line">            q = (i * <span class="number">52429</span>) &gt;&gt;&gt; (<span class="number">16</span>+<span class="number">3</span>);</span><br><span class="line">            r = i - ((q &lt;&lt; <span class="number">3</span>) + (q &lt;&lt; <span class="number">1</span>));  <span class="comment">// r = i-(q*10) ...</span></span><br><span class="line">            buf [--charPos] = digits [r];</span><br><span class="line">            i = q;</span><br><span class="line">            <span class="keyword">if</span> (i == <span class="number">0</span>) <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (sign != <span class="number">0</span>) &#123;</span><br><span class="line">            buf [--charPos] = sign;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="stringSize-int"><a href="#stringSize-int" class="headerlink" title="stringSize(int)"></a>stringSize(int)</h3><blockquote>
+<p>输入值必须是 正数,在进行10进制转换的时候，可以快速确定转换数组的长度</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="keyword">static</span> <span class="keyword">int</span> [] sizeTable = &#123; <span class="number">9</span>, <span class="number">99</span>, <span class="number">999</span>, <span class="number">9999</span>, <span class="number">99999</span>, <span class="number">999999</span>, <span class="number">9999999</span>,</span><br><span class="line">                                      <span class="number">99999999</span>, <span class="number">999999999</span>, Integer.MAX_VALUE &#125;;</span><br><span class="line">    <span class="comment">// Requires positive x</span></span><br><span class="line">    <span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">stringSize</span><span class="params">(<span class="keyword">int</span> x)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i=<span class="number">0</span>; ; i++)</span><br><span class="line">            <span class="keyword">if</span> (x &lt;= sizeTable[i])</span><br><span class="line">                <span class="keyword">return</span> i+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>相比 Short，Integer类多了如下方法</p>
+</blockquote>
+<h3 id="parseUnsignedInt-String-int"><a href="#parseUnsignedInt-String-int" class="headerlink" title="parseUnsignedInt(String ,int)"></a>parseUnsignedInt(String ,int)</h3><blockquote>
+<p>最终调用的 parseInt 和 Long.parseLong ，在执行之前排除有负号的数字，然后判断字符串长度，根据长度进行转换值的类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">if</span> (len &lt;= <span class="number">5</span> || <span class="comment">// Integer.MAX_VALUE in Character.MAX_RADIX is 6 digits</span></span><br><span class="line">&gt;     (radix == <span class="number">10</span> &amp;&amp; len &lt;= <span class="number">9</span>) ) &#123; <span class="comment">// Integer.MAX_VALUE in base 10 is 10 digits</span></span><br><span class="line">&gt;     <span class="keyword">return</span> parseInt(s, radix); </span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<p>&gt;</p>
+<blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; <span class="keyword">long</span> ell = Long.parseLong(s, radix);</span><br><span class="line">&gt; <span class="keyword">if</span> ((ell &amp; <span class="number">0xffff_ffff_0000_0000L</span>) == <span class="number">0</span>) &#123; <span class="comment">// 如果不为0，怎说明超过32位，抛出 NumberFormatException 异常</span></span><br><span class="line">&gt;     <span class="keyword">return</span> (<span class="keyword">int</span>) ell;</span><br><span class="line">&gt; &#125;</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="toUnsignedString-int-int"><a href="#toUnsignedString-int-int" class="headerlink" title="toUnsignedString(int,int)"></a>toUnsignedString(int,int)</h3><blockquote>
+<p> 调用的Long中方法，Long 中部分处理方法使用的 BigInteger</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toUnsignedString</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> radix)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Long.toUnsignedString(toUnsignedLong(i), radix);</span><br><span class="line">&#125;</span><br><span class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toUnsignedString</span><span class="params">(<span class="keyword">long</span> i, <span class="keyword">int</span> radix)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (i &gt;= <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> toString(i, radix);</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">switch</span> (radix) &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>:</span><br><span class="line">                <span class="keyword">return</span> toBinaryString(i);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> <span class="number">4</span>:</span><br><span class="line">                <span class="keyword">return</span> toUnsignedString0(i, <span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> <span class="number">8</span>:</span><br><span class="line">                <span class="keyword">return</span> toOctalString(i);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> <span class="number">10</span>:</span><br><span class="line">                <span class="comment">/*</span></span><br><span class="line"><span class="comment">                 * We can get the effect of an unsigned division by 10</span></span><br><span class="line"><span class="comment">                 * on a long value by first shifting right, yielding a</span></span><br><span class="line"><span class="comment">                 * positive value, and then dividing by 5.  This</span></span><br><span class="line"><span class="comment">                 * allows the last digit and preceding digits to be</span></span><br><span class="line"><span class="comment">                 * isolated more quickly than by an initial conversion</span></span><br><span class="line"><span class="comment">                 * to BigInteger.</span></span><br><span class="line"><span class="comment">                 */</span></span><br><span class="line">                <span class="keyword">long</span> quot = (i &gt;&gt;&gt; <span class="number">1</span>) / <span class="number">5</span>;</span><br><span class="line">                <span class="keyword">long</span> rem = i - quot * <span class="number">10</span>;</span><br><span class="line">                <span class="keyword">return</span> toString(quot) + rem;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> <span class="number">16</span>:</span><br><span class="line">                <span class="keyword">return</span> toHexString(i);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">case</span> <span class="number">32</span>:</span><br><span class="line">                <span class="keyword">return</span> toUnsignedString0(i, <span class="number">5</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">default</span>:</span><br><span class="line">                <span class="keyword">return</span> toUnsignedBigInteger(i).toString(radix);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="getInteger-String-nm-Integer-val"><a href="#getInteger-String-nm-Integer-val" class="headerlink" title="getInteger(String nm, Integer val)"></a>getInteger(String nm, Integer val)</h3><blockquote>
+<p>用于获取系统属性数值，目前没用到过</p>
+</blockquote>
+<h3 id="decode-String-nm"><a href="#decode-String-nm" class="headerlink" title="decode(String nm)"></a>decode(String nm)</h3><blockquote>
+<p>将String 转换为Integer<br>因为平时表示有 8，10，16进制，其中8,16分别使用 0, 0x或# 开头，该函数用于判别不同的进制和正负，以便正确转换值</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> Integer <span class="title">decode</span><span class="params">(String nm)</span> <span class="keyword">throws</span> NumberFormatException </span>&#123;</span><br><span class="line">       <span class="keyword">int</span> radix = <span class="number">10</span>;</span><br><span class="line">       <span class="keyword">int</span> index = <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">boolean</span> negative = <span class="keyword">false</span>;</span><br><span class="line">       Integer result;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (nm.length() == <span class="number">0</span>)</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> NumberFormatException(<span class="string">"Zero length string"</span>);</span><br><span class="line">       <span class="keyword">char</span> firstChar = nm.charAt(<span class="number">0</span>);</span><br><span class="line">       <span class="comment">// Handle sign, if present</span></span><br><span class="line">       <span class="keyword">if</span> (firstChar == <span class="string">'-'</span>) &#123;</span><br><span class="line">           negative = <span class="keyword">true</span>;</span><br><span class="line">           index++;</span><br><span class="line">       &#125; <span class="keyword">else</span> <span class="keyword">if</span> (firstChar == <span class="string">'+'</span>)</span><br><span class="line">           index++;</span><br><span class="line"></span><br><span class="line">       <span class="comment">// Handle radix specifier, if present</span></span><br><span class="line">       <span class="keyword">if</span> (nm.startsWith(<span class="string">"0x"</span>, index) || nm.startsWith(<span class="string">"0X"</span>, index)) &#123;</span><br><span class="line">           index += <span class="number">2</span>;</span><br><span class="line">           radix = <span class="number">16</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">else</span> <span class="keyword">if</span> (nm.startsWith(<span class="string">"#"</span>, index)) &#123;</span><br><span class="line">           index ++;</span><br><span class="line">           radix = <span class="number">16</span>;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">else</span> <span class="keyword">if</span> (nm.startsWith(<span class="string">"0"</span>, index) &amp;&amp; nm.length() &gt; <span class="number">1</span> + index) &#123;</span><br><span class="line">           index ++;</span><br><span class="line">           radix = <span class="number">8</span>;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">       <span class="keyword">if</span> (nm.startsWith(<span class="string">"-"</span>, index) || nm.startsWith(<span class="string">"+"</span>, index))</span><br><span class="line">           <span class="keyword">throw</span> <span class="keyword">new</span> NumberFormatException(<span class="string">"Sign character in wrong position"</span>);</span><br><span class="line"></span><br><span class="line">       <span class="keyword">try</span> &#123;</span><br><span class="line">           result = Integer.valueOf(nm.substring(index), radix);</span><br><span class="line">           result = negative ? Integer.valueOf(-result.intValue()) : result;</span><br><span class="line">       &#125; <span class="keyword">catch</span> (NumberFormatException e) &#123;</span><br><span class="line">           <span class="comment">// If number is Integer.MIN_VALUE, we'll end up here. The next line</span></span><br><span class="line">           <span class="comment">// handles this case, and causes any genuine format error to be</span></span><br><span class="line">           <span class="comment">// rethrown.</span></span><br><span class="line">           String constant = negative ? (<span class="string">"-"</span> + nm.substring(index))</span><br><span class="line">                                      : nm.substring(index);</span><br><span class="line">           result = Integer.valueOf(constant, radix);</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> result;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="formatUnsignedInt-int-int-char-int-int"><a href="#formatUnsignedInt-int-int-char-int-int" class="headerlink" title="formatUnsignedInt(int, int, char[], int, int )"></a>formatUnsignedInt(int, int, char[], int, int )</h3><blockquote>
+<p>toHexString(int), toOctalString(int), toBinaryString(int) 的最终底层调用都是这个</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">formatUnsignedInt</span><span class="params">(<span class="keyword">int</span> val, <span class="keyword">int</span> shift, <span class="keyword">char</span>[] buf, <span class="keyword">int</span> offset, <span class="keyword">int</span> len)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">int</span> charPos = len;</span><br><span class="line">        <span class="keyword">int</span> radix = <span class="number">1</span> &lt;&lt; shift;<span class="comment">//确定进制</span></span><br><span class="line">        <span class="keyword">int</span> mask = radix - <span class="number">1</span>; <span class="comment">// 掩码，用于取值，如16进制掩码为 1111，每四位取一次值</span></span><br><span class="line">        <span class="keyword">do</span> &#123;</span><br><span class="line">            <span class="comment">// 根据进制 取一定位数保存，使用 digits 中按表使用char替换</span></span><br><span class="line">            buf[offset + --charPos] = Integer.digits[val &amp; mask];</span><br><span class="line">            val &gt;&gt;&gt;= shift;<span class="comment">//将已取的位去除</span></span><br><span class="line">        &#125; <span class="keyword">while</span> (val != <span class="number">0</span> &amp;&amp; charPos &gt; <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> charPos;</span><br><span class="line">&#125;</span><br><span class="line"> <span class="function"><span class="keyword">private</span> <span class="keyword">static</span> String <span class="title">toUnsignedString0</span><span class="params">(<span class="keyword">int</span> val, <span class="keyword">int</span> shift)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// assert shift &gt; 0 &amp;&amp; shift &lt;=5 : "Illegal shift value";</span></span><br><span class="line">        <span class="keyword">int</span> mag = Integer.SIZE - Integer.numberOfLeadingZeros(val);<span class="comment">// 得出有效值二进制位数</span></span><br><span class="line">        <span class="keyword">int</span> chars = Math.max(((mag + (shift - <span class="number">1</span>)) / shift), <span class="number">1</span>);<span class="comment">// 求出转换所需的数组长度</span></span><br><span class="line">        <span class="keyword">char</span>[] buf = <span class="keyword">new</span> <span class="keyword">char</span>[chars];</span><br><span class="line">        formatUnsignedInt(val, shift, buf, <span class="number">0</span>, chars);</span><br><span class="line">        <span class="comment">// Use special constructor which takes over "buf".</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">new</span> String(buf, <span class="keyword">true</span>);</span><br><span class="line"> &#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toHexString</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> toUnsignedString0(i, <span class="number">4</span>);</span><br><span class="line">&#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toOctalString</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> toUnsignedString0(i, <span class="number">3</span>);</span><br><span class="line"> &#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toBinaryString</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> toUnsignedString0(i, <span class="number">1</span>);</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>compareUnsigned(int,int)、dividedUnsigned(int,int)、remainderUnsigned(int,int)<br>如函数字面意思</p>
+</blockquote>
+<h3 id="HighestOneBit-int-、lowestOneBit-int"><a href="#HighestOneBit-int-、lowestOneBit-int" class="headerlink" title="HighestOneBit(int)、lowestOneBit(int)"></a>HighestOneBit(int)、lowestOneBit(int)</h3><blockquote>
+<p>HighestOneBit : 取 i 这个数的二进制形式最左边的最高一位且高位后面全部补零，最后返回int型的结果<br>lowesetOneBit : 传入一个int参数i，返回其二进制最低位1的权值,</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">highestOneBit</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="comment">// HD, Figure 3-1</span></span><br><span class="line">        i |= (i &gt;&gt;  <span class="number">1</span>);</span><br><span class="line">        i |= (i &gt;&gt;  <span class="number">2</span>);</span><br><span class="line">        i |= (i &gt;&gt;  <span class="number">4</span>);</span><br><span class="line">        i |= (i &gt;&gt;  <span class="number">8</span>);</span><br><span class="line">        i |= (i &gt;&gt; <span class="number">16</span>);</span><br><span class="line">        <span class="keyword">return</span> i - (i &gt;&gt;&gt; <span class="number">1</span>);</span><br><span class="line">    &#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">lowestOneBit</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;<span class="comment">//原理与负数的补码表示有关，由i按位取反再末位加1可以得到-i的补码。</span></span><br><span class="line">        <span class="comment">// HD, Section 2-1</span></span><br><span class="line">        <span class="keyword">return</span> i &amp; -i;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="numberOfLeadingZeros-int-、numberOfTrailingZeros-int"><a href="#numberOfLeadingZeros-int-、numberOfTrailingZeros-int" class="headerlink" title="numberOfLeadingZeros(int)、numberOfTrailingZeros(int)"></a>numberOfLeadingZeros(int)、numberOfTrailingZeros(int)</h3><blockquote>
+<p>用户获取数值作为二进制时，头部和尾部连续的0的个数</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">numberOfLeadingZeros</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">if</span> (i == <span class="number">0</span>)</span><br><span class="line">            <span class="keyword">return</span> <span class="number">32</span>;</span><br><span class="line">        <span class="keyword">int</span> n = <span class="number">1</span>;</span><br><span class="line">    <span class="comment">// 二分，判断最高的 16 位是否有值，如果不等于0，说明有值的位数 至少为 16位</span></span><br><span class="line">        <span class="keyword">if</span> (i &gt;&gt;&gt; <span class="number">16</span> == <span class="number">0</span>) &#123; n += <span class="number">16</span>; i &lt;&lt;= <span class="number">16</span>; &#125;</span><br><span class="line">    <span class="comment">// 判断最高 8 位是否有值，如果不等于0，则说明，至少有 16 + 8 位属于有效位数</span></span><br><span class="line">        <span class="keyword">if</span> (i &gt;&gt;&gt; <span class="number">24</span> == <span class="number">0</span>) &#123; n +=  <span class="number">8</span>; i &lt;&lt;=  <span class="number">8</span>; &#125;</span><br><span class="line">    <span class="comment">// 4 位</span></span><br><span class="line">        <span class="keyword">if</span> (i &gt;&gt;&gt; <span class="number">28</span> == <span class="number">0</span>) &#123; n +=  <span class="number">4</span>; i &lt;&lt;=  <span class="number">4</span>; &#125;</span><br><span class="line">    <span class="comment">// 2 位</span></span><br><span class="line">        <span class="keyword">if</span> (i &gt;&gt;&gt; <span class="number">30</span> == <span class="number">0</span>) &#123; n +=  <span class="number">2</span>; i &lt;&lt;=  <span class="number">2</span>; &#125;</span><br><span class="line">    <span class="comment">// 1 位</span></span><br><span class="line">        n -= i &gt;&gt;&gt; <span class="number">31</span>;</span><br><span class="line">        <span class="keyword">return</span> n;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">numberOfTrailingZeros</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;<span class="comment">// 原理和numberOfLeadingZeros一样，反过来而已</span></span><br><span class="line">        <span class="keyword">int</span> y;</span><br><span class="line">        <span class="keyword">if</span> (i == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">32</span>;</span><br><span class="line">        <span class="keyword">int</span> n = <span class="number">31</span>;</span><br><span class="line">        y = i &lt;&lt;<span class="number">16</span>; <span class="keyword">if</span> (y != <span class="number">0</span>) &#123; n = n -<span class="number">16</span>; i = y; &#125;</span><br><span class="line">        y = i &lt;&lt; <span class="number">8</span>; <span class="keyword">if</span> (y != <span class="number">0</span>) &#123; n = n - <span class="number">8</span>; i = y; &#125;</span><br><span class="line">        y = i &lt;&lt; <span class="number">4</span>; <span class="keyword">if</span> (y != <span class="number">0</span>) &#123; n = n - <span class="number">4</span>; i = y; &#125;</span><br><span class="line">        y = i &lt;&lt; <span class="number">2</span>; <span class="keyword">if</span> (y != <span class="number">0</span>) &#123; n = n - <span class="number">2</span>; i = y; &#125;</span><br><span class="line">        <span class="keyword">return</span> n - ((i &lt;&lt; <span class="number">1</span>) &gt;&gt;&gt; <span class="number">31</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="bitCount-int"><a href="#bitCount-int" class="headerlink" title="bitCount(int)"></a>bitCount(int)</h3><blockquote>
+<p>返回 i 用二进制表示时 1 的个数</p>
+<p>举例：<br>10110100 &gt;&gt;&gt; 1 = 01011010<br>01011010&amp; 01010101 = 01010000<br>10110100 - 01010000 =  01 10 01 00 //分别对应了两位一组中 1- 2- 1- 0 个1<br>接下来 4 位一组，01 + 10 = 11  01 + 00 = 01 即这8位数分成2组，即为 0011 0001<br>然后 8 位一组 0011 + 0001 = 0100 余下以此类推</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">bitCount</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123; <span class="comment">// 有点像 归并和位移的结合</span></span><br><span class="line">        <span class="comment">// HD, Figure 5-2</span></span><br><span class="line">        i = i - ((i &gt;&gt;&gt; <span class="number">1</span>) &amp; <span class="number">0x55555555</span>); <span class="comment">// 5 用二进制表示为 0101，2位一组，分别记录1的个数</span></span><br><span class="line">        i = (i &amp; <span class="number">0x33333333</span>) + ((i &gt;&gt;&gt; <span class="number">2</span>) &amp; <span class="number">0x33333333</span>);<span class="comment">// 3 用二进制表示为 0011，4位一组</span></span><br><span class="line">        i = (i + (i &gt;&gt;&gt; <span class="number">4</span>)) &amp; <span class="number">0x0f0f0f0f</span>; <span class="comment">// 8 位一组， 0000 1111</span></span><br><span class="line">        i = i + (i &gt;&gt;&gt; <span class="number">8</span>); <span class="comment">// 16位一组，int只有32位，16位一组，其实这里正好统计完成</span></span><br><span class="line">        i = i + (i &gt;&gt;&gt; <span class="number">16</span>); <span class="comment">// 32位一组</span></span><br><span class="line">        <span class="keyword">return</span> i &amp; <span class="number">0x3f</span>; <span class="comment">// 最高肯定不会超过32，去最后 6 位</span></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="rotateLeft-int-int-、rotateRight-int-int"><a href="#rotateLeft-int-int-、rotateRight-int-int" class="headerlink" title="rotateLeft(int,int)、rotateRight(int,int)"></a>rotateLeft(int,int)、rotateRight(int,int)</h3><blockquote>
+<p>循环左右，循环右移   微机原理简单概念，不解释</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">rotateLeft</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> distance)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (i &lt;&lt; distance) | (i &gt;&gt;&gt; -distance); <span class="comment">// 这里的 -distance 应该是 32 - distance，这样写会自动根据长度转换</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">rotateRight</span><span class="params">(<span class="keyword">int</span> i, <span class="keyword">int</span> distance)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (i &gt;&gt;&gt; distance) | (i &lt;&lt; -distance);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="reverse-int"><a href="#reverse-int" class="headerlink" title="reverse(int)"></a>reverse(int)</h3><blockquote>
+<p>二进制数倒转</p>
+<p>举个例子(依旧只写8位):<br>11 01 00 10 =&gt; 11 10 00 01 =&gt; 10 11 01 00 =&gt; 01 00 10 11</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">reverse</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;        </span><br><span class="line">       i = (i &amp; <span class="number">0x55555555</span>) &lt;&lt; <span class="number">1</span> | (i &gt;&gt;&gt; <span class="number">1</span>) &amp; <span class="number">0x55555555</span>; <span class="comment">// 2位一组，互相交换位置</span></span><br><span class="line">       i = (i &amp; <span class="number">0x33333333</span>) &lt;&lt; <span class="number">2</span> | (i &gt;&gt;&gt; <span class="number">2</span>) &amp; <span class="number">0x33333333</span>; <span class="comment">// 4位一组，互相交换位置</span></span><br><span class="line">       i = (i &amp; <span class="number">0x0f0f0f0f</span>) &lt;&lt; <span class="number">4</span> | (i &gt;&gt;&gt; <span class="number">4</span>) &amp; <span class="number">0x0f0f0f0f</span>; <span class="comment">// 8位一组，互相交换位置</span></span><br><span class="line">       i = (i &lt;&lt; <span class="number">24</span>) | ((i &amp; <span class="number">0xff00</span>) &lt;&lt; <span class="number">8</span>) |</span><br><span class="line">           ((i &gt;&gt;&gt; <span class="number">8</span>) &amp; <span class="number">0xff00</span>) | (i &gt;&gt;&gt; <span class="number">24</span>);  <span class="comment">//  16 位一组，互相交换位置</span></span><br><span class="line">       <span class="keyword">return</span> i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="signum-int"><a href="#signum-int" class="headerlink" title="signum(int)"></a>signum(int)</h3><blockquote>
+<p>常用的 sign 函数，这里是大于0返回1，等于 0则返回0， 小于 0 则返回 -1</p>
+<p>负数转二进制：取负数绝对值的原码==&gt;计算原码的反码==&gt;对反码 + 1</p>
+<p>还需了解 有符号数和无符号数位移的区别，以16位 +1 和 -1 为例：<br>+1 ： 0000 0000 0000 0001<br> -1 ： 1111 1111 1111 1111 = $-1*2^{15} + 2^{14} + 2^{13}+……+ 2^0$<br>位移后：<br>+1 &gt;&gt; 15 = 0   +1&gt;&gt;&gt; 15 = 0<br>-1 &gt;&gt; 15 = 1111 1111 1111 1111（符号不变，每次将符号也位移了）<br> -1 &gt;&gt;&gt; 15 = 0000 0000 0000 0001</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">signum</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;    </span><br><span class="line">        <span class="keyword">return</span> (i &gt;&gt; <span class="number">31</span>) | (-i &gt;&gt;&gt; <span class="number">31</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>这三个，字面意思理解就行，sum(int,int) 、max(int,int) 、min(int,int)</p>
+</blockquote>
+<h3 id="Long-与-Integer"><a href="#Long-与-Integer" class="headerlink" title="Long 与 Integer"></a>Long 与 Integer</h3><blockquote>
+<p>Long 和 Integer 相比，只是值范围的不同，或者说长度不同，其原理操作等其实是一致的</p>
+<p>其中 toUnsignedBigInteger(long)相对有所不同</p>
+</blockquote>
+<p><img src="/2019/02/14/JDK_Learning_wrapper_primitive/1563027878638.png" alt="1563027878638"></p>
+<h2 id="5-Float、Double"><a href="#5-Float、Double" class="headerlink" title="5. Float、Double"></a>5. Float、Double</h2><blockquote>
+<p> Float 与 Double 的区别，类似于 Integer 和 Long</p>
+<p><img src="/2019/02/14/JDK_Learning_wrapper_primitive/1563085069398.png" alt="1563085069398"></p>
+<p>先看一些常量的定义，Float 和 Double 引入了无穷大和无穷小，乍一看肯定在想，为什么 0 当除数会不报错，只有一个可能，就是Java中带小数的 零 是假零，实际上是大于0的极小的一个值。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">double</span> POSITIVE_INFINITY = <span class="number">1.0</span> / <span class="number">0.0</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">double</span> NEGATIVE_INFINITY = -<span class="number">1.0</span> / <span class="number">0.0</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">double</span> NaN = <span class="number">0.0</span>d / <span class="number">0.0</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">double</span> MAX_VALUE = <span class="number">0x1</span>.fffffffffffffP+<span class="number">1023</span>; <span class="comment">// 1.7976931348623157e+308</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">double</span> MIN_NORMAL = <span class="number">0x1</span>.0p-<span class="number">1022</span>; <span class="comment">// 2.2250738585072014E-308</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">double</span> MIN_VALUE = <span class="number">0x0</span>.0000000000001P-<span class="number">1022</span>; <span class="comment">// 4.9e-324</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_EXPONENT = <span class="number">1023</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MIN_EXPONENT = -<span class="number">1022</span>;</span><br></pre></td></tr></table></figure>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">float</span> POSITIVE_INFINITY = <span class="number">1.0f</span> / <span class="number">0.0f</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">float</span> NEGATIVE_INFINITY = -<span class="number">1.0f</span> / <span class="number">0.0f</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">float</span> NaN = <span class="number">0.0f</span> / <span class="number">0.0f</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">float</span> MAX_VALUE = <span class="number">0x1</span>.fffffeP+<span class="number">127f</span>; <span class="comment">// 3.4028235e+38f</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">float</span> MIN_NORMAL = <span class="number">0x1</span>.0p-<span class="number">126f</span>; <span class="comment">// 1.17549435E-38f</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">float</span> MIN_VALUE = <span class="number">0x0</span>.000002P-<span class="number">126f</span>; <span class="comment">// 1.4e-45f</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_EXPONENT = <span class="number">127</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MIN_EXPONENT = -<span class="number">126</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>具体方法函数，Float 和 Double 原理基本一致，在许多方法中 Float 直接使用的 Double中的方法<br>toString 方法中， Float 和 Double 使用的是 FloatingDecimal.toJavaFormatString(double d)</p>
+</blockquote>
+<h3 id="toString-NaN"><a href="#toString-NaN" class="headerlink" title="toString()"></a>toString()</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toString</span><span class="params">(<span class="keyword">double</span> d)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> FloatingDecimal.toJavaFormatString(d);<span class="comment">// 待研究</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="doubleToLongBits-double-value"><a href="#doubleToLongBits-double-value" class="headerlink" title="doubleToLongBits(double value)"></a>doubleToLongBits(double value)</h3><blockquote>
+<p>根据 IEEE 754 浮点双精度格式位布局，返回指定浮点值。在所有情况下，实际<strong>返回的是一个Long整数</strong>，然后使用 longBitsToDouble(Long l) 生成对应的浮点值<br>第 63 位（掩码 0x8000000000000000L 选定的位）表示浮点数的符号，第62～52位（掩码<br>0x7ff0000000000000L 选定的位）表示指数，第51～0位（掩码 0x000fffffffffffffL<br>选定的位）表示浮点数的有效数字（有时也称为尾数）</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">EXP_BIT_MASK = <span class="number">9218868437227405312L</span>;</span><br><span class="line">SIGN_BIT_MASK = -<span class="number">9223372036854775808L</span>;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">long</span> <span class="title">doubleToLongBits</span><span class="params">(<span class="keyword">double</span> value)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">long</span> result = doubleToRawLongBits(value);</span><br><span class="line">        <span class="comment">// Check for NaN based on values of bit fields, maximum</span></span><br><span class="line">        <span class="comment">// exponent and nonzero significand.</span></span><br><span class="line">        <span class="keyword">if</span> ( ((result &amp; DoubleConsts.EXP_BIT_MASK) ==</span><br><span class="line">              DoubleConsts.EXP_BIT_MASK) &amp;&amp;</span><br><span class="line">             (result &amp; DoubleConsts.SIGNIF_BIT_MASK) != <span class="number">0L</span>)</span><br><span class="line">            result = <span class="number">0x7ff8000000000000L</span>;</span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="toHexString"><a href="#toHexString" class="headerlink" title="toHexString()"></a>toHexString()</h3><blockquote>
+<p>相关字符转换可以看API文档</p>
+<p>在<a href="https://blog.csdn.net/noteless/article/details/83005822" target="_blank" rel="noopener">博客</a>淘到一张图片<br><img src="/2019/02/14/JDK_Learning_wrapper_primitive/1563112202621.png" alt="1563112202621"></p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> String <span class="title">toHexString</span><span class="params">(<span class="keyword">double</span> d)</span> </span>&#123;</span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * Modeled after the "a" conversion specifier in C99, section</span></span><br><span class="line"><span class="comment">         * 7.19.6.1; however, the output of this method is more</span></span><br><span class="line"><span class="comment">         * tightly specified.</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">if</span> (!isFinite(d) )</span><br><span class="line">            <span class="comment">// For infinity and NaN, use the decimal output.</span></span><br><span class="line">            <span class="keyword">return</span> Double.toString(d);</span><br><span class="line">        <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// Initialized to maximum size of output.</span></span><br><span class="line">            StringBuilder answer = <span class="keyword">new</span> StringBuilder(<span class="number">24</span>);</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (Math.copySign(<span class="number">1.0</span>, d) == -<span class="number">1.0</span>)    <span class="comment">// value is negative,</span></span><br><span class="line">                answer.append(<span class="string">"-"</span>);                  <span class="comment">// so append sign info</span></span><br><span class="line">            answer.append(<span class="string">"0x"</span>);</span><br><span class="line">            d = Math.abs(d);</span><br><span class="line">            <span class="keyword">if</span>(d == <span class="number">0.0</span>) &#123;</span><br><span class="line">                answer.append(<span class="string">"0.0p0"</span>);</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">boolean</span> subnormal = (d &lt; DoubleConsts.MIN_NORMAL);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// Isolate significand bits and OR in a high-order bit</span></span><br><span class="line">                <span class="comment">// so that the string representation has a known</span></span><br><span class="line">                <span class="comment">// length.</span></span><br><span class="line">                <span class="keyword">long</span> signifBits = (Double.doubleToLongBits(d)</span><br><span class="line">                                   &amp; DoubleConsts.SIGNIF_BIT_MASK) |</span><br><span class="line">                    <span class="number">0x1000000000000000L</span>;</span><br><span class="line"></span><br><span class="line">                <span class="comment">// Subnormal values have a 0 implicit bit; normal</span></span><br><span class="line">                <span class="comment">// values have a 1 implicit bit.</span></span><br><span class="line">                answer.append(subnormal ? <span class="string">"0."</span> : <span class="string">"1."</span>);</span><br><span class="line"></span><br><span class="line">                <span class="comment">// Isolate the low-order 13 digits of the hex</span></span><br><span class="line">                <span class="comment">// representation.  If all the digits are zero,</span></span><br><span class="line">                <span class="comment">// replace with a single 0; otherwise, remove all</span></span><br><span class="line">                <span class="comment">// trailing zeros.</span></span><br><span class="line">                String signif = Long.toHexString(signifBits).substring(<span class="number">3</span>,<span class="number">16</span>);</span><br><span class="line">                answer.append(signif.equals(<span class="string">"0000000000000"</span>) ? <span class="comment">// 13 zeros</span></span><br><span class="line">                              <span class="string">"0"</span>:</span><br><span class="line">                              signif.replaceFirst(<span class="string">"0&#123;1,12&#125;$"</span>, <span class="string">""</span>));</span><br><span class="line"></span><br><span class="line">                answer.append(<span class="string">'p'</span>);</span><br><span class="line">                <span class="comment">// If the value is subnormal, use the E_min exponent</span></span><br><span class="line">                <span class="comment">// value for double; otherwise, extract and report d's</span></span><br><span class="line">                <span class="comment">// exponent (the representation of a subnormal uses</span></span><br><span class="line">                <span class="comment">// E_min -1).</span></span><br><span class="line">                answer.append(subnormal ?</span><br><span class="line">                              DoubleConsts.MIN_EXPONENT:</span><br><span class="line">                              Math.getExponent(d));</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">return</span> answer.toString();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="parseDouble-String-s"><a href="#parseDouble-String-s" class="headerlink" title="parseDouble(String s)"></a>parseDouble(String s)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">double</span> <span class="title">parseDouble</span><span class="params">(String s)</span> <span class="keyword">throws</span> NumberFormatException </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> FloatingDecimal.parseDouble(s);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="isNaN-double-v"><a href="#isNaN-double-v" class="headerlink" title="isNaN(double v)"></a>isNaN(double v)</h3><blockquote>
+<p>判断是否是一个数字</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isNaN</span><span class="params">(<span class="keyword">double</span> v)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (v != v);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="isInfinite-double-v-、isFinite-double-d"><a href="#isInfinite-double-v-、isFinite-double-d" class="headerlink" title="isInfinite(double v)、isFinite(double d)"></a>isInfinite(double v)、isFinite(double d)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isInfinite</span><span class="params">(<span class="keyword">double</span> v)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> (v == POSITIVE_INFINITY) || (v == NEGATIVE_INFINITY);</span><br><span class="line">&#125;</span><br><span class="line"> <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">boolean</span> <span class="title">isFinite</span><span class="params">(<span class="keyword">double</span> d)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> Math.abs(d) &lt;= DoubleConsts.MAX_VALUE;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="hashCode-double-value"><a href="#hashCode-double-value" class="headerlink" title="hashCode(double value)"></a>hashCode(double value)</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">(<span class="keyword">double</span> value)</span> </span>&#123;</span><br><span class="line">       <span class="keyword">long</span> bits = doubleToLongBits(value);</span><br><span class="line">       <span class="keyword">return</span> (<span class="keyword">int</span>)(bits ^ (bits &gt;&gt;&gt; <span class="number">32</span>));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="doubleToRawLongBits-longBitsToDouble"><a href="#doubleToRawLongBits-longBitsToDouble" class="headerlink" title="doubleToRawLongBits  longBitsToDouble"></a>doubleToRawLongBits  longBitsToDouble</h3><blockquote>
+<p>调用的 native 本地库</p>
+</blockquote>
+<h2 id="6-Character"><a href="#6-Character" class="headerlink" title="6. Character"></a>6. Character</h2><blockquote>
+<p>部分常量</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MIN_RADIX = <span class="number">2</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> MAX_RADIX = <span class="number">36</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">char</span> MIN_VALUE = <span class="string">'\u0000'</span>;</span><br><span class="line"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">char</span> MAX_VALUE = <span class="string">'\uFFFF'</span>;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>内部类 Subset UnicodeBlock</p>
+<p>缓存内部类</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="class"><span class="keyword">class</span> <span class="title">CharacterCache</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">private</span> <span class="title">CharacterCache</span><span class="params">()</span></span>&#123;&#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">static</span> <span class="keyword">final</span> Character cache[] = <span class="keyword">new</span> Character[<span class="number">127</span> + <span class="number">1</span>];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">static</span> &#123;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; cache.length; i++)</span><br><span class="line">                cache[i] = <span class="keyword">new</span> Character((<span class="keyword">char</span>)i);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="7-Void"><a href="#7-Void" class="headerlink" title="7. Void"></a>7. Void</h2><h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://blog.csdn.net/wus_shang/article/details/78705142" target="_blank" rel="noopener">Java中的8种基本和对应的封装类</a></p>
+<p><a href="https://www.cnblogs.com/alternative/p/7520332.html" target="_blank" rel="noopener">Java 八种基本类型和基本类型封装类</a></p>
+<p><a href="https://blog.csdn.net/china_zoujinyong/article/details/8049755" target="_blank" rel="noopener">java中boolean类型的长度</a></p>
+<p><a href="https://www.cnblogs.com/alternative/p/7520332.html" target="_blank" rel="noopener">Java 八种基本类型和基本类型封装类及不同数据类型间的转换</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Liang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://pengshiliang.coding.me/2019/02/14/JDK_Learning_wrapper_primitive/" title="基础数据类型封装类源码阅读">https://pengshiliang.coding.me/2019/02/14/JDK_Learning_wrapper_primitive/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JDK/" rel="tag"># JDK</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/13/JDK_Learning_Class/" rel="next" title="Class源码阅读">
+                <i class="fa fa-chevron-left"></i> Class源码阅读
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/04/Jdk_Learning_String/" rel="prev" title="String 源码阅读">
+                String 源码阅读 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/head-32x32.png" alt="Liang">
+            
+              <p class="site-author-name" itemprop="name">Liang</p>
+              <p class="site-description motion-element" itemprop="description">一个喜欢养花养草的扫地僧</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">21</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/liang-2018" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:doubieheart@qq.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Boolean"><span class="nav-text">1. Boolean</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-Byte"><span class="nav-text">2. Byte</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Short"><span class="nav-text">3. Short</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Integer、Long"><span class="nav-text">4. Integer、Long</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#getChars-int-i-int-index-char-buf"><span class="nav-text">getChars(int i, int index, char[] buf)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#stringSize-int"><span class="nav-text">stringSize(int)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#parseUnsignedInt-String-int"><span class="nav-text">parseUnsignedInt(String ,int)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#toUnsignedString-int-int"><span class="nav-text">toUnsignedString(int,int)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#getInteger-String-nm-Integer-val"><span class="nav-text">getInteger(String nm, Integer val)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#decode-String-nm"><span class="nav-text">decode(String nm)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#formatUnsignedInt-int-int-char-int-int"><span class="nav-text">formatUnsignedInt(int, int, char[], int, int )</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HighestOneBit-int-、lowestOneBit-int"><span class="nav-text">HighestOneBit(int)、lowestOneBit(int)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#numberOfLeadingZeros-int-、numberOfTrailingZeros-int"><span class="nav-text">numberOfLeadingZeros(int)、numberOfTrailingZeros(int)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bitCount-int"><span class="nav-text">bitCount(int)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#rotateLeft-int-int-、rotateRight-int-int"><span class="nav-text">rotateLeft(int,int)、rotateRight(int,int)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#reverse-int"><span class="nav-text">reverse(int)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#signum-int"><span class="nav-text">signum(int)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Long-与-Integer"><span class="nav-text">Long 与 Integer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-Float、Double"><span class="nav-text">5. Float、Double</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#toString-NaN"><span class="nav-text">toString()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#doubleToLongBits-double-value"><span class="nav-text">doubleToLongBits(double value)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#toHexString"><span class="nav-text">toHexString()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#parseDouble-String-s"><span class="nav-text">parseDouble(String s)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#isNaN-double-v"><span class="nav-text">isNaN(double v)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#isInfinite-double-v-、isFinite-double-d"><span class="nav-text">isInfinite(double v)、isFinite(double d)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hashCode-double-value"><span class="nav-text">hashCode(double value)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#doubleToRawLongBits-longBitsToDouble"><span class="nav-text">doubleToRawLongBits  longBitsToDouble</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#6-Character"><span class="nav-text">6. Character</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#7-Void"><span class="nav-text">7. Void</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考链接"><span class="nav-text">参考链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Liang</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+  
+  
+
+
+
+  
+  
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_sphere.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'f7JF0rBv804AugR3Qlzdf7pn-gzGzoHsz',
+        appKey: 'MGlHDt9joI6jLjPA69Qqs0bE',
+        placeholder: 'Just go go',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('-1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+  
+
+
+  
+
+  
+
+  
+  <!-- 页面点击小红心 -->
+	<script type="text/javascript" src="/js/src/love.js"></script>
+	<!-- 雪花特效 -->
+	<script type="text/javascript" src="/js/src/snow.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"log":false,"pluginJsPath":"lib/","pluginModelPath":"assets/","pluginRootPath":"live2dw/","tagMode":false});</script></body>
+</html>
