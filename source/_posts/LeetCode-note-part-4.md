@@ -299,6 +299,63 @@ class Solution {
 }
 ```
 
+## [229. Majority Element II](https://leetcode-cn.com/problems/majority-element-ii/)
+
+Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.
+
+Note: The algorithm should run in linear time and in O(1) space.
+
+Example 1:
+```
+Input: [3,2,3]
+Output: [3]
+```
+Example 2:
+```
+Input: [1,1,1,3,3,2,2,2]
+Output: [1,2]
+```
+
+> Boyer-Moore Majority Vote Algorithm 摩尔投票法
+
+```java
+class Solution {
+    public List<Integer> majorityElement(int[] nums) {
+        List<Integer> list = new ArrayList();
+        if(nums.length == 0)return list;
+        int num1 = nums[0], num2 = nums[0];
+        int count1 = 0, count2 = 0;
+        for(int num : nums){
+            if(num == num1){
+                count1 ++;
+            }else if(num == num2){
+                count2 ++;
+            }else if(count1 == 0){
+                num1 = num;
+                count1 = 1;
+            }else if(count2 == 0){
+                num2 = num;
+                count2 = 1;
+            }else{
+                count1 --;
+                count2 --;
+            }
+        }
+        count1 = count2 = 0;
+        for(int num : nums){
+            if(num == num1){
+                count1 ++;                
+            }else if(num == num2){
+                count2 ++;
+            }
+        }
+        if(count1 * 3 > nums.length)list.add(num1);
+        if(count2 * 3 > nums.length)list.add(num2);
+        return list;
+    }
+}
+```
+
 ## [172. Factorial Trailing Zeroes](https://leetcode-cn.com/problems/factorial-trailing-zeroes/)
 
 > Given an integer *n*, return the number of trailing zeroes in *n*!.
@@ -2246,6 +2303,110 @@ class Solution {
         }
         return pq.peek();
     }
+}
+```
+
+## [230. Kth Smallest Element in a BST](https://leetcode-cn.com/problems/kth-smallest-element-in-a-bst/)
+
+Given a binary search tree, write a function kthSmallest to find the kth smallest element in it.
+
+Note: 
+You may assume k is always valid, 1 ≤ k ≤ BST's total elements.
+
+Example 1:
+```
+Input: root = [3,1,4,null,2], k = 1
+   3
+  / \
+ 1   4
+  \
+   2
+Output: 1
+```
+Example 2:
+```
+Input: root = [5,3,6,2,4,null,null,1], k = 3
+       5
+      / \
+     3   6
+    / \
+   2   4
+  /
+ 1
+Output: 3
+```
+Follow up:
+What if the BST is modified (insert/delete operations) often and you need to find the kth smallest frequently? How would you optimize the kthSmallest routine?
+
+> 使用优先队列，简单粗暴
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+    PriorityQueue<Integer> pq;
+    public int kthSmallest(TreeNode root, int k) {
+         pq = new PriorityQueue<Integer>(new Comparator<Integer>() {
+            public int compare(Integer o1, Integer o2) {
+               return o2 - o1;
+            }
+        });
+        judge(root, k);
+        return pq.poll();
+    }
+    public void judge(TreeNode root, int k){
+        if(pq.size() < k ){
+            pq.add(root.val);
+        }else{            
+            int num = pq.poll();
+            if(num > root.val){
+                pq.add(root.val);    
+            }else{
+                pq.add(num);
+            }
+            
+        }
+        if(root.left != null)judge(root.left, k);
+        if(root.right != null)judge(root.right, k);
+    }
+}
+```
+
+> 利用二叉树特性，中序遍历，计数找出第k个即可
+
+```java
+/**
+ * Definition for a binary tree node.
+ * public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode(int x) { val = x; }
+ * }
+ */
+class Solution {
+   private int res = Integer.MAX_VALUE, count;
+    public int kthSmallest(TreeNode root, int k) {
+        count = k;
+        inorder(root);
+        return res;
+    }
+    private void inorder(TreeNode root) {
+        if(root != null) {
+            inorder(root.left);
+            if(res != Integer.MAX_VALUE) return;
+            if(--count == 0) res = root.val;
+            inorder(root.right);
+        }
+    }
+
 }
 ```
 
