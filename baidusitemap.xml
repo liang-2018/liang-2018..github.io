@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://pengshiliang.coding.me/2019/02/14/JDK_Learning_wrapper_primitive/</loc>
-    <lastmod>2019-07-14</lastmod>
+    <loc>https://pengshiliang.coding.me/2019/06/03/LeetCode-note-part-5/</loc>
+    <lastmod>2019-07-15</lastmod>
+  </url>  <url>
+    <loc>https://pengshiliang.coding.me/2019/05/03/LeetCode-note-part-4/</loc>
+    <lastmod>2019-07-15</lastmod>
+  </url>  <url>
+    <loc>https://pengshiliang.coding.me/2019/02/15/JDK_Learning_Thread_Runnable/</loc>
+    <lastmod>2019-07-15</lastmod>
   </url>  <url>
     <loc>https://pengshiliang.coding.me/2019/02/13/JDK_Learning_Class/</loc>
-    <lastmod>2019-07-12</lastmod>
+    <lastmod>2019-07-14</lastmod>
   </url>  <url>
-    <loc>https://pengshiliang.coding.me/2019/06/03/LeetCode-note-part-5/</loc>
-    <lastmod>2019-07-12</lastmod>
+    <loc>https://pengshiliang.coding.me/2019/02/14/JDK_Learning_wrapper_primitive/</loc>
+    <lastmod>2019-07-14</lastmod>
   </url>  <url>
     <loc>https://pengshiliang.coding.me/2018/09/29/redis-learning/</loc>
     <lastmod>2019-07-11</lastmod>
@@ -18,9 +24,6 @@
   </url>  <url>
     <loc>https://pengshiliang.coding.me/2019/02/12/JDK_Learning_Object/</loc>
     <lastmod>2019-07-11</lastmod>
-  </url>  <url>
-    <loc>https://pengshiliang.coding.me/2019/05/03/LeetCode-note-part-4/</loc>
-    <lastmod>2019-07-09</lastmod>
   </url>  <url>
     <loc>https://pengshiliang.coding.me/2019/04/22/LeetCode-note-part-3/</loc>
     <lastmod>2019-07-08</lastmod>
