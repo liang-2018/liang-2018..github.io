@@ -75,7 +75,7 @@
 
 
 
-  <meta name="keywords" content="J2EE, Plants">
+  <meta name="keywords" content="JDK,">
 
 
 
@@ -86,17 +86,20 @@
 
 
 
-<meta name="description" content="一个喜欢养花养草的扫地僧">
-<meta name="keywords" content="养花养草，bug制造师">
-<meta property="og:type" content="website">
-<meta property="og:title" content="初心不忘">
-<meta property="og:url" content="https://pengshiliang.coding.me/tags/流媒体/index.html">
+<meta name="description" content="ThreadLocal 类粗读">
+<meta name="keywords" content="JDK">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ThreadLocal 源码阅读">
+<meta property="og:url" content="https://pengshiliang.coding.me/2019/02/16/JDK-Learning-ThreadLocal/index.html">
 <meta property="og:site_name" content="初心不忘">
-<meta property="og:description" content="一个喜欢养花养草的扫地僧">
+<meta property="og:description" content="ThreadLocal 类粗读">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://pengshiliang.coding.me/2019/02/16/JDK-Learning-ThreadLocal/1563281580954.png">
+<meta property="og:updated_time" content="2019-07-16T13:24:50.183Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="初心不忘">
-<meta name="twitter:description" content="一个喜欢养花养草的扫地僧">
+<meta name="twitter:title" content="ThreadLocal 源码阅读">
+<meta name="twitter:description" content="ThreadLocal 类粗读">
+<meta name="twitter:image" content="https://pengshiliang.coding.me/2019/02/16/JDK-Learning-ThreadLocal/1563281580954.png">
 
 
 
@@ -126,13 +129,13 @@
 
 
 
-  <link rel="canonical" href="https://pengshiliang.coding.me/tags/流媒体/">
+  <link rel="canonical" href="https://pengshiliang.coding.me/2019/02/16/JDK-Learning-ThreadLocal/">
 
 
 
 
 
-  <title>标签: 流媒体 | 初心不忘</title>
+  <title>ThreadLocal 源码阅读 | 初心不忘</title>
   
 
 
@@ -151,7 +154,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -287,52 +290,215 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>流媒体<small>标签</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://pengshiliang.coding.me/2019/02/16/JDK-Learning-ThreadLocal/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Liang">
+      <meta itemprop="description" content>
+      <meta itemprop="image" content="/images/head-32x32.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="初心不忘">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2018/10/28/node.js创建流媒体服务器/" itemprop="url">
-              
-                <span itemprop="name">node.js创建流媒体服务器</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">ThreadLocal 源码阅读</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2018-10-28T00:00:00+08:00" content="2018-10-28">
-          10-28
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-02-16T20:50:32+08:00">
+                2019-02-16
+              </time>
+            
 
-    </header>
-  </article>
+            
 
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Source-Code/" itemprop="url" rel="index">
+                    <span itemprop="name">Source Code</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/02/16/JDK-Learning-ThreadLocal/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/02/16/JDK-Learning-ThreadLocal/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <blockquote>
+<p>ThreadLocal 类粗读</p>
+</blockquote>
+<a id="more"></a>
+<blockquote>
+<p>了解 ThreadLocal 先了解其类和接口关系<br>内部类 ThreadLocalMap 以及 SuppliedThreadLocal</p>
+</blockquote>
+<p><img src="/2019/02/16/JDK-Learning-ThreadLocal/1563281580954.png" alt="1563281580954"></p>
+<blockquote>
+<p>ThreadLocal是一个本地线程副本变量工具类。主要用于将私有线程和该线程存放的副本对象做一个映射，各个线程之间的变量互不干扰<strong>(ThreadLocal在每个线程中对该变量会创建一个副本，即每个线程内部都会有一个该变量，且在线程内部任何地方都可以使用，线程之间互不影响,由于在每个线程中都创建了副本，所以要考虑它对资源的消耗)</strong>。在高并发场景下，可以实现无状态的调用，特别适用于各个线程依赖不同的变量值完成操作的场景。</p>
+</blockquote>
+<h2 id="nextHashCode"><a href="#nextHashCode" class="headerlink" title="nextHashCode"></a>nextHashCode</h2><blockquote>
+<p>每次新增一个 ThreadLocal 实例，增加 HASH_INCREMENT = 0x61c88647 ，然后 &amp; (INITIAL_CAPACITY - 1) 取得在数组  private Entry[] table 中的索引。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> <span class="keyword">int</span> threadLocalHashCode = nextHashCode();</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> AtomicInteger nextHashCode = <span class="keyword">new</span> AtomicInteger();<span class="comment">// 初始化为0，整形，cas原子类</span></span><br><span class="line"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">int</span> HASH_INCREMENT = <span class="number">0x61c88647</span>;</span><br><span class="line"><span class="comment">// 由于是类成员，每次增加一个 ThreadLocal 对象，都会加 HASH_INCREMENT，以做到对象hash值不同</span></span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">int</span> <span class="title">nextHashCode</span><span class="params">()</span> </span>&#123; </span><br><span class="line">        <span class="keyword">return</span> nextHashCode.getAndAdd(HASH_INCREMENT);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+      <div>
+        <ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者：</strong>
+    Liang
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://pengshiliang.coding.me/2019/02/16/JDK-Learning-ThreadLocal/" title="ThreadLocal 源码阅读">https://pengshiliang.coding.me/2019/02/16/JDK-Learning-ThreadLocal/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>
+    本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/" rel="external nofollow" target="_blank">CC BY-NC-SA 3.0</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+
+      </div>
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JDK/" rel="tag"># JDK</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/02/15/JDK_Learning_Thread_Runnable/" rel="next" title="Thread 源码粗读">
+                <i class="fa fa-chevron-left"></i> Thread 源码粗读
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/03/04/Jdk_Learning_String/" rel="prev" title="String 源码阅读">
+                String 源码阅读 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -340,6 +506,13 @@
 
 
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -360,8 +533,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -439,6 +621,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#nextHashCode"><span class="nav-text">nextHashCode</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -607,6 +805,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
