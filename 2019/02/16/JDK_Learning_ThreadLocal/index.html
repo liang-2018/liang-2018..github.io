@@ -90,16 +90,16 @@
 <meta name="keywords" content="JDK">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ThreadLocal 源码阅读">
-<meta property="og:url" content="https://pengshiliang.coding.me/2019/02/16/JDK-Learning-ThreadLocal/index.html">
+<meta property="og:url" content="https://pengshiliang.coding.me/2019/02/16/JDK_Learning_ThreadLocal/index.html">
 <meta property="og:site_name" content="初心不忘">
 <meta property="og:description" content="ThreadLocal 类粗读">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://pengshiliang.coding.me/2019/02/16/JDK-Learning-ThreadLocal/1563281580954.png">
-<meta property="og:updated_time" content="2019-07-17T09:25:34.506Z">
+<meta property="og:image" content="https://pengshiliang.coding.me/2019/02/16/JDK_Learning_ThreadLocal/1563281580954.png">
+<meta property="og:updated_time" content="2019-07-17T09:52:30.462Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ThreadLocal 源码阅读">
 <meta name="twitter:description" content="ThreadLocal 类粗读">
-<meta name="twitter:image" content="https://pengshiliang.coding.me/2019/02/16/JDK-Learning-ThreadLocal/1563281580954.png">
+<meta name="twitter:image" content="https://pengshiliang.coding.me/2019/02/16/JDK_Learning_ThreadLocal/1563281580954.png">
 
 
 
@@ -129,7 +129,7 @@
 
 
 
-  <link rel="canonical" href="https://pengshiliang.coding.me/2019/02/16/JDK-Learning-ThreadLocal/">
+  <link rel="canonical" href="https://pengshiliang.coding.me/2019/02/16/JDK_Learning_ThreadLocal/">
 
 
 
@@ -304,7 +304,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://pengshiliang.coding.me/2019/02/16/JDK-Learning-ThreadLocal/">
+    <link itemprop="mainEntityOfPage" href="https://pengshiliang.coding.me/2019/02/16/JDK_Learning_ThreadLocal/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Liang">
@@ -374,8 +374,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2019/02/16/JDK-Learning-ThreadLocal/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2019/02/16/JDK-Learning-ThreadLocal/" itemprop="commentCount"></span>
+                <a href="/2019/02/16/JDK_Learning_ThreadLocal/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2019/02/16/JDK_Learning_ThreadLocal/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -410,7 +410,7 @@
 <h1 id="ThreadLocal-源码阅读"><a href="#ThreadLocal-源码阅读" class="headerlink" title="ThreadLocal 源码阅读"></a>ThreadLocal 源码阅读</h1><blockquote>
 <p>了解 ThreadLocal 先了解其类和接口关系<br>内部类 ThreadLocalMap 以及 SuppliedThreadLocal</p>
 </blockquote>
-<p><img src="/2019/02/16/JDK-Learning-ThreadLocal/1563281580954.png" alt="1563281580954"></p>
+<p><img src="/2019/02/16/JDK_Learning_ThreadLocal/1563281580954.png" alt="1563281580954"></p>
 <blockquote>
 <p>ThreadLocal是一个本地线程副本变量工具类。主要用于将私有线程和该线程存放的副本对象做一个映射，各个线程之间的变量互不干扰<strong>(ThreadLocal在每个线程中对该变量会创建一个副本，即每个线程内部都会有一个该变量，且在线程内部任何地方都可以使用，线程之间互不影响,由于在每个线程中都创建了副本，所以要考虑它对资源的消耗)</strong>。在高并发场景下，可以实现无状态的调用，特别适用于各个线程依赖不同的变量值完成操作的场景。</p>
 </blockquote>
@@ -550,6 +550,8 @@
 <h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><p><a href="http://www.hchstudio.cn/article/2018/1766/" target="_blank" rel="noopener">死磕Java之聊聊ThreadLocal源码(基于JDK1.8)</a></p>
 <p><a href="https://juejin.im/post/5b5ecf9de51d45190a434308" target="_blank" rel="noopener">为什么使用0x61c88647</a></p>
 <p><a href="https://blog.csdn.net/weixin_41344042/article/details/83024039" target="_blank" rel="noopener">ThreadLocalMap 源码解析</a></p>
+<p><a href="https://blog.csdn.net/zhuzj12345/article/details/84333765" target="_blank" rel="noopener">Threadlocal 和 ThreadLocalMap 原理解析</a>:有一定的图文描述，帮助理解</p>
+<p><a href="https://www.jianshu.com/p/a1cd61fa22da" target="_blank" rel="noopener">ThreadLocal内存泄漏真因探究</a></p>
 
       
     </div>
@@ -570,7 +572,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://pengshiliang.coding.me/2019/02/16/JDK-Learning-ThreadLocal/" title="ThreadLocal 源码阅读">https://pengshiliang.coding.me/2019/02/16/JDK-Learning-ThreadLocal/</a>
+    <a href="https://pengshiliang.coding.me/2019/02/16/JDK_Learning_ThreadLocal/" title="ThreadLocal 源码阅读">https://pengshiliang.coding.me/2019/02/16/JDK_Learning_ThreadLocal/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>
