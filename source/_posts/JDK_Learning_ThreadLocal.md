@@ -16,7 +16,7 @@ categories: Source Code
 > 了解 ThreadLocal 先了解其类和接口关系
 > 内部类 ThreadLocalMap 以及 SuppliedThreadLocal
 
-![1563281580954](JDK-Learning-ThreadLocal/1563281580954.png)
+![1563281580954](JDK_Learning_ThreadLocal/1563281580954.png)
 
 > ThreadLocal是一个本地线程副本变量工具类。主要用于将私有线程和该线程存放的副本对象做一个映射，各个线程之间的变量互不干扰**(ThreadLocal在每个线程中对该变量会创建一个副本，即每个线程内部都会有一个该变量，且在线程内部任何地方都可以使用，线程之间互不影响,由于在每个线程中都创建了副本，所以要考虑它对资源的消耗)**。在高并发场景下，可以实现无状态的调用，特别适用于各个线程依赖不同的变量值完成操作的场景。
 
@@ -688,3 +688,7 @@ private void resize() {
 [为什么使用0x61c88647](https://juejin.im/post/5b5ecf9de51d45190a434308)
 
 [ThreadLocalMap 源码解析](https://blog.csdn.net/weixin_41344042/article/details/83024039)
+
+[Threadlocal 和 ThreadLocalMap 原理解析](https://blog.csdn.net/zhuzj12345/article/details/84333765):有一定的图文描述，帮助理解
+
+[ThreadLocal内存泄漏真因探究](https://www.jianshu.com/p/a1cd61fa22da)
