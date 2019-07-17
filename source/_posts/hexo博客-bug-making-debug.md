@@ -2,7 +2,7 @@
 title: hexo博客踩坑
 toc: true
 mathjax: true
-date: 2019-04-08 19:52:23
+date: 2018-12-08 19:52:23
 tags: hexo
 categories: tools
 ---

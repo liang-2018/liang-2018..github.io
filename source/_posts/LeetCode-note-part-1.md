@@ -2,7 +2,7 @@
 title: LeetCode note - part 1
 toc: true
 mathjax: true
-date: 2018-10-09 11:44:39
+date: 2018-10-02 11:44:39
 tags: 
 - LeetCode
 - Algorithm
