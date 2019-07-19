@@ -3,6 +3,7 @@ title: LeetCode note - part 3
 toc: true
 mathjax: true
 date: 2018-10-22 21:03:27
+top: -1
 tags: 
 - LeetCode
 - Algorithm

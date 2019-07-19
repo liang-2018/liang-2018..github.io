@@ -3,6 +3,7 @@ title: hexo博客踩坑
 toc: true
 mathjax: true
 date: 2018-12-08 19:52:23
+top: 1
 tags: hexo
 categories: tools
 ---

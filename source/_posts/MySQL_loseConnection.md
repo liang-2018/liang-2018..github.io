@@ -3,8 +3,9 @@ title: 连接池丢失MySQL连接
 toc: true
 mathjax: true
 date: 2018-8-09 11:44:39
+top: 1
 tags: 
-- MySQl
+- MySQL
 - c3p0
 categories: MySQL
 ---

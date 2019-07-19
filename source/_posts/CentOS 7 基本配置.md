@@ -3,6 +3,7 @@ title: CentOS 7 基本配置
 toc: true
 mathjax: true
 date: 2018-07-26 15:05:55
+top: 1
 tags:
 - linux
 - CentOS7
