@@ -13,7 +13,7 @@ categories:
 
 > CentOS7 从新装到常用软件、常用配置指令等的配置笔记
 >
-> [TOC]
+> **Linux 下尽量避免空格和中文**
 
 <!-- more -->
 
@@ -132,7 +132,7 @@ ssh-copy-id -i .ssh/id_rsa.pub root@worker1
 
 ```bash
 #before installation,we need to uninstall mariadb
-rpm -qa | grep -i mariadb
+rpm -qa | grep -i mariadb # 查询是否有安装 mariadb
 # the edition might be different
 rpm -e --nodeps mariadb-libs-5.5.52-1.el7.x86_64
 #download the mysql
