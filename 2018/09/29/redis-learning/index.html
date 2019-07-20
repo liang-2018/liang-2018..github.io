@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="初心不忘">
 <meta property="og:description" content="Redis简介以及常用指令">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-19T02:34:06.110Z">
+<meta property="og:updated_time" content="2019-07-20T07:34:23.840Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis_learning">
 <meta name="twitter:description" content="Redis简介以及常用指令">
@@ -325,6 +325,10 @@
         <div class="post-meta">
 		
 		  
+            <i class="fa fa-thumb-tack"></i>
+            <font color="7D26CD"> </font>
+            <span class="post-meta-divider">|</span>
+          
 		
           <span class="post-time">
             
@@ -472,7 +476,11 @@
 <blockquote>
 <p>详情参考 <a href="https://redislabs.com/ebook/part-1-getting-started/chapter-1-getting-to-know-redis/" target="_blank" rel="noopener">https://redislabs.com/ebook/part-1-getting-started/chapter-1-getting-to-know-redis/</a></p>
 </blockquote>
-<h2 id="二、常用指令"><a href="#二、常用指令" class="headerlink" title="二、常用指令"></a>二、常用指令</h2><h2 id="三、使用场景"><a href="#三、使用场景" class="headerlink" title="三、使用场景"></a>三、使用场景</h2><ul>
+<h3 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h3><blockquote>
+<p>我使用的docker</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&gt; docker pull redis</span><br><span class="line">&gt; docker run -d --name redis -p 6379:6379 redis <span class="comment"># 仅用于学习时使用，所有就没做持久化设置</span></span><br><span class="line">&gt; docker <span class="built_in">exec</span> -it redis bash</span><br><span class="line">&gt; redis-cli <span class="comment"># 使用客户端进行连接</span></span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
+</blockquote>
+<h3 id="使用场景"><a href="#使用场景" class="headerlink" title="使用场景"></a>使用场景</h3><ul>
 <li>计数器：利用自增自减计数，Redis读写性能高，适合频繁读写</li>
 <li>缓存：热点数据缓存</li>
 <li>查找表：如 DNS记录</li>
@@ -480,7 +488,24 @@
 <li>会话缓存：分布式会话统一存储</li>
 <li>分布式锁：分布式情况下，多节点进程同步，使用SETNX或RedLock实现</li>
 </ul>
-<h2 id="四、相关算法与模型"><a href="#四、相关算法与模型" class="headerlink" title="四、相关算法与模型"></a>四、相关算法与模型</h2>
+<h2 id="二、数据类型及常用指令"><a href="#二、数据类型及常用指令" class="headerlink" title="二、数据类型及常用指令"></a>二、数据类型及常用指令</h2><h3 id="通用指令"><a href="#通用指令" class="headerlink" title="通用指令"></a>通用指令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT 1; <span class="comment"># 默认是第0个库，可以通过 select 进行跳转选择</span></span><br><span class="line">FLUSHALL <span class="comment"># 清空当前库</span></span><br><span class="line">FLUSHDB <span class="comment"># 清空所有库</span></span><br><span class="line">KEYS *e* <span class="comment"># 查看相关的 key， 支持正则表达式</span></span><br><span class="line">TTL key_name <span class="comment"># 查看变量的状态，-1 代表一直存在， -2 说明不存在，其他代表在对应秒数后删除</span></span><br></pre></td></tr></table></figure>
+<h2 id="三、相关理论"><a href="#三、相关理论" class="headerlink" title="三、相关理论"></a>三、相关理论</h2><h3 id="NoSQL-数据库分类"><a href="#NoSQL-数据库分类" class="headerlink" title="NoSQL 数据库分类"></a>NoSQL 数据库分类</h3><h3 id="分布式数据库CAP理论"><a href="#分布式数据库CAP理论" class="headerlink" title="分布式数据库CAP理论"></a>分布式数据库CAP理论</h3><p>BASE:</p>
+<blockquote>
+<p>BASE 是三个属于的缩写，其提出是为了解决关系数据库强一致性引起可用性较低的问题。</p>
+<ul>
+<li>Basically Available 基本可用</li>
+<li>Soft State 软状态</li>
+<li>Eventually Consistant 最终一致</li>
+</ul>
+</blockquote>
+<h3 id="CAP"><a href="#CAP" class="headerlink" title="CAP"></a>CAP</h3><blockquote>
+<ul>
+<li>Consistency 强一致性</li>
+<li>Availability 高可用性</li>
+<li>Partition Tolerance 分区容错性</li>
+</ul>
+</blockquote>
+
       
     </div>
     
@@ -530,8 +555,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/08/11/MySQL学习笔记/" rel="next" title="MySQL 基础 学习笔记">
-                <i class="fa fa-chevron-left"></i> MySQL 基础 学习笔记
+              <a href="/2018/09/02/advanced-MySQL/" rel="next" title="MySQL 数据库原理">
+                <i class="fa fa-chevron-left"></i> MySQL 数据库原理
               </a>
             
           </div>
@@ -624,7 +649,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">26</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -695,7 +720,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、简介"><span class="nav-text">一、简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、常用指令"><span class="nav-text">二、常用指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、使用场景"><span class="nav-text">三、使用场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、相关算法与模型"><span class="nav-text">四、相关算法与模型</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、简介"><span class="nav-text">一、简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境搭建"><span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用场景"><span class="nav-text">使用场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、数据类型及常用指令"><span class="nav-text">二、数据类型及常用指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通用指令"><span class="nav-text">通用指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、相关理论"><span class="nav-text">三、相关理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NoSQL-数据库分类"><span class="nav-text">NoSQL 数据库分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式数据库CAP理论"><span class="nav-text">分布式数据库CAP理论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CAP"><span class="nav-text">CAP</span></a></li></ol></li></ol></div>
             
 
           </div>
