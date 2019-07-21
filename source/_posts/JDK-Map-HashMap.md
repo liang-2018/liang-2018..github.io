@@ -457,7 +457,7 @@ public HashMap(int initialCapacity, float loadFactor) {
      this.loadFactor = loadFactor;
      this.threshold = tableSizeFor(initialCapacity); // 将 initialCapacity 转换为相应的 2的整数次幂
  }
-
+// 在没有有指定的情况下，数值默认为0，在初始化前，会对参数进行判断，如果值为0，则使用默认值
  public HashMap(int initialCapacity) {
      this(initialCapacity, DEFAULT_LOAD_FACTOR);
  }
