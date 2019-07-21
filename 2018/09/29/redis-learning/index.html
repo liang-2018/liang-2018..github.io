@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="初心不忘">
 <meta property="og:description" content="Redis简介以及常用指令">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2019-07-20T07:34:23.840Z">
+<meta property="og:updated_time" content="2019-07-21T14:01:57.858Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="redis_learning">
 <meta name="twitter:description" content="Redis简介以及常用指令">
@@ -488,7 +488,263 @@
 <li>会话缓存：分布式会话统一存储</li>
 <li>分布式锁：分布式情况下，多节点进程同步，使用SETNX或RedLock实现</li>
 </ul>
-<h2 id="二、数据类型及常用指令"><a href="#二、数据类型及常用指令" class="headerlink" title="二、数据类型及常用指令"></a>二、数据类型及常用指令</h2><h3 id="通用指令"><a href="#通用指令" class="headerlink" title="通用指令"></a>通用指令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">SELECT 1; <span class="comment"># 默认是第0个库，可以通过 select 进行跳转选择</span></span><br><span class="line">FLUSHALL <span class="comment"># 清空当前库</span></span><br><span class="line">FLUSHDB <span class="comment"># 清空所有库</span></span><br><span class="line">KEYS *e* <span class="comment"># 查看相关的 key， 支持正则表达式</span></span><br><span class="line">TTL key_name <span class="comment"># 查看变量的状态，-1 代表一直存在， -2 说明不存在，其他代表在对应秒数后删除</span></span><br></pre></td></tr></table></figure>
+<h2 id="二、数据类型及常用指令"><a href="#二、数据类型及常用指令" class="headerlink" title="二、数据类型及常用指令"></a>二、数据类型及常用指令</h2><h3 id="通用指令"><a href="#通用指令" class="headerlink" title="通用指令"></a>通用指令</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">SELECT 1; <span class="comment"># 默认是第0个库，可以通过 select 进行跳转选择</span></span><br><span class="line">FLUSHALL <span class="comment"># 清空当前库</span></span><br><span class="line">FLUSHDB <span class="comment"># 清空所有库</span></span><br><span class="line">KEYS *e* <span class="comment"># 查看相关的 key， 支持正则表达式</span></span><br><span class="line">TTL key_name <span class="comment"># 查看变量的状态，-1 代表一直存在， -2 说明不存在，其他代表在对应秒数后删除</span></span><br><span class="line">DEL key <span class="comment"># 删除指定变量</span></span><br></pre></td></tr></table></figure>
+<h3 id="String"><a href="#String" class="headerlink" title="String"></a>String</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">指令</th>
+<th style="text-align:center">含义</th>
+<th style="text-align:center">示例</th>
+<th style="text-align:center">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">SET</td>
+<td style="text-align:center">设置值</td>
+<td style="text-align:center">SET name liang</td>
+<td style="text-align:center">OK</td>
+</tr>
+<tr>
+<td style="text-align:center">GET</td>
+<td style="text-align:center">获取值</td>
+<td style="text-align:center">get name</td>
+<td style="text-align:center">liang</td>
+</tr>
+<tr>
+<td style="text-align:center">APPEND</td>
+<td style="text-align:center">对字符串追加</td>
+<td style="text-align:center">APPEND name 2019</td>
+<td style="text-align:center">liang2019</td>
+</tr>
+<tr>
+<td style="text-align:center">STRLEN</td>
+<td style="text-align:center">字符串长度</td>
+<td style="text-align:center">SET name liang2018<br>STRLEN name</td>
+<td style="text-align:center">9</td>
+</tr>
+<tr>
+<td style="text-align:center">INCR/DECR</td>
+<td style="text-align:center">对数字型字符串进行加减</td>
+<td style="text-align:center">SET count 10<br>INCR count</td>
+<td style="text-align:center">11</td>
+</tr>
+<tr>
+<td style="text-align:center">INCRBY/DECYBY</td>
+<td style="text-align:center">指定幅度加减</td>
+<td style="text-align:center">INCRBY count 3</td>
+<td style="text-align:center">14</td>
+</tr>
+<tr>
+<td style="text-align:center">GETRANGE/SETRANGE</td>
+<td style="text-align:center">截取/覆盖修改字符串</td>
+<td style="text-align:center">GETRANGE name 0 4<br>SETRANGE name 0 nice</td>
+<td style="text-align:center">liang<br>niceg2018</td>
+</tr>
+<tr>
+<td style="text-align:center">SETEX/SETNX</td>
+<td style="text-align:center">设置过期时间<br>如不存在设置过期时间(避免覆盖值)</td>
+<td style="text-align:center">SETEX time  60 50<br>SETNX time 30</td>
+<td style="text-align:center">time值依旧为50</td>
+</tr>
+<tr>
+<td style="text-align:center">MSET/MGET</td>
+<td style="text-align:center">批量操作</td>
+<td style="text-align:center">MSET k1 v1 k2 v2 k3 v3</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">MSETNX</td>
+<td style="text-align:center">批量操作（一个失败则都失败）</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">GETSET</td>
+<td style="text-align:center">先get再set</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="List"><a href="#List" class="headerlink" title="List"></a>List</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">指令</th>
+<th style="text-align:center">含义</th>
+<th style="text-align:center">示例</th>
+<th style="text-align:center">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">LPUSH/RPUSH</td>
+<td style="text-align:center">在列表左边/右边添加</td>
+<td style="text-align:center">LPUSH list1 1 2 3 4 5 6</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">LRANGE</td>
+<td style="text-align:center">从左往右按索引取值</td>
+<td style="text-align:center">LRANGE list1 0 3<br>LRANGE list1 0 -1</td>
+<td style="text-align:center">1 2 3 4<br>1 2 3 4 5 6</td>
+</tr>
+<tr>
+<td style="text-align:center">LPOP/RPOP</td>
+<td style="text-align:center">从列表左侧/右侧取一个元素</td>
+<td style="text-align:center">LPOP list1</td>
+<td style="text-align:center">1</td>
+</tr>
+<tr>
+<td style="text-align:center">LINDEX</td>
+<td style="text-align:center">根据索引小标获取元素</td>
+<td style="text-align:center">LINDEX list1 2</td>
+<td style="text-align:center">4</td>
+</tr>
+<tr>
+<td style="text-align:center">LLEN</td>
+<td style="text-align:center">求列表的长度</td>
+<td style="text-align:center">LLEN list1</td>
+<td style="text-align:center">5</td>
+</tr>
+<tr>
+<td style="text-align:center">LREM</td>
+<td style="text-align:center">删除列表元素(删除count个value)</td>
+<td style="text-align:center">LREM  key count value</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">LTRIM</td>
+<td style="text-align:center">截取指定范围值后再赋值给key</td>
+<td style="text-align:center">LTRIM list1 0 2</td>
+<td style="text-align:center">2 3 5</td>
+</tr>
+<tr>
+<td style="text-align:center">RPOPLPUSH</td>
+<td style="text-align:center">对list1进行rpop，并将该值lpush到list2</td>
+<td style="text-align:center">RPOPLPUSH list1 list2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="Set"><a href="#Set" class="headerlink" title="Set"></a>Set</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">指令</th>
+<th style="text-align:center">含义</th>
+<th style="text-align:center">示例</th>
+<th style="text-align:center">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">SADD</td>
+<td style="text-align:center">添加</td>
+<td style="text-align:center">SADD set1 1 2 3 3 4 5 6</td>
+<td style="text-align:center">1 2 3 4 5 6</td>
+</tr>
+<tr>
+<td style="text-align:center">SMEMBERS</td>
+<td style="text-align:center">查看值</td>
+<td style="text-align:center">SMEMBERS set1</td>
+<td style="text-align:center">1 2 3 4 5 6</td>
+</tr>
+<tr>
+<td style="text-align:center">SCARD</td>
+<td style="text-align:center">查看元素个数</td>
+<td style="text-align:center">SCARD set1</td>
+<td style="text-align:center">6</td>
+</tr>
+<tr>
+<td style="text-align:center">SREM</td>
+<td style="text-align:center">删除元素</td>
+<td style="text-align:center">SREM 3</td>
+<td style="text-align:center">1 2 4 5 6</td>
+</tr>
+<tr>
+<td style="text-align:center">SRANDMEMBER</td>
+<td style="text-align:center">随机获取 n 个元素</td>
+<td style="text-align:center">SRANDMEMBER set1 3</td>
+<td style="text-align:center">4 5 1</td>
+</tr>
+<tr>
+<td style="text-align:center">SMOVE</td>
+<td style="text-align:center">将key1中某个值传给key2</td>
+<td style="text-align:center">SMOVE key1 key2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h3 id="Hash"><a href="#Hash" class="headerlink" title="Hash"></a>Hash</h3><div class="table-container">
+<table>
+<thead>
+<tr>
+<th style="text-align:center">指令</th>
+<th style="text-align:center">含义</th>
+<th style="text-align:center">示例</th>
+<th style="text-align:center">结果</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">HSET</td>
+<td style="text-align:center">设置值</td>
+<td style="text-align:center">HSET user name Seven<br>HSET user age 25<br>HSET user sex male</td>
+<td style="text-align:center">Seven(被覆盖了)</td>
+</tr>
+<tr>
+<td style="text-align:center">HGET</td>
+<td style="text-align:center">获取值</td>
+<td style="text-align:center">HGET user name</td>
+<td style="text-align:center">Seven</td>
+</tr>
+<tr>
+<td style="text-align:center">HGETALL</td>
+<td style="text-align:center">获取所有</td>
+<td style="text-align:center">HGETALL user</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">HDEL</td>
+<td style="text-align:center">删除指定value</td>
+<td style="text-align:center">HDEL  user name</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">HLEN</td>
+<td style="text-align:center">求size()</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">HEXISTS</td>
+<td style="text-align:center">判断value是否存在</td>
+<td style="text-align:center">HEXIST user age</td>
+<td style="text-align:center">有则返回 1，无则0</td>
+</tr>
+<tr>
+<td style="text-align:center">HKEYS/HVALS</td>
+<td style="text-align:center">类似Java中的 keySet() 和 Values()</td>
+<td style="text-align:center">HKEYS user</td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">HINCRBY/HINCRBYFLOAT</td>
+<td style="text-align:center">类似incr</td>
+<td style="text-align:center"></td>
+<td style="text-align:center"></td>
+</tr>
+<tr>
+<td style="text-align:center">HSETNX</td>
+<td style="text-align:center">避免覆盖值，不存在才赋值</td>
+<td style="text-align:center"></td>
+</tr>
+</tbody>
+</table>
+</div>
 <h2 id="三、相关理论"><a href="#三、相关理论" class="headerlink" title="三、相关理论"></a>三、相关理论</h2><h3 id="NoSQL-数据库分类"><a href="#NoSQL-数据库分类" class="headerlink" title="NoSQL 数据库分类"></a>NoSQL 数据库分类</h3><h3 id="分布式数据库CAP理论"><a href="#分布式数据库CAP理论" class="headerlink" title="分布式数据库CAP理论"></a>分布式数据库CAP理论</h3><p>BASE:</p>
 <blockquote>
 <p>BASE 是三个属于的缩写，其提出是为了解决关系数据库强一致性引起可用性较低的问题。</p>
@@ -720,7 +976,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、简介"><span class="nav-text">一、简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境搭建"><span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用场景"><span class="nav-text">使用场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、数据类型及常用指令"><span class="nav-text">二、数据类型及常用指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通用指令"><span class="nav-text">通用指令</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、相关理论"><span class="nav-text">三、相关理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NoSQL-数据库分类"><span class="nav-text">NoSQL 数据库分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式数据库CAP理论"><span class="nav-text">分布式数据库CAP理论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CAP"><span class="nav-text">CAP</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、简介"><span class="nav-text">一、简介</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#环境搭建"><span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用场景"><span class="nav-text">使用场景</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、数据类型及常用指令"><span class="nav-text">二、数据类型及常用指令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#通用指令"><span class="nav-text">通用指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#String"><span class="nav-text">String</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#List"><span class="nav-text">List</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Set"><span class="nav-text">Set</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hash"><span class="nav-text">Hash</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、相关理论"><span class="nav-text">三、相关理论</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#NoSQL-数据库分类"><span class="nav-text">NoSQL 数据库分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#分布式数据库CAP理论"><span class="nav-text">分布式数据库CAP理论</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#CAP"><span class="nav-text">CAP</span></a></li></ol></li></ol></div>
             
 
           </div>
