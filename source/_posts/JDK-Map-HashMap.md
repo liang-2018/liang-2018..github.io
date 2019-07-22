@@ -455,7 +455,8 @@ public HashMap(int initialCapacity, float loadFactor) {
          throw new IllegalArgumentException("Illegal load factor: " +
                                             loadFactor);
      this.loadFactor = loadFactor;
-     this.threshold = tableSizeFor(initialCapacity); // 将 initialCapacity 转换为相应的 2的整数次幂
+     // 将 initialCapacity 转换为相应的 2的整数次幂，由于对应的 table 未初始化，对应长度为0，该值直接保存在 threshold 中
+     this.threshold = tableSizeFor(initialCapacity);
  }
 // 在没有有指定的情况下，数值默认为0，在初始化前，会对参数进行判断，如果值为0，则使用默认值
  public HashMap(int initialCapacity) {
@@ -472,3 +473,210 @@ public HashMap(Map<? extends K, ? extends V> m) {
 }
 ```
 
+### putMapEntries
+
+> 这个方法是 Map#putAll 在 HashMap 中的实现
+>
+> + 判断 table 是否为null
+>   + 为null，初始化相关参数，如加载因子，容量，扩容阈值等
+>   + 不为null，判断当前新增元素个数是否达到扩容条件
+> + 将逐个 键值对 进行添加
+
+```java
+final void putMapEntries(Map<? extends K, ? extends V> m, boolean evict) {
+    int s = m.size();
+    if (s > 0) {
+        if (table == null) { // pre-size
+            float ft = ((float)s / loadFactor) + 1.0F;
+            int t = ((ft < (float)MAXIMUM_CAPACITY) ?
+                     (int)ft : MAXIMUM_CAPACITY);
+            if (t > threshold)
+                threshold = tableSizeFor(t);
+        }
+        else if (s > threshold)
+            resize(); // 扩容
+        for (Map.Entry<? extends K, ? extends V> e : m.entrySet()) {
+            K key = e.getKey();
+            V value = e.getValue();
+            putVal(hash(key), key, value, false, evict); // 添加 键值对
+        }
+    }
+}
+```
+
+### hash
+
+> 计算原本哈希值，并将其与低16位做异或,目的是减少哈希碰撞。
+>
+> 在 table 的长度比较小时，只有低几位参与下标的计算，仅仅进行异或计算，系统开销小，能使高位参与到hash值计算中，同时能有效减小碰撞。
+
+例如：源于[HashMap中的hash算法总结](https://www.cnblogs.com/wang-meng/p/9b6c35c4b2ef7e5b398db9211733292d.html)
+
+> 假设有一种情况，对象 A 的 hashCode 为 1000010001110001000001111000000，对象 B 的 hashCode 为 0111011100111000101000010100000。
+> 如果数组长度是16，也就是 15 与运算这两个数（求下标方式：**hashCode & （length - 1）**）， 你会发现结果都是0。这样的散列结果太让人失望了。很明显不是一个好的散列算法。但是如果我们将 hashCode 值右移 16 位，也就是取 int 类型的一半，刚好将该二进制数对半切开。并且使用位异或运算（如果两个数对应的位置相反，则结果为1，反之为0），这样的话，就能避免我们上面的情况的发生。简而言之就是尽量打乱hashCode的低16位，因为真正参与运算的还是低16位。
+
+```java
+static final int hash(Object key) {
+    int h;
+    return (key == null) ? 0 : (h = key.hashCode()) ^ (h >>> 16);
+}
+```
+
+### putVal
+
+> 添加键值对时最终调用的方法
+>
+> + 判断table是否已初始化，若未初始化，则初始化 resize()
+> + 判断table对应位置是否为空
+>   + 为空，初始化并添加
+>   + 不为空则追加，追加时，如果是红黑树结构，则按照红黑树结构添加处理；如果不是红黑树结构，则直接在链表尾部追加，追加后判断是否满足转换为红黑树的条件。
+
+```java
+final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) {
+    Node<K,V>[] tab; Node<K,V> p; int n, i;
+    if ((tab = table) == null || (n = tab.length) == 0)
+        n = (tab = resize()).length;
+    // 判断对应位置是否已经有值，这一行相当于如下，节约了两行。
+    /*
+        i = (n - 1) & hash;
+        p = tab[i];
+        if (p == null){
+            ........
+        } 
+    */
+    if ((p = tab[i = (n - 1) & hash]) == null) 
+        tab[i] = newNode(hash, key, value, null); // 没有节点，直接添加就可以了。
+    else {
+        Node<K,V> e; K k;
+        if (p.hash == hash && ((k = p.key) == key || (key != null && key.equals(k))))
+            e = p;
+        else if (p instanceof TreeNode) // 说明已经转换为 红黑树了，则按照红黑树添加方式处理
+            e = ((TreeNode<K,V>)p).putTreeVal(this, tab, hash, key, value);
+        else { // 不是红黑树，在链表后追加，如果追加后满足条件则转换为红黑树结构
+            for (int binCount = 0; ; ++binCount) {
+                if ((e = p.next) == null) { 
+                    // p.next == null 说明链表已经遍历完，没有找到完全相同的节点，直接添加新节点
+                    p.next = newNode(hash, key, value, null);
+                    if (binCount >= TREEIFY_THRESHOLD - 1) // 如果链表长度大于等于7时，转换为红黑树
+                        treeifyBin(tab, hash);
+                    break;
+                }
+               // 如果找打 hash 和 key 完全相等的带你，直接跳出进行覆盖
+                if (e.hash == hash &&((k = e.key) == key || (key != null && key.equals(k))))
+                    break;
+                // 结合前面的 e = p.next;此处 p = e，整体而言，相当于 p = p.next,将 p 往链表后1移一步。
+                p = e;
+            }
+        }
+        if (e != null) { // existing mapping for key 存在 key 完全相同的节点，进行覆盖
+            V oldValue = e.value;
+            if (!onlyIfAbsent || oldValue == null)
+                e.value = value;
+            afterNodeAccess(e); // 这个方法，HashMap中是个空方法，在 LinkedHashMap 中有实现，
+            return oldValue; // 如果进行了覆盖，则返回被覆盖的原来的值
+        }
+    }
+    ++modCount; // 更新操作次数，每次修改都会 +1
+    if (++size > threshold) // 判断是否达到阈值，若达到，进行扩容
+        resize();
+    afterNodeInsertion(evict);// 这个方法，HashMap中是个空方法，在 LinkedHashMap 中有实现
+    return null; // 没有进行覆盖，则返回 null，可以通过返回值是否为null来判断是否产生覆盖
+}
+```
+
+### resize()
+
+> resieze() 有 扩容和初始化的功能。
+> resize() 是 HashMap 真正初始化的地方，其他方法只是确定部分 HashMap 的参数。
+>
+> + 通过 table 和 threshold 判断HashMap是否已进行过初始化
+>   + 若未初始化，则只进行初始化
+>   + 若已初始化，则进行扩容操作
+
+```java
+final Node<K,V>[] resize() {
+    Node<K,V>[] oldTab = table;
+    int oldCap = (oldTab == null) ? 0 : oldTab.length;
+    int oldThr = threshold;
+    int newCap, newThr = 0;
+    if (oldCap > 0) {
+        if (oldCap >= MAXIMUM_CAPACITY) { // 判断是否达到最大容量
+            threshold = Integer.MAX_VALUE;
+            return oldTab;
+        }
+        // MAXIMUM_CAPACITY 值为 2^30，newCap 小于2^30， 因而 newCap<<1 不会超过 (2^31)-1，
+        else if ((newCap = oldCap << 1) < MAXIMUM_CAPACITY && oldCap >= DEFAULT_INITIAL_CAPACITY)
+            newThr = oldThr << 1; // double threshold
+    }else if (oldThr > 0) 
+        // initial capacity was placed in threshold 构造函数初始化参数时将容量值保存在 threshold 中
+        newCap = oldThr;
+    else {               
+        // zero initial threshold signifies using defaults 
+        //阈值 和 容量都为 0时（都未初始化），则都是用默认参数。
+        newCap = DEFAULT_INITIAL_CAPACITY;
+        newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
+    }
+    if (newThr == 0) {
+        float ft = (float)newCap * loadFactor;
+        newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
+                  (int)ft : Integer.MAX_VALUE);
+    }
+    threshold = newThr;
+    @SuppressWarnings({"rawtypes","unchecked"})
+    Node<K,V>[] newTab = (Node<K,V>[])new Node[newCap];
+    table = newTab;
+    if (oldTab != null) {
+        for (int j = 0; j < oldCap; ++j) {
+            Node<K,V> e;
+            if ((e = oldTab[j]) != null) {
+                oldTab[j] = null;
+                if (e.next == null)
+                    newTab[e.hash & (newCap - 1)] = e;
+                else if (e instanceof TreeNode)
+                    ((TreeNode<K,V>)e).split(this, newTab, j, oldCap);
+                else { // preserve order
+                    Node<K,V> loHead = null, loTail = null;
+                    Node<K,V> hiHead = null, hiTail = null;
+                    Node<K,V> next;
+                    do {
+                        next = e.next;
+                        if ((e.hash & oldCap) == 0) {
+                            if (loTail == null)
+                                loHead = e;
+                            else
+                                loTail.next = e;
+                            loTail = e;
+                        }
+                        else {
+                            if (hiTail == null)
+                                hiHead = e;
+                            else
+                                hiTail.next = e;
+                            hiTail = e;
+                        }
+                    } while ((e = next) != null);
+                    if (loTail != null) {
+                        loTail.next = null;
+                        newTab[j] = loHead;
+                    }
+                    if (hiTail != null) {
+                        hiTail.next = null;
+                        newTab[j + oldCap] = hiHead;
+                    }
+                }
+            }
+        }
+    }
+    return newTab;
+}
+```
+
+
+
+## 参考资料
+
+[HashMap解析](https://blog.csdn.net/wangluomin/article/details/78247872)
+
+[HashMap中的hash算法总结](https://www.cnblogs.com/wang-meng/p/9b6c35c4b2ef7e5b398db9211733292d.html)
+
+[Jav8 HashMap-putVal() 方法分析](https://blog.csdn.net/AJ1101/article/details/79413939)
