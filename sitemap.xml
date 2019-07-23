@@ -2,9 +2,23 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://pengshiliang.coding.me/2019/02/12/JDK-List-ArrayList/</loc>
+    
+    <lastmod>2019-07-23T15:10:38.345Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://pengshiliang.coding.me/2019/02/12/JDK-Set-HashSet/</loc>
+    
+    <lastmod>2019-07-23T12:02:28.065Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://pengshiliang.coding.me/2019/02/19/JDK-Map-HashMap/</loc>
     
-    <lastmod>2019-07-22T15:18:44.974Z</lastmod>
+    <lastmod>2019-07-23T11:51:25.833Z</lastmod>
     
   </url>
   
