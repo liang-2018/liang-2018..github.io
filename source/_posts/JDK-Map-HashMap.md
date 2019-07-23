@@ -1,5 +1,5 @@
 ---
-title: Map/HashMap 源码阅读（一）
+title: HashMap 源码阅读
 toc: true
 mathjax: true
 top: 1
@@ -8,7 +8,7 @@ tags: JDK
 categories: Source Code
 ---
 
-> Map 相关类 源码阅读
+> HashMap 相关类 源码阅读
 
 <!-- more -->
 
@@ -374,6 +374,8 @@ public String toString() {
 
 ## HashMap
 
+![1563862417613](JDK-Map-HashMap/1563862417613.png)
+
 ### 静态常量
 
 ```java
@@ -557,7 +559,9 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) {
                 if ((e = p.next) == null) { 
                     // p.next == null 说明链表已经遍历完，没有找到完全相同的节点，直接添加新节点
                     p.next = newNode(hash, key, value, null);
-                    if (binCount >= TREEIFY_THRESHOLD - 1) // 如果链表长度大于等于7时，转换为红黑树
+                    // 如果链表长度大于8时，转换为红黑树,那为何这里 binCount >= 7 就转换呢？
+                    // 原因在于 0是第一个，7是第八个，相当于原链表有8个节点，但是 newNode 加入后就有9个了。
+                    if (binCount >= TREEIFY_THRESHOLD - 1) 
                         treeifyBin(tab, hash);
                     break;
                 }
@@ -584,7 +588,7 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) {
 }
 ```
 
-### resize()
+### resize
 
 > resieze() 有 扩容和初始化的功能。
 > resize() 是 HashMap 真正初始化的地方，其他方法只是确定部分 HashMap 的参数。
@@ -592,10 +596,19 @@ final V putVal(int hash, K key, V value, boolean onlyIfAbsent, boolean evict) {
 > + 通过 table 和 threshold 判断HashMap是否已进行过初始化
 >   + 若未初始化，则只进行初始化
 >   + 若已初始化，则进行扩容操作
+>
+> ![img](JDK-Map-HashMap/9358011-0a98b066e83d6a30.webp)
+
+与 Java 7 区别
+
+> JDK7是每拿到一个Node就直接插入到newTable
+> JDK8是构建完整个链表后，一次性插入到newTable。
+> 链表扩容过程JDK7会出现死循环问题，JDK8避免了这个问题。
+> JDK8跟原先的链表对比Node之间顺序是一致的，而JDK7是是反过来的。
 
 ```java
 final Node<K,V>[] resize() {
-    Node<K,V>[] oldTab = table;
+    Node<K,V>[] oldTab = table; // 备份原 table，便于后面扩容复制值。
     int oldCap = (oldTab == null) ? 0 : oldTab.length;
     int oldThr = threshold;
     int newCap, newThr = 0;
@@ -616,30 +629,33 @@ final Node<K,V>[] resize() {
         newCap = DEFAULT_INITIAL_CAPACITY;
         newThr = (int)(DEFAULT_LOAD_FACTOR * DEFAULT_INITIAL_CAPACITY);
     }
-    if (newThr == 0) {
+    if (newThr == 0) {// 针对 oldThr > 0 情况，更新 门限值
         float ft = (float)newCap * loadFactor;
-        newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ?
-                  (int)ft : Integer.MAX_VALUE);
+        newThr = (newCap < MAXIMUM_CAPACITY && ft < (float)MAXIMUM_CAPACITY ? (int)ft : Integer.MAX_VALUE);
     }
     threshold = newThr;
     @SuppressWarnings({"rawtypes","unchecked"})
     Node<K,V>[] newTab = (Node<K,V>[])new Node[newCap];
-    table = newTab;
-    if (oldTab != null) {
+    table = newTab; // 新建table，容量要么为16，要么不变(已达到上限)，要么是原来的2倍
+    if (oldTab != null) { // 原 table 存在元素
         for (int j = 0; j < oldCap; ++j) {
             Node<K,V> e;
-            if ((e = oldTab[j]) != null) {
-                oldTab[j] = null;
-                if (e.next == null)
+            if ((e = oldTab[j]) != null) {//获取原table[j] 头结点，并备份值
+                oldTab[j] = null; // 将原table[j]清空
+                if (e.next == null)// 原 table[j] 只有一个节点
                     newTab[e.hash & (newCap - 1)] = e;
-                else if (e instanceof TreeNode)
+                else if (e instanceof TreeNode) // 原节点为树节点，按照树的方法处理
                     ((TreeNode<K,V>)e).split(this, newTab, j, oldCap);
                 else { // preserve order
+                    // 原table[j]保存的链表长度大于 1，逐个保存
+                    // 进行扩容后，容量一直是 2 的整数次幂，因而扩容后，对应的索引位置要么不便，要么在二进制前面添加一个 1
                     Node<K,V> loHead = null, loTail = null;
                     Node<K,V> hiHead = null, hiTail = null;
                     Node<K,V> next;
                     do {
                         next = e.next;
+                        // e.hash & (oldCap- 1) 为对应下标位置，如 15对应 01111,16对应 010000
+                        // 链表key值跨度大的情况下，有可能分为两组，一组位置不变，一组位置在二进制最前面添加 1
                         if ((e.hash & oldCap) == 0) {
                             if (loTail == null)
                                 loHead = e;
@@ -655,12 +671,14 @@ final Node<K,V>[] resize() {
                             hiTail = e;
                         }
                     } while ((e = next) != null);
+                    // 分为两组后，进行分别赋值，一次性将整个链表添加进去
                     if (loTail != null) {
                         loTail.next = null;
                         newTab[j] = loHead;
                     }
                     if (hiTail != null) {
                         hiTail.next = null;
+                        // 为毛这样看上面的图
                         newTab[j + oldCap] = hiHead;
                     }
                 }
@@ -671,7 +689,321 @@ final Node<K,V>[] resize() {
 }
 ```
 
+### resize Java 7 
 
+```java
+void resize(int newCapacity) {
+	Entry[] oldTable = table;
+	int oldCapacity = oldTable.length;
+	if (oldCapacity == MAXIMUM_CAPACITY) {
+		threshold = Integer.MAX_VALUE;
+		return;
+	}
+
+	Entry[] newTable = new Entry[newCapacity];
+	boolean oldAltHashing = useAltHashing;
+	useAltHashing |= sun.misc.VM.isBooted() &&
+			(newCapacity >= Holder.ALTERNATIVE_HASHING_THRESHOLD);
+    // 类似JDK8中if ((e.hash & oldCap) == 0) 判断效果，将节点分为两组
+	boolean rehash = oldAltHashing ^ useAltHashing;    
+	transfer(newTable, rehash); //扩容核心方法
+	table = newTable;
+	threshold = (int)Math.min(newCapacity * loadFactor, MAXIMUM_CAPACITY + 1);
+}
+void transfer(Entry[] newTable, boolean rehash) {
+	int newCapacity = newTable.length;
+	for (Entry<K,V> e : table) {//直接遍历table变量
+		//链表跟table[i]断裂遍历，头部往后遍历插入到newTable中
+		while(null != e) {
+			Entry<K,V> next = e.next;
+			if (rehash) {
+				e.hash = null == e.key ? 0 : hash(e.key);
+			}
+			int i = indexFor(e.hash, newCapacity);
+            // 这里重新构建后，顺序正好是反的
+            // 好处是不用判断头结点为null的，每次将节点的next指向 newTable[i]链表头结点，并将链表头结点替换为当前节点
+            // 如果有多个线程在同时 resize()，那可能造成之前已经加入到链表中的节点，指向当前节点，从而成环
+			e.next = newTable[i];
+			newTable[i] = e;
+			e = next;
+		}
+	}
+}
+```
+
+### treeifyBin
+
+> 为嘛不是 treefyBin......
+> TreeNode 的继承关系
+>
+> ![1563851867863](JDK-Map-HashMap/1563851867863.png)
+
+```java
+final void treeifyBin(Node<K,V>[] tab, int hash) {
+    int n, index; Node<K,V> e;
+    // 如果 table 总容量不足 MIN_TREEIFY_CAPACITY（64)则不进行转换，而是进行扩容处理
+    if (tab == null || (n = tab.length) < MIN_TREEIFY_CAPACITY)
+        resize();
+    else if ((e = tab[index = (n - 1) & hash]) != null) {
+        TreeNode<K,V> hd = null, tl = null; // head 和tail的意思
+        do {
+            TreeNode<K,V> p = replacementTreeNode(e, null);// 返回新建的TreeNode节点，TreeNode 实际继承自Node
+            if (tl == null)
+                hd = p;
+            else {// 构建双向链表
+                p.prev = tl;
+                tl.next = p;
+            }
+            tl = p;
+        } while ((e = e.next) != null);
+        if ((tab[index] = hd) != null)// tab[index]设值为 hd，链表头节点
+            hd.treeify(tab);// TreeNode 类的方法，将链表进行转换为树
+    }
+}
+TreeNode<K,V> replacementTreeNode(Node<K,V> p, Node<K,V> next) {
+    return new TreeNode<>(p.hash, p.key, p.value, next);
+}
+```
+
+### put/putAll
+
+> 最终调用的 putVal
+
+```java
+ public V put(K key, V value) {
+     return putVal(hash(key), key, value, false, true);
+ }
+public void putAll(Map<? extends K, ? extends V> m) {
+    putMapEntries(m, true);
+}
+```
+
+### remove
+
+> 根据 key 和 value 移除对应的节点
+
+```java
+public V remove(Object key) {
+    Node<K,V> e;
+    return (e = removeNode(hash(key), key, null, false, true)) == null ? null : e.value;
+}
+/*
+matchValue : 为true时，必须 value 相等才会将节点移除
+movable : false 时，移除节点时，不移除其他节点
+*/
+ final Node<K,V> removeNode(int hash, Object key, Object value, boolean matchValue, boolean movable) {
+     Node<K,V>[] tab; Node<K,V> p; int n, index;
+     if ((tab = table) != null && (n = tab.length) > 0 && // table 中含有元素
+         (p = tab[index = (n - 1) & hash]) != null) { // 对应位置不为空
+         Node<K,V> node = null, e; K k; V v;
+         if (p.hash == hash &&
+             ((k = p.key) == key || (key != null && key.equals(k))))// 确定为要移除的节点
+             node = p;
+         else if ((e = p.next) != null) {
+             if (p instanceof TreeNode)// 如果为树节点，使用 TreeNode 中的方法获取节点
+                 node = ((TreeNode<K,V>)p).getTreeNode(hash, key);
+             else {
+                 do {// 对链表遍历查找，直到找到对应的节点
+                     if (e.hash == hash &&
+                         ((k = e.key) == key ||
+                          (key != null && key.equals(k)))) {
+                         node = e;
+                         break;
+                     }
+                     p = e;
+                 } while ((e = e.next) != null);
+             }
+         }
+         /*
+          1. 节点不为空
+          2. 如果不要求匹配值，直接跳过；如果要求比较值，判断值是否相等(先判断内存地址再判断值)
+          3. 判断是否为树节点，若为树节点，使用树的方式移除；否则使用链表方式处理
+          4. 如果该节点是头节点，则需要对 table 进行修改；否则链表指针跳过该节点
+          5. 修正 modCount 和 size
+         */
+         if (node != null && (!matchValue || (v = node.value) == value ||
+                              (value != null && value.equals(v)))) {
+             if (node instanceof TreeNode)
+                 ((TreeNode<K,V>)node).removeTreeNode(this, tab, movable);
+             else if (node == p)
+                 tab[index] = node.next;
+             else
+                 p.next = node.next;
+             ++modCount;
+             --size;
+             afterNodeRemoval(node);// 在 LinkedHashMap 才需要使用到
+             return node;
+         }
+     }
+     return null;
+ }
+```
+
+### replace
+
+> 根据 key 替换对应的 value
+
+```java
+@Override
+public boolean replace(K key, V oldValue, V newValue) {
+    Node<K,V> e; V v;
+    if ((e = getNode(hash(key), key)) != null &&
+        ((v = e.value) == oldValue || (v != null && v.equals(oldValue)))) {
+        e.value = newValue;
+        afterNodeAccess(e);
+        return true;
+    }
+    return false;
+}
+
+@Override
+public V replace(K key, V value) {
+    Node<K,V> e;
+    if ((e = getNode(hash(key), key)) != null) {
+        V oldValue = e.value;
+        e.value = value;
+        afterNodeAccess(e);
+        return oldValue;
+    }
+    return null;
+}
+```
+
+### replaceAll
+
+> BiFunction 函数式编程接口，与 Function 不同的是，BiFunction 可以接收两个参数，Function 只能一个
+>
+> 我能想到的作用是 数据加解密
+
+```java
+ public void replaceAll(BiFunction<? super K, ? super V, ? extends V> function) {
+     Node<K,V>[] tab;
+     if (function == null)
+         throw new NullPointerException();
+     if (size > 0 && (tab = table) != null) {
+         int mc = modCount;
+         for (int i = 0; i < tab.length; ++i) {
+             for (Node<K,V> e = tab[i]; e != null; e = e.next) {
+                 e.value = function.apply(e.key, e.value);
+             }
+         }
+         if (modCount != mc)
+             throw new ConcurrentModificationException();
+     }
+ }
+```
+
+### clear
+
+> 清空数据，删库跑路
+
+```java
+public void clear() {
+    Node<K,V>[] tab;
+    modCount++;
+    if ((tab = table) != null && size > 0) {
+        size = 0;
+        for (int i = 0; i < tab.length; ++i)
+            tab[i] = null;
+    }
+}
+```
+
+### containsValue
+
+> 遍历判断是否包含对应的值
+
+```java
+public boolean containsValue(Object value) {
+    Node<K,V>[] tab; V v;
+    if ((tab = table) != null && size > 0) {
+        for (int i = 0; i < tab.length; ++i) {
+            for (Node<K,V> e = tab[i]; e != null; e = e.next) {
+                if ((v = e.value) == value ||
+                    (value != null && value.equals(v)))
+                    return true;
+            }
+        }
+    }
+    return false;
+}
+```
+
+### keySet
+
+> 返回包含所有 key的 Set集合
+
+```java
+public Set<K> keySet() {
+    Set<K> ks = keySet;
+    if (ks == null) {
+        ks = new KeySet();
+        keySet = ks;
+    }
+    return ks;
+}
+```
+
+### entrySet
+
+> 用于遍历的 Entry 组成的集合
+
+```java
+public Set<Map.Entry<K,V>> entrySet() {
+    Set<Map.Entry<K,V>> es;
+    return (es = entrySet) == null ? (entrySet = new EntrySet()) : es;
+}
+```
+
+### values
+
+> 返回包含所有 value 的 Set集合
+
+```java
+public Collection<V> values() {
+    Collection<V> vs = values;
+    if (vs == null) {
+        vs = new Values();
+        values = vs;
+    }
+    return vs;
+}
+```
+
+### 其他方法
+
++ computeIfAbsent
++ computeIfPresent
++ compute
++ merge
++ forEach
++ clone
++ writeObject/readObject
+
+## 内部类
+
+> TODO
+>
+> 后续这些暂时不看了，看懂后面这些，感觉没时间看其他类了。
+
+### TreeNode
+
+### KeySet
+
+### Values
+
+### EntrySet
+
+### HashIterator
+
+#### KeyIterator
+#### ValueIterator
+#### EntryIterator
+
+### HashMapSpliterator
+#### KeySpliterator
+#### ValueSpliterator
+#### EntrySpliterator
 
 ## 参考资料
 
