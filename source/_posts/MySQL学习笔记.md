@@ -877,11 +877,11 @@ SHOW CREATE VIEW view_name;
 具备以下类型的视图是不能更新(有些只是 插入、修改、删除其中一项不允许)
 
 > + 包含以下关键字的sql语句：聚合函数(sum、min、max、count)、distinct、group by 、having、union或者uinon all
-> + 常量视图
-> + select 中包含子查询
-> + join
-> + from一个不可更新的视图
-> + where字句的子查询引用了from字句中的表
+>  + 常量视图
+>  + select 中包含子查询
+>  + join
+>  + from一个不可更新的视图
+>  + where字句的子查询引用了from字句中的表
 
 ```mysql
 UPDATE view_name SET .... WHERE ...
@@ -891,11 +891,12 @@ INSERT view_name WHERE .... # 原表不涉及的字段，用默认值填充
 
 视图好处：
 
-+ 重用 sql 语句
-+ 简化复杂的 sql 操作， 不必知道具体查询细节
-+ 保护数据，提高安全性
+> + 重用 sql 语句
+> + 简化复杂的 sql 操作， 不必知道具体查询细节
+> + 保护数据，提高安全性
 
-## 六、 变量
+
+## 六、变量
 
 变量种类：
 

@@ -182,7 +182,7 @@ public void clear() {
 }
 ```
 
-##  clonel
+##  clone
 
 ```java
 public Object clone() {
