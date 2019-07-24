@@ -2,16 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://pengshiliang.coding.me/2019/02/12/JDK-List-ArrayList/</loc>
+    <loc>https://pengshiliang.coding.me/2018/09/29/redis-learning/</loc>
     
-    <lastmod>2019-07-23T15:10:38.345Z</lastmod>
+    <lastmod>2019-07-24T14:31:43.036Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://pengshiliang.coding.me/2019/02/12/JDK-Set-HashSet/</loc>
     
-    <lastmod>2019-07-23T12:02:28.065Z</lastmod>
+    <lastmod>2019-07-24T13:21:22.671Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://pengshiliang.coding.me/2018/08/20/MySQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
+    
+    <lastmod>2019-07-24T08:55:33.474Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://pengshiliang.coding.me/2019/02/12/JDK-List-ArrayList/</loc>
+    
+    <lastmod>2019-07-24T08:16:46.415Z</lastmod>
     
   </url>
   
@@ -23,23 +37,9 @@
   </url>
   
   <url>
-    <loc>https://pengshiliang.coding.me/2018/09/29/redis-learning/</loc>
-    
-    <lastmod>2019-07-21T14:01:57.858Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>https://pengshiliang.coding.me/2018/09/02/advanced-MySQL/</loc>
     
     <lastmod>2019-07-19T14:31:31.229Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://pengshiliang.coding.me/2018/08/20/MySQL%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/</loc>
-    
-    <lastmod>2019-07-19T07:17:00.542Z</lastmod>
     
   </url>
   
