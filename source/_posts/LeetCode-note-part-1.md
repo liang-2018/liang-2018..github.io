@@ -44,84 +44,44 @@ Output: 0
 Explanation: In this case, no transaction is done, i.e. max profit = 0.
 ```
 
+>  采用递归方式计算，逐个方案遍历
+>
+> 1. 从第 s 天买入
+> 2. 遍历情况，在 s 之后的天数 t 卖出(只在能获取利润的情况下卖出)，统计该方案利润
+> 3. 返回第一步，从 t + 1天
+
 
 ```Java
 class Solution {
     public int maxProfit(int[] prices) {
         return calculate(prices, 0);
     }
-
+    /*
+    * s 为起始天数，从第 s 天开始买进
+    * 作用为 得出从 s 天买入的情况下的最大收益
+    */
     public int calculate(int prices[], int s) {
         if (s >= prices.length)
             return 0;
         int max = 0;
-        for (int start = s; start < prices.length; start++) {
-            System.out.println("======new start== "+start+" ====");
+        for (int start = s; start < prices.length; start++) {            
             int maxprofit = 0;
-            for (int i = start + 1; i < prices.length; i++) {
-                if (prices[start] < prices[i]) {
-                    System.out.println("index :"+start+"--"+i+"  buy: "+prices[start] +"  sell: " + prices[i]);
+            for (int i = start + 1; i < prices.length; i++) {// 进行逐个尝试，找出最大利益 
+                if (prices[start] < prices[i]) { // 如果卖出能获取利益，则尝试卖出
                     int profit = calculate(prices, i + 1) + prices[i] - prices[start];
                     if (profit > maxprofit){
-                        System.out.println("profit change:"+ maxprofit +" --> " +profit);
-                         maxprofit = profit;
+                         maxprofit = profit; // 更新利润
                     }     
                 }
             }
             if (maxprofit > max){
-                System.out.println("max profit change:"+ max +" --> " +maxprofit);
                 max = maxprofit;
             }         
         }
-        System.out.println("profit:"+max);
         return max;
     }
 }
 ```
-
-
-```Java
-int[] price = new int[]{7,1,5,3,6,4};
-new Solution().maxProfit(price);
-```
-
-    ======new start== 0 ====
-    ======new start== 1 ====
-    index :1--2  buy: 1  sell: 5
-    ======new start== 3 ====
-    index :3--4  buy: 3  sell: 6
-    ======new start== 5 ====
-    profit:0
-    profit change:0 --> 3
-    index :3--5  buy: 3  sell: 4
-    max profit change:0 --> 3
-    ======new start== 4 ====
-    ======new start== 5 ====
-    profit:3
-    profit change:0 --> 7
-    index :1--3  buy: 1  sell: 3
-    ======new start== 4 ====
-    ======new start== 5 ====
-    profit:0
-    index :1--4  buy: 1  sell: 6
-    ======new start== 5 ====
-    profit:0
-    index :1--5  buy: 1  sell: 4
-    max profit change:0 --> 7
-    ======new start== 2 ====
-    index :2--4  buy: 5  sell: 6
-    ======new start== 5 ====
-    profit:0
-    profit change:0 --> 1
-    ======new start== 3 ====
-    index :3--4  buy: 3  sell: 6
-    ======new start== 5 ====
-    profit:0
-    profit change:0 --> 3
-    index :3--5  buy: 3  sell: 4
-    ======new start== 4 ====
-    ======new start== 5 ====
-    profit:7
 
 # 125. Valid Palindrome
 Given a string, determine if it is a palindrome, considering only alphanumeric characters and ignoring cases.
@@ -139,6 +99,8 @@ Input: "race a car"
 Output: false
 ```
 
+> 方法一：暴力法，通过判断去除无效字符，根据索引比较
+
 
 ```Java
 // 自己的解决方案
@@ -148,7 +110,7 @@ class Solution {
         String pattern = "^[a-z0-9]";
         s = s.toLowerCase();
         List<Character> list = new ArrayList<>();
-        for(int i =0 ; i< s.length(); i++){
+        for(int i =0 ; i< s.length(); i++){ // 去除无用的字符
             if(String.valueOf(s.charAt(i)).matches(pattern)){
                 list.add(s.charAt(i));
             }
@@ -156,7 +118,7 @@ class Solution {
         Object[] strArray = list.toArray();
         return isPalindromeArray(strArray);
     }
-    private boolean isPalindromeArray(Object[] array){
+    private boolean isPalindromeArray(Object[] array){ // 校验是否为回文
         int length = array.length;
         for(int i = 0; i< array.length /2; i++){
             if( array[i] != array[length-1-i]){
@@ -168,12 +130,14 @@ class Solution {
 }
 ```
 
+> 通过双指针进行定位比较字符
+
 
 ```Java
 // 最好的解决方案
 class Solution {
  private static final int[] map = new int[256];
-    static{
+    static{ // 通过查表比值方式可以减少转换麻烦
         for(int i = 0; i < 10; i++){
             map[i + '0'] = (i + 1);
         }
@@ -221,30 +185,8 @@ Input: [4,1,2,1,2]
 Output: 4
 ```
 
-
-```Java
-//自己写的错误方法
-class Solution {
-    public int singleNumber(int[] nums) {
-        int[] positive = new int[Integer.MAX_VALUE];
-        int[] negative = new int[Integer.MAX_VALUE];
-        for( int i = 0; i < nums.length; i++ ){
-            if( nums[i] >=0 ){
-                positive[nums[i]]++;
-            }
-            else{
-                negative[-nums[i]]++;
-            }
-            
-        }
-        for( int i = 0; i < Integer.MAX_VALUE; i++){
-            if(positive[i] == 1 )return i;
-            if(negative[i] == 1 )return i;
-        }
-        return nums[0];
-    }
-}
-```
+> 可以使用暴力法，通过哈希表计数，对存储和耗时太大。
+> 通过异或处理最快捷: 相同的数字异或为0， 非 0 值和 0 进行异或保持不变。
 
 
 ```Java
@@ -267,43 +209,11 @@ Follow up:
 
 Can you solve it without using extra space?
 
-
-```Java
-// my Code 
-//错误原因：有环，但是不一定首尾相连，可能是中间部位
-/**
- * Definition for singly-linked list.
- * class ListNode {
- *     int val;
- *     ListNode next;
- *     ListNode(int x) {
- *         val = x;
- *         next = null;
- *     }
- * }
- */
-class ListNode {
-      int val;
-      ListNode next;
-      ListNode(int x) {
-          val = x;
-          next = null;
-      }
-  }
-public class Solution {
-    public boolean hasCycle(ListNode head) {
-        ListNode head_bak = head;
-        if( null ==  head || head.next == null )return false;
-        while(null != head.next){
-             head = head.next;
-            if( head_bak == head){
-                return true;
-            }  
-        }
-        return false;
-    }
-}
-```
+> 注意： 环不一定是首尾，也可以是中间开始出现环
+> 解法有两种：
+>
+> + 一种通过Set来逐个加入，判断是否已含有，如果有则表示有环
+>    + 双指针解法，一个一次走一步，一个一次走两步，如果有环，总有一次会遇上
 
 
 ```Java
@@ -395,9 +305,10 @@ Explanation: The number "-91283472332" is out of the range of a 32-bit signed in
              Thefore INT_MIN (−231) is returned.
 ```
 
+> 由于转换时可能会数值溢出，需要额外考虑
+
 
 ```Java
-//我的答案
 class Solution {
     public int myAtoi(String str) {
         if(null == str)return 0;
@@ -481,6 +392,8 @@ Input: "cbbd"
 Output: "bb"
 ```
 
+> 暴力解决，类似滑动窗口，寻找最长
+
 
 ```Java
 // 我的答案
@@ -513,10 +426,14 @@ class Solution {
 }
 ```
 
+> 以 i 处为中心，向两端扩展比较；如果是偶数则以 i 和 i+1 的中间为中心点。比较两种情况，求最优
+
 
 ```Java
 //推荐答案
 class Solution {
+    private static int lo = 0;
+    private static int maxLen = 0;
    public String longestPalindrome(String s) {
                if (s == null || s.length() <= 1) return s;
         
@@ -565,7 +482,10 @@ Explanation: The answer is "wke", with the length of 3.
              Note that the answer must be a substring, "pwke" is a subsequence and not a substring.
 ```
 
-**注释部分是自己写ac的答案**
+>  方法一：双指针
+>  使用集合进行判断是否重复，从 0 开始逐个遍历，找出最长不重复
+>  方法二：记录字符上次出现的位置
+>  从头到尾遍历一次字符串就可以 
 
 ```java
 class Solution {
@@ -633,6 +553,9 @@ Input: [1,8,6,2,5,4,8,3,7]
 Output: 49
 ```
 
+> + 暴力法，列出所有可能方案，逐个比较
+> + 双指针法，为何以比较高度作为判断，有待数学验证
+
 
 ```Java
 //逐个遍历求面积然后取最大值，肯定能做出来，但是效率太差
@@ -675,6 +598,10 @@ A solution set is:
 ]
 ```
 
+> + 暴击解决
+>   找出两个数，再从余下数字遍历查找符合条件的数
+> + 先进行排序，通过有序能减少很多无效尝试，通过首尾双指针，进行查找
+
 
 ```Java
 // 我的ac
@@ -686,7 +613,7 @@ class Solution {
         int num2Index = 1;
         boolean is3Zero = false;
         boolean isAllZero = true;
-          for(int i = 0; i < nums.length; i++){//需要考虑全是0的特殊情况，避免大量判断
+        for(int i = 0; i < nums.length; i++){//需要考虑全是0的特殊情况，避免大量判断
             if(nums[i] != 0){
                 isAllZero = false;
                 break;
@@ -736,7 +663,7 @@ class Solution {
 
 
 ```Java
-// 推荐答案，先进行排序，然后进行相关判断（子对队列首、尾相加并进行判断）
+// 推荐答案，先进行排序，然后进行相关判断（只对队列首、尾相加并进行判断）
 class Solution {
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> resultArray=new ArrayList<>();
@@ -790,6 +717,11 @@ Given array nums = [-1, 2, 1, -4], and target = 1.
 
 The sum that is closest to the target is 2. (-1 + 2 + 1 = 2).
 ```
+
+> 15题的变形，将 0 修改成不定的数
+>
+> + 方法一，和 target 相差的值，从 0 开始递增查找
+> + 排序后，双指针查找
 
 
 ```Java
@@ -876,7 +808,7 @@ Although the above answer is in lexicographical order, your answer could be in a
 
 
 ```Java
-// 我的方法，使用循环实现
+// 使用循环实现
 class Solution {
     public String[] letterTable = {"","","abc", "def", "ghi", "jkl", "mno", 
                                 "qprs", "tuv", "wxyz"};
@@ -973,6 +905,8 @@ A solution set is:
   [-2,  0, 0, 2]
 ]
 ```
+
+> 先确定前面两个数，然后从后面数字中利用双指针找出余下两个数字，由于有重复数字，注意去重
 
 
 ```Java
@@ -1088,6 +1022,10 @@ Note:
 
 Given n will always be valid.
 
+> + 暴力法
+> + 递归
+> + 快慢指针，比暴力法稍稍快点
+
 
 ```Java
 // my ac
@@ -1181,7 +1119,7 @@ For example, given n = 3, a solution set is:
 
 
 ```Java
-// 第一次错误方法
+// 第一次错误方法， 有些不是在原有的左边添加，如 4 = 1 +3 = 2+ 2
 class Solution {
     public List<String> generateParenthesis(int n) {
         List<String> list = new ArrayList();
@@ -1406,22 +1344,7 @@ Note:
 + The divisor will never be 0.
 + Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: [$−2^{31}$,$2^{31}$ − 1]. For the purpose of this problem, assume that your function returns 231 − 1 when the division result overflows.
 
-
-```Java
-//MY AC
-class Solution {
-    public int divide(int dividend, int divisor) {
-        if(dividend == Integer.MIN_VALUE && divisor ==-1)return Integer.MAX_VALUE;
-        try{
-            int result =  dividend/divisor;
-            if(result < Integer.MIN_VALUE || result >= Integer.MAX_VALUE)return Integer.MAX_VALUE;
-            return result;
-        }catch(Exception e) {
-            return Integer.MAX_VALUE;
-        }
-    }
-}
-```
+> 将答案分解成2进制相加
 
 
 ```Java
