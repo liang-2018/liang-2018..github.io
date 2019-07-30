@@ -1345,10 +1345,12 @@ Note:
 + Assume we are dealing with an environment which could only store integers within the 32-bit signed integer range: [$−2^{31}$,$2^{31}$ − 1]. For the purpose of this problem, assume that your function returns 231 − 1 when the division result overflows.
 
 > 将答案分解成2进制相加
+>
+> + 先找出比商小的 最大的2整数次幂
+> + 循环操作，每次减去能减的 2 的整数次幂
 
 
 ```Java
-// BETTER AC 
 class Solution {
     public int divide(int dividend, int divisor) {
         if (dividend == 0) {
@@ -1389,9 +1391,7 @@ Suppose an array sorted in ascending order is rotated at some pivot unknown to y
 (i.e., [0,1,2,4,5,6,7] might become [4,5,6,7,0,1,2]).
 
 You are given a target value to search. If found in the array return its index, otherwise return -1.
-
 You may assume no duplicate exists in the array.
-
 Your algorithm's runtime complexity must be in the order of O(log n).
 
 Example 1:
@@ -1404,6 +1404,9 @@ Example 2:
 Input: nums = [4,5,6,7,0,1,2], target = 3
 Output: -1
 ```
+
+> 二分排序变种
+> 由于是有序的，即使旋转过，也只有局部反转，只要边界左边小于右边，那就这部分就是有序的。
 
 
 ```Java
@@ -1458,6 +1461,8 @@ Example 2:
 Input: nums = [5,7,7,8,8,10], target = 6
 Output: [-1,-1]
 ```
+
+> 二分查找变种，找到后遍历查找前后，
 
 
 ```Java
@@ -1542,6 +1547,8 @@ Note:
 + The given board contain only digits 1-9 and the character '.'.
 + The given board size is always 9x9.
 
+> 按照要求暴力解决
+
 
 ```Java
 // my ac
@@ -1587,6 +1594,8 @@ class Solution {
 }
 ```
 
+> 原理差不多
+
 
 ```Java
 // suggested ac
@@ -1610,7 +1619,7 @@ class Solution {
           int n = (int)num;
           int box_index = (i / 3 ) * 3 + j / 3;
 
-          // keep the current cell value
+          // keep the current cell value; getOrDefault 如果没有获得值，则使用默认值
           rows[i].put(n, rows[i].getOrDefault(n, 0) + 1);
           columns[j].put(n, columns[j].getOrDefault(n, 0) + 1);
           boxes[box_index].put(n, boxes[box_index].getOrDefault(n, 0) + 1);
@@ -1701,6 +1710,8 @@ A solution set is:
 ]
 ```
 
+> 递归遍历获取答案
+
 
 ```Java
 class Solution {  
@@ -1727,6 +1738,8 @@ class Solution {
     }
 }
 ```
+
+> 取 与 不取
 
 
 ```Java
@@ -1975,9 +1988,10 @@ Output:
 ]
 ```
 
+> 递归暴力解决
+
 
 ```Java
-// my ac
 class Solution {
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> result = new ArrayList();
@@ -1997,16 +2011,17 @@ class Solution {
                 combine(result, tmpc, nums);
             }
         }
-       
     }
 }
 ```
+
+> 回溯，当前取与不取，由于有 isContain 笔记数字是否已取，相当于 List 每次取完后移除，然后再从剩余数字进行选取
 
 
 ```Java
 // seems better ac ? 利用数组记录该数是否已包含该数字，而不是用list判断
 class Solution {
-   private List<List<Integer>> numList;
+   	private List<List<Integer>> numList;
     private boolean[] isContain;
     public List<List<Integer>> permute(int[] nums) {
         numList = new ArrayList<>();
@@ -2076,7 +2091,7 @@ class Solution {
             for(int j =n; j <len; j++){
                 swap(nums,n,j);
                 sortNums(nums,n+1,len);
-                swap(nums,n,j);      //不还原，for不同次的循环使用的nums不同
+                swap(nums,n,j);      //不还原会导致不同次的循环使用的nums不同
             }
     }
     public void swap(int[] nums, int n, int j){
@@ -2105,7 +2120,7 @@ Output:
 
 
 ```Java
-// my ac,实验证明用数组记录是否已包含该数值会比用list.contains效果更好，因为前者可以定位到具体位置的数字，而不是判断值是否相等
+// my ac,实验证明用数组记录是否已包含该数值会比用list.contains效果更好，因为前者可以定位到具体位置的数字，而不是判断遍历值是否相等
 class Solution {
     public List<List<Integer>> permuteUnique(int[] nums) {
         Arrays.sort(nums);
@@ -2130,7 +2145,6 @@ class Solution {
             while(i < nums.length -1 && nums[i] == nums[i+1]){
                 i++;
             }
-            
         }
     }
 }
@@ -2138,7 +2152,7 @@ class Solution {
 
 
 ```Java
-// 使用的回溯，相比之下，比我的方法能节约多次new ArrayList(tmp)的空间
+// 使用的回溯，相比之下，比我的方法能节约多次new ArrayList(tmp)备份的空间
 import java.util.Arrays;
 import java.util.List;
 import java.util.ArrayList;
@@ -2160,12 +2174,11 @@ class Solution {
             ret.add(new ArrayList<Integer>(list));
             return;
         }
-        
+
         for (int i = 0; i < nums.length; i++) {
             if (i > 0 && nums[i] == nums[i - 1] && !visited[i - 1]) {
                 continue;
             }
-            
             if (!visited[i]) {
                 list.add(nums[i]);
                 visited[i] = true;
@@ -2398,6 +2411,8 @@ class Solution {
 }
 ```
 
+> 以特殊方式计算Hash值
+
 
 ```Java
 // best ac
@@ -2454,7 +2469,7 @@ Explanation: 2-2 = 1/22 = 1/4 = 0.25
 Note:
 
 + -100.0 < x < 100.0
-+ n is a 32-bit signed integer, within the range [$−2^{31}$, $2^{31}$ − 1]
++ n is a 32-bit signed integer, within the range [$−2^{31}$, $2^{31}​$ − 1]
 
 
 ```Java

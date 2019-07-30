@@ -17,6 +17,7 @@ categories: LeetCode
 ## 54. Spiral Matrix
 
 **第一次做的时候，会多加或者漏了最里面的行或者列**  
+
 > Given a matrix of m x n elements (m rows, n columns), return all elements of the matrix in spiral order.
 >
 > ```
@@ -152,7 +153,7 @@ class Solution {
 >              jump length is 0, which makes it impossible to reach the last index.
 > ```
 
-
+> 标记跳过的位置，一旦遇到0，返回之前未起跳的位重新跳
 
 ```Java
 // my ac
@@ -169,7 +170,7 @@ class Solution {
             jumped[curIndex] = 1;            
             curIndex = curIndex + curVal;     
             if(nums[curIndex] == 0){    
-                 while(curIndex >= 0 && jumped[curIndex] == 1){
+                 while(curIndex >= 0 && jumped[curIndex] == 1){// 跳过已跳过的位置，只从之前未起跳的位置重新开始跳
                      curIndex --;
                  }
             }
@@ -180,6 +181,8 @@ class Solution {
     }
 }
 ```
+
+> 逆向思维，可以从 0 起步跳到 最后，也能从最后跳到 0 
 
 
 ```Java
@@ -192,6 +195,7 @@ class Solution {
     public boolean canJump(int[] nums) {
         int index = nums.length - 2,right = nums.length - 1;
         while(index >= 0){
+            // 当前 index 加上步数大于 末端位置，说明当前位置是可以从后面往回跳回来
             if(index + nums[index] >= right) right = index;//只有满足条件，才更新right 下标值
             index--;
         }
@@ -218,9 +222,7 @@ class Solution {
 > Explanation: Intervals [1,4] and [4,5] are considered overlapping.
 > ```
 
-
-
-
+> 使用自定义集合排序，只要 后一个数组开头小于等于前一个数组结尾，则可以合并
 
 ```Java
 // my ac 17ms, 使用了自定义集合排序
@@ -266,6 +268,8 @@ class Solution {
 }
 ```
 
+> 从左往右，遍历查找能合并的对象，逐个合并
+
 
 ```Java
 // 10ms
@@ -307,6 +311,8 @@ class Solution {
     } 
 }
 ```
+
+>  通过数域的性质，只用关心起始和终止点，直接进行拼接即可，较难想到(这理论不一定知道)
 
 
 ```Java
@@ -352,9 +358,7 @@ class Solution {
 >  [ 7, 6, 5 ]
 > ]
 
-
-
-
+> 按照要求进行，注意拐角点
 
 ```Java
 class Solution {
@@ -362,8 +366,7 @@ class Solution {
         int[][] matrix = new int[n][n];
         int minLength = (n-1)/2;
         int value = 1;
-        for(int i = 0; i <= minLength; i++){
-            
+        for(int i = 0; i <= minLength; i++){            
             //right-->
             for(int j = i; j <= n -i -1; j++){
                 matrix[i][j] = value;
@@ -374,7 +377,7 @@ class Solution {
                 matrix[j][n -i -1] = value;
                 value ++;
             }
-            if(i != n -i -1 ){//注意，此处和 i != minLength 是两码事，原因在于int计算取证
+            if(i != n -i -1 ){//注意，此处和 i != minLength 是两码事，原因在于int计算取整
                 // left <--
                 for(int j = n - i -2; j >= i; j--){
                     matrix[n - i -1][j] = value;
@@ -384,10 +387,8 @@ class Solution {
                 for(int j = n -i -2; j > i; j--){
                     matrix[j][i] = value;
                     value ++;
-                }
-                
-            }
-                                    
+                }                
+            }                                    
         }
         return matrix;
     }
@@ -615,10 +616,8 @@ public ListNode rotateRight(ListNode head, int k) {
 > The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
 >
 > How many possible unique paths are there?
->
-> ![img](https://assets.leetcode.com/uploads/2018/10/22/robot_maze.png)
+> ![img](LeetCode-note-part-2/robot_maze-1564480945576.png)
 > Above is a 7 x 3 grid. How many possible unique paths are there?
->
 > **Note:** *m* and *n* will be at most 100.
 >
 > **Example 1:**
@@ -656,27 +655,29 @@ class Solution {
 }
 ```
 
-> 分析（1）：  
+> **分析（1）：**  
 >
 > 由于机器人智能往右或者往下，所以到达(i,j)的方式只有两种：从（i-1,j）往右和从(i,j-1)往下；从而易得出到达（i,j）的路径总数为dp\[i\]\[j\]=dp\[i-1\]\[j\]+dp\[i\]\[j-1\]
 >
-> 分析（2）：   
+> **分析（2）：**   
 >
-> 由高中数学可知答案就是$C_{m+n-2}^{m-1}$或者$C_{m+n-2}^{n-1}$。其中
+> 由高中数学可知答案就是$C_{m+n-2}^{m-1}​$或者$C_{m+n-2}^{n-1}​$。其中
 >
 > $$C_m^n=\frac{m!}{n!*(m-n)!}$$(1)
 >
 > 如果m或者n较小，结果容易得出，但是由于m，n最大可能100，使用阶乘计算的话溢出是必定的。
 >
-> 同时有性质：$C_{m+1}^{n+1}=C_m^n+C_m^{n+1}$(2)和$C_n^0+C_n^1+C_n^2+C_n^3+...+C_n^n=2^n$(3)
+> 同时有性质：
+> $C_{m+1}^{n+1}=C_m^n+C_m^{n+1}​$                                 (2)  
+> $C_n^0+C_n^1+C_n^2+C_n^3+...+C_n^n=2^n​$       (3)
 >
 > 通过式（2），很容易想到这题使用动态规划计算。
 >
-> 假设使用数组dp存储结果，则有：dp\[m\]\[n\]=$C_{m+n-2}^{n-1}=C_{m+n-3}^{n-2}+C_{m+n-3}^{n-1}$
+> 假设使用数组dp存储结果，则有：dp\[m\]\[n\]=$C_{m+n-2}^{n-1}=C_{m+n-3}^{n-2}+C_{m+n-3}^{n-1}​$
 >
 > 结合公式（2）得出：dp\[m\]\[n\]=dp\[m-1\]\[n\]+dp\[m\]\[n-1\]
 >
-> **注意：**dp\[m-1\]\[n-1\]=$C_{m+n-4}^{n-2}$
+> **注意：**dp\[m-1\]\[n-1\]=$C_{m+n-4}^{n-2}​$
 
 ```java
 class Solution {
@@ -703,9 +704,9 @@ class Solution {
 > The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid (marked 'Finish' in the diagram below).
 >
 > Now consider if some obstacles are added to the grids. How many unique paths would there be?
->
-> ![img](https://assets.leetcode.com/uploads/2018/10/22/robot_maze.png)
->
+
+![img](LeetCode-note-part-2/robot_maze.png)
+
 > An obstacle and empty space is marked as `1` and `0` respectively in the grid.
 >
 > **Note:** *m* and *n* will be at most 100.
@@ -715,9 +716,9 @@ class Solution {
 > ```
 > Input:
 > [
->   [0,0,0],
->   [0,1,0],
->   [0,0,0]
+> [0,0,0],
+> [0,1,0],
+> [0,0,0]
 > ]
 > Output: 2
 > Explanation:
@@ -980,15 +981,15 @@ class Solution {
 > ```
 > Input: 
 > [
->   [1,1,1],
->   [1,0,1],
->   [1,1,1]
+> [1,1,1],
+> [1,0,1],
+> [1,1,1]
 > ]
 > Output: 
 > [
->   [1,0,1],
->   [0,0,0],
->   [1,0,1]
+> [1,0,1],
+> [0,0,0],
+> [1,0,1]
 > ]
 > ```
 >
@@ -997,15 +998,15 @@ class Solution {
 > ```
 > Input: 
 > [
->   [0,1,2,0],
->   [3,4,5,2],
->   [1,3,1,5]
+> [0,1,2,0],
+> [3,4,5,2],
+> [1,3,1,5]
 > ]
 > Output: 
 > [
->   [0,0,0,0],
->   [0,4,5,0],
->   [0,3,1,0]
+> [0,0,0,0],
+> [0,4,5,0],
+> [0,3,1,0]
 > ]
 > ```
 >
@@ -1014,6 +1015,8 @@ class Solution {
 > - A straight forward solution using O(*m**n*) space is probably a bad idea.
 > - A simple improvement uses O(*m* + *n*) space, but still not the best solution.
 > - Could you devise a constant space solution?
+
+> 使用标记法，标记需要重置为 0 的行和列
 
 ```java
 // O(m+n) space 2ms
@@ -1135,9 +1138,9 @@ class Solution {
 > ```
 > Input:
 > matrix = [
->   [1,   3,  5,  7],
->   [10, 11, 16, 20],
->   [23, 30, 34, 50]
+> [1,   3,  5,  7],
+> [10, 11, 16, 20],
+> [23, 30, 34, 50]
 > ]
 > target = 3
 > Output: true
@@ -1148,13 +1151,16 @@ class Solution {
 > ```
 > Input:
 > matrix = [
->   [1,   3,  5,  7],
->   [10, 11, 16, 20],
->   [23, 30, 34, 50]
+> [1,   3,  5,  7],
+> [10, 11, 16, 20],
+> [23, 30, 34, 50]
 > ]
 > target = 13
 > Output: false
 > ```
+
+> The first integer of each row is greater than the last integer of the previous row.
+> 这个条件可以考虑，将二维转成一维数组进行二分排序
 
 ```java
 // 日常判断  传入的值可能为 null 或者 长度为0
@@ -1284,7 +1290,7 @@ class Solution {
             // 注意，添加 i >= k 可以节约很多时间，避免大量无用功，差不多是5ms和57ms的区别              
             combine.add(i);
             combine(i-1, k-1, combine);
-            combine.remove((Object)i); // 或  combine.remove(combine.size()-1);
+            combine.remove((Object)i); // 建议使用 combine.remove(combine.size()-1);移除速度更快
         }
     }
 }
@@ -1345,16 +1351,19 @@ class Solution {
 > Input: nums = [1,2,3]
 > Output:
 > [
->   [3],
->   [1],
->   [2],
->   [1,2,3],
->   [1,3],
->   [2,3],
->   [1,2],
->   []
+> [3],
+> [1],
+> [2],
+> [1,2,3],
+> [1,3],
+> [2,3],
+> [1,2],
+> []
 > ]
 > ```
+
+> 回溯，选 或者 不选
+> <https://leetcode-cn.com/problems/subsets/solution/hui-su-suan-fa-by-powcai-5/>
 
 ```java
 class Solution {
@@ -1372,7 +1381,7 @@ class Solution {
         }
         temp.add(nums[index]);
         sub(nums, temp, index + 1);
-        temp.remove(temp.size() - 1);
+        temp.remove(temp.size() - 1);// 这里尽可能使用 索引位置移除，更快
         sub(nums, temp, index + 1);
     }
 }
@@ -1528,7 +1537,7 @@ class Solution {
         }
         if( word.charAt(curIndex) == board[curRow][curCol]){
             //判断四个方向是否可行
-            mark[curRow][curCol] = 1;
+            mark[curRow][curCol] = 1; // 位置，回溯标记
             if(exist(curRow - 1, curCol, curIndex + 1) 
               || exist(curRow + 1, curCol, curIndex + 1)
               || exist(curRow, curCol -1, curIndex + 1)
@@ -1621,7 +1630,7 @@ class Solution {
 >
 > Internally you can think of this:
 >
-> ```
+> ```java
 > // nums is passed in by reference. (i.e., without making a copy)
 > int len = removeDuplicates(nums);
 > 
