@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://pengshiliang.coding.me/2018/10/02/LeetCode-note-part-1/</loc>
+    
+    <lastmod>2019-07-29T15:09:52.958Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://pengshiliang.coding.me/2018/09/29/redis-learning/</loc>
     
     <lastmod>2019-07-24T14:31:43.036Z</lastmod>
@@ -180,13 +187,6 @@
     <loc>https://pengshiliang.coding.me/2018/10/12/LeetCode-note-part-2/</loc>
     
     <lastmod>2019-07-19T02:30:09.995Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://pengshiliang.coding.me/2018/10/02/LeetCode-note-part-1/</loc>
-    
-    <lastmod>2019-07-19T02:29:40.311Z</lastmod>
     
   </url>
   
