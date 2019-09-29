@@ -1756,6 +1756,8 @@ class Solution {
 }
 ```
 
+> 每次先遍历去除重复值位置，问题就简化了
+
 ```java
 class Solution {
     public boolean search(int[] nums, int target) {
@@ -1990,14 +1992,16 @@ class Solution {
 > Input: [1,2,2]
 > Output:
 > [
->   [2],
->   [1],
->   [1,2,2],
->   [2,2],
->   [1,2],
->   []
+> [2],
+> [1],
+> [1,2,2],
+> [2,2],
+> [1,2],
+> []
 > ]
 > ```
+
+> 子集类，基本就在于取和不取，此题关键点在于规避重复值
 
 ```java
 class Solution {
@@ -2024,10 +2028,8 @@ class Solution {
             sub.remove(sub.size() -1);
             while(i < nums.length -1 && nums[i] == nums[i+1]){
                 i++ ;
-            } 
-                      
-        }        
-        
+            }                       
+        }                
     }
 }
 ```
