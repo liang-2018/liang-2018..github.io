@@ -94,13 +94,14 @@
 <meta property="og:site_name" content="初心不忘">
 <meta property="og:description" content="当前更多是集群环境，从部署到运维相对工作量大。Docker一次构建，处处运行。 实验室相关项目最终也决定使用docker部署">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://pengshiliang.coding.me/2019/03/05/docker-learning-note/1572962679617.png">
 <meta property="og:image" content="https://pengshiliang.coding.me/2019/03/05/docker-learning-note/1559736972755.png">
 <meta property="og:image" content="https://pengshiliang.coding.me/2019/03/05/docker-learning-note/1559740258069.png">
-<meta property="og:updated_time" content="2019-07-19T02:32:58.758Z">
+<meta property="og:updated_time" content="2019-11-05T14:15:35.487Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="docker学习笔记">
 <meta name="twitter:description" content="当前更多是集群环境，从部署到运维相对工作量大。Docker一次构建，处处运行。 实验室相关项目最终也决定使用docker部署">
-<meta name="twitter:image" content="https://pengshiliang.coding.me/2019/03/05/docker-learning-note/1559736972755.png">
+<meta name="twitter:image" content="https://pengshiliang.coding.me/2019/03/05/docker-learning-note/1572962679617.png">
 
 
 
@@ -416,6 +417,11 @@
 <p>实验室相关项目最终也决定使用docker部署</p>
 </blockquote>
 <a id="more"></a>
+<h2 id="Docker-构成关系转换"><a href="#Docker-构成关系转换" class="headerlink" title="Docker 构成关系转换"></a>Docker 构成关系转换</h2><p><img src="/2019/03/05/docker-learning-note/1572962679617.png" alt="1572962679617"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">dockerfile[Dockerfile文件]--&gt;|build| dockerImage(docker镜像)</span><br><span class="line">dockerImage--&gt;|run| dockerContainer[docker容器]</span><br><span class="line">dockerContainer--&gt;|commit|dockerImage</span><br><span class="line">tarFile(压缩包)--&gt;|load/import|dockerImage</span><br><span class="line">dockerImage--&gt;|save|tarFile</span><br><span class="line">dockerContainer--&gt;|export|tarFile</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>通过容器导出(export)时，最终导出的文件和对应的源镜像基本一致，如果想保存容器的修改后的内容，应使用commit保存为新的镜像再导出。</p>
+</blockquote>
 <h2 id="一、Docker安装"><a href="#一、Docker安装" class="headerlink" title="一、Docker安装"></a>一、Docker安装</h2><p>参考链接:</p>
 <p><a href="http://www.docker.org.cn/book/install/linux.html" target="_blank" rel="noopener">http://www.docker.org.cn/book/install/linux.html</a>  </p>
 <p><a href="https://docs.docker.com/install/linux/docker-ce/centos/" target="_blank" rel="noopener">https://docs.docker.com/install/linux/docker-ce/centos/</a></p>
@@ -689,7 +695,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">28</span>
+                  <span class="site-state-item-count">29</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -700,7 +706,7 @@
               
               <div class="site-state-item site-state-categories">
                 <a href="/categories/index.html">
-                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-count">13</span>
                   <span class="site-state-item-name">分类</span>
                 </a>
               </div>
@@ -711,7 +717,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">24</span>
+                  <span class="site-state-item-count">25</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -760,7 +766,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Docker安装"><span class="nav-text">一、Docker安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、依赖检查"><span class="nav-text">1、依赖检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、安装"><span class="nav-text">2、安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）脚本安装"><span class="nav-text">（1）脚本安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）yum指令安装"><span class="nav-text">（2）yum指令安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（3）离线安装"><span class="nav-text">（3）离线安装</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、卸载"><span class="nav-text">3、卸载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Docker镜像"><span class="nav-text">二、Docker镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、切换为阿里云镜像源"><span class="nav-text">1、切换为阿里云镜像源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、Docker状态查询"><span class="nav-text">2、Docker状态查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、镜像操作"><span class="nav-text">3、镜像操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）镜像查看"><span class="nav-text">（1）镜像查看</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）镜像查询与拉取"><span class="nav-text">（2）镜像查询与拉取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（3）镜像删除"><span class="nav-text">（3）镜像删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（4）镜像导出与导入"><span class="nav-text">（4）镜像导出与导入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Docker容器"><span class="nav-text">三、Docker容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、容器启动（run）"><span class="nav-text">1、容器启动（run）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、容器其他操作"><span class="nav-text">2、容器其他操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、应用容器化-Docker镜像构建"><span class="nav-text">四、应用容器化(Docker镜像构建)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、镜像构建常用指令"><span class="nav-text">1、镜像构建常用指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、tomcat-mysql构建-Dockerfile"><span class="nav-text">2、tomcat mysql构建 Dockerfile</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、Docker-Compose部署"><span class="nav-text">五、Docker Compose部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、Docker-Swarm"><span class="nav-text">六、Docker Swarm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、Docker网络"><span class="nav-text">七、Docker网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八、Docker卷与持久化"><span class="nav-text">八、Docker卷与持久化</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Docker-构成关系转换"><span class="nav-text">Docker 构成关系转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#一、Docker安装"><span class="nav-text">一、Docker安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、依赖检查"><span class="nav-text">1、依赖检查</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、安装"><span class="nav-text">2、安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）脚本安装"><span class="nav-text">（1）脚本安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）yum指令安装"><span class="nav-text">（2）yum指令安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（3）离线安装"><span class="nav-text">（3）离线安装</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、卸载"><span class="nav-text">3、卸载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#二、Docker镜像"><span class="nav-text">二、Docker镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、切换为阿里云镜像源"><span class="nav-text">1、切换为阿里云镜像源</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、Docker状态查询"><span class="nav-text">2、Docker状态查询</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、镜像操作"><span class="nav-text">3、镜像操作</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#（1）镜像查看"><span class="nav-text">（1）镜像查看</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（2）镜像查询与拉取"><span class="nav-text">（2）镜像查询与拉取</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（3）镜像删除"><span class="nav-text">（3）镜像删除</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#（4）镜像导出与导入"><span class="nav-text">（4）镜像导出与导入</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#三、Docker容器"><span class="nav-text">三、Docker容器</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、容器启动（run）"><span class="nav-text">1、容器启动（run）</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、容器其他操作"><span class="nav-text">2、容器其他操作</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#四、应用容器化-Docker镜像构建"><span class="nav-text">四、应用容器化(Docker镜像构建)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、镜像构建常用指令"><span class="nav-text">1、镜像构建常用指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、tomcat-mysql构建-Dockerfile"><span class="nav-text">2、tomcat mysql构建 Dockerfile</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#五、Docker-Compose部署"><span class="nav-text">五、Docker Compose部署</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#六、Docker-Swarm"><span class="nav-text">六、Docker Swarm</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#七、Docker网络"><span class="nav-text">七、Docker网络</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#八、Docker卷与持久化"><span class="nav-text">八、Docker卷与持久化</span></a></li></ol></div>
             
 
           </div>
