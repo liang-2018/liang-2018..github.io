@@ -17,6 +17,22 @@ categories:
 
 <!-- more -->
 
+## Docker 构成关系转换
+
+![1572962679617](docker-learning-note/1572962679617.png)
+
+```mermaid
+graph LR
+dockerfile[Dockerfile文件]-->|build| dockerImage(docker镜像)
+dockerImage-->|run| dockerContainer[docker容器]
+dockerContainer-->|commit|dockerImage
+tarFile(压缩包)-->|load/import|dockerImage
+dockerImage-->|save|tarFile
+dockerContainer-->|export|tarFile
+```
+
+> 通过容器导出(export)时，最终导出的文件和对应的源镜像基本一致，如果想保存容器的修改后的内容，应使用commit保存为新的镜像再导出。
+
 ## 一、Docker安装
 
 参考链接:
