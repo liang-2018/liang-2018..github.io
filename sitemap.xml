@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://pengshiliang.coding.me/2019/12/01/DjangoLearning/</loc>
+    
+    <lastmod>2019-12-02T01:51:48.296Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://pengshiliang.coding.me/2019/10/09/clean-code-read-note/</loc>
     
     <lastmod>2019-11-05T14:16:58.533Z</lastmod>
