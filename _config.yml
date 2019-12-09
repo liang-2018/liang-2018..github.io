@@ -90,10 +90,10 @@ deploy:
   repository: git@github.com:liang-2018/liang-2018.github.io.git
   branch: master
 - type: git
-  repo: git@gitee.com:PengShiliang/PengShiliang.git
+  repo: git@git.dev.tencent.com:pengshiliang/pengshiliang.git
   branch: master
 - type: git
-  repo: git@git.dev.tencent.com:pengshiliang/pengshiliang.git
+  repo: git@gitee.com:PengShiliang/PengShiliang.git
   branch: master
 
 live2d:
@@ -112,4 +112,23 @@ live2d:
     height: 300
   mobile:
     show: true
-  
+# hexo-neat
+neat_enable: true
+neat_html:
+  enable: true
+  exclude:
+neat_css:
+  enable: true
+  exclude:
+    - '**/*.min.css'
+
+# 压缩js
+neat_js:
+  enable: true
+  mangle: true
+  output:
+  compress:
+  exclude:
+    - '**/*.min.js'
+    - '**/jquery.fancybox.pack.js'
+    - '**/index.js'

@@ -366,7 +366,7 @@ public class Neo4jUtil {
 >
 > fields()
 >
-> 将Record封装，返回为List<Pair<String,Value>>,Pair有点类似Map
+> 将Record封装，返回为List < Pair < String,Value > > , Pair有点类似Map
 >
 > index(String key)，containsKey(String key),get(String key),get(int index)
 >
@@ -417,7 +417,7 @@ size(), isEmpty(), keys(), get(int index), type(), hasType(Type type), isTrue(),
 >
 > 余下的asXxx()方法，不做详细介绍，主要根据返回的结果类型，进行转化
 
-#### 4、(Internal)Node
+#### 
 
 
 
